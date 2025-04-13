@@ -38,7 +38,7 @@ $quantity = $_SESSION['cart_quantity'];
       <div class="flex items-center justify-between p-4 border-b">
         <h2 class="text-lg font-semibold">Your Cart</h2>
         <div class="flex items-center gap-4">
-            <button class="text-blue-500 font-semibold hover:underline" onclick="window.location.href='{{ route('cart.view') }}'">
+        <button class="text-blue-500 font-semibold hover:underline" onclick="window.location.href='{{ route('cart.view') }}'">
               View Cart
             </button>
             <button onclick="toggleCartModal()" class="text-gray-400 hover:text-gray-600">
@@ -70,8 +70,12 @@ $quantity = $_SESSION['cart_quantity'];
       </div>
       <div class="p-4 border-t bg-gray-50">
         <p class="text-sm text-gray-500 mb-4">Taxes and shipping calculated at checkout.</p>
-        <button onclick="window.location.href='{{ route('checkout.view') }}'" class="w-full bg-blue-500 text-white py-3 font-semibold rounded hover:bg-blue-600">
-          Checkout ₱9,780.00
+        <button
+      onclick="window.location.href='{{ route('checkout.view') }}'"
+            class="text-white py-3 px-6 rounded-lg flex items-center justify-center whitespace-nowrap transition-colors w-full hover:opacity-90"
+              style="background-color: #4F46E5;">
+                <i class="ri-flash-line mr-2"></i>
+                    Checkout
         </button>
       </div>
     </div>

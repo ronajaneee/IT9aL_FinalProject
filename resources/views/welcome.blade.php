@@ -1,4 +1,3 @@
-<!-- filepath: c:\xampp\htdocs\IT9aL_Website\resources\views\welcome.blade.php -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -12,14 +11,13 @@
     <script src="{{ asset('js/tailwind-config.min.js') }}" data-color="#000000" data-border-radius="small"></script>
 </head>
 <body class="bg-gray-100">
-      <!-- Header Section -->
   <header class="fixed w-full top-0 z-50 bg-white shadow-sm">
     <nav class="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="flex justify-between h-16">
         <!-- Left Section: Logo & Navigation -->
         <div class="flex items-center">
           <a href="/" class="flex-shrink-0">
-            <img class="h-28 w-auto" src="{{ asset('storage/images/logo.webp') }}" alt="Under The Hood Supply"/>
+          <img class="h-12 md:h-16 lg:h-20 w-auto" src="{{ asset('storage/images/logo.png') }}" alt="Under The Hood Supply"/>
           </a>
           <div class="hidden md:ml-8 md:flex md:space-x-8">
             <a href="#" class="text-blue-500 hover:text-blue-600 px-3 py-2 text-sm font-medium">Shop</a>
@@ -54,25 +52,7 @@
       </div>
     </nav>
   </header>
-        </div>
-      </div>
-    </nav>
-  </header>
-  
-  <!-- Cart Modal (Overlay) - Initially Hidden -->  
-<div id="cartModal" class="hidden fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center z-50">
-    <div class="bg-white w-full max-w-xl rounded-lg shadow-xl">
-        <div class="flex items-center justify-between p-4 border-b">
-            <h2 class="text-lg font-semibold">Your Cart</h2>
-            <button onclick="toggleCartModal()" class="text-gray-400 hover:text-gray-600">
-                <i class="fas fa-times text-lg"></i>
-            </button>
-        </div>
-        <div id="cartContent" class="p-4" style="min-height: 300px; overflow-y: auto;">
-            <!-- Cart content will be dynamically loaded here -->
-        </div>
-    </div>
-</div>
+
     <main class="mt-16">
         <section class="relative bg-gray-900 h-[600px] overflow-hidden">
             <div class="absolute inset-0">
@@ -99,131 +79,233 @@
             </div>
         </section>
         <section id="products" class="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-            <h2 class="text-3xl font-semibold text-gray-900 mb-8">Popular Categories</h2>
-            <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-6">
-                <a href="#" class="group">
-                    <div class="aspect-w-1 aspect-h-1 rounded-lg bg-gray-100 overflow-hidden">
-                        <img src="storage/images/engine.webp" class="object-center object-cover group-hover:scale-105 transition-transform duration-300" alt="Engine Parts"/>
-                    </div>
-                    <h3 class="mt-4 text-base font-medium text-gray-900">Engine Parts</h3>
-                </a>
-                <a href="#" class="group">
-                    <div class="aspect-w-1 aspect-h-1 rounded-lg bg-gray-100 overflow-hidden">
-                        <img src="storage/images/brake.webp" class="object-center object-cover group-hover:scale-105 transition-transform duration-300" alt="Brake Systems"/>
-                    </div>
-                    <h3 class="mt-4 text-base font-medium text-gray-900">Brake Systems</h3>
-                </a>
-                <a href="#" class="group">
-                    <div class="aspect-w-1 aspect-h-1 rounded-lg bg-gray-100 overflow-hidden">
-                        <img src="storage/images/transmission.webp" class="object-center object-cover group-hover:scale-105 transition-transform duration-300" alt="Transmission"/>
-                    </div>
-                    <h3 class="mt-4 text-base font-medium text-gray-900">Transmission</h3>
-                </a>
-                <a href="#" class="group">
-                    <div class="aspect-w-1 aspect-h-1 rounded-lg bg-gray-100 overflow-hidden">
-                        <img src="storage/images/suspension.webp" class="object-center object-cover group-hover:scale-105 transition-transform duration-300" alt="Suspension"/>
-                    </div>
-                    <h3 class="mt-4 text-base font-medium text-gray-900">Suspension</h3>
-                </a>
-                <a href="#" class="group">
-                    <div class="aspect-w-1 aspect-h-1 rounded-lg bg-gray-100 overflow-hidden">
-                        <img src="storage/images/rim.avif" class="object-center object-cover group-hover:scale-105 transition-transform duration-300" alt="Electrical"/>
-                    </div>
-                    <h3 class="mt-4 text-base font-medium text-gray-900">Wheel Rim</h3>
-                </a>
-                <a href="#" class="group">
-                    <div class="aspect-w-1 aspect-h-1 rounded-lg bg-gray-100 overflow-hidden">
-                        <img src="storage/images/interior.webp" class="object-center object-cover group-hover:scale-105 transition-transform duration-300" alt="Interior"/>
-                    </div>
-                    <h3 class="mt-4 text-base font-medium text-gray-900">Interior</h3>
-                </a>
-            </div>
-        </section>
+    <h2 class="text-3xl font-semibold text-gray-900 mb-8">Popular Categories</h2>
+    <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-6">
         
-        <section class="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-            <div class="flex items-center justify-between mb-8">
-                <h2 class="text-3xl font-semibold text-gray-900 mb-8">Featured Products</h2>
-                <div class="flex space-x-2">
-                    <button class="glide__bullet !rounded-button" data-glide-dir="=0"></button>
-                    <button class="glide__bullet !rounded-button" data-glide-dir="=1"></button>
-                    <button class="glide__bullet !rounded-button" data-glide-dir="=2"></button>
+        <!-- Engine Parts -->
+        <div class="group">
+            <a href="{{ route('product') }}">
+                <div class="aspect-w-1 aspect-h-1 rounded-lg bg-gray-100 overflow-hidden">
+                    <img src="storage/images/engine.webp" class="object-center object-cover group-hover:scale-105 transition-transform duration-300" alt="Engine Parts" />
                 </div>
+                <h3 class="mt-4 text-base font-medium text-gray-900">Engine Parts</h3>
+            </a>
+            <div class="mt-2">
+                <a href="{{ route('product') }}" class="text-purple-600 font-medium hover:underline inline-block">
+                    View 
+                </a>
             </div>
-            <div class="glide">
-                <div class="glide__track" data-glide-el="track">
-                    <div class="glide__slides">
-                        <div class="glide__slide">
-                            <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
-                                <div class="group">
-                                    <div class="aspect-w-1 aspect-h-1 rounded-lg bg-gray-100 overflow-hidden">
-                                        <img src="{{ asset('storage/images/brake_rotor.webp') }}" class="object-center object-cover group-hover:scale-105 transition-transform duration-300" alt="Premium Brake Rotor"/>
-                                    </div>
-                                    <div class="mt-4">
-                                        <h3 class="text-base font-medium text-gray-900">Premium Brake Rotor</h3>
-                                        <p class="mt-1 text-base text-gray-500">High-performance braking system</p>
-                                        <div class="mt-1 flex items-center justify-between">
-                                            <p class="text-lg font-bold text-custom">$299.99</p>
-                                            <a href="{{ route('product.show', ['id' => 1]) }}" class="bg-custom text-white px-3 py-1 !rounded-button text-sm hover:bg-custom/90">View Details</a>
-                                        </div>
-                                        <div class="mt-2">
-                                            <a href="{{ route('product.show', ['id' => 1]) }}" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 text-sm">Go to Show</a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="group">
-                                    <div class="aspect-w-1 aspect-h-1 rounded-lg bg-gray-100 overflow-hidden">
-                                        <img src="{{ asset('storage/images/air_intake.webp') }}" class="object-center object-cover group-hover:scale-105 transition-transform duration-300" alt="Performance Air Intake"/>
-                                    </div>
-                                    <div class="mt-4">
-                                        <h3 class="text-base font-medium text-gray-900">Performance Air Intake</h3>
-                                        <p class="mt-1 text-base text-gray-500">Enhanced engine breathing</p>
-                                        <div class="mt-1 flex items-center justify-between">
-                                            <p class="text-lg font-bold text-custom">$199.99</p>
-                                            <a href="{{ route('product.show', ['id' => 2]) }}" class="bg-custom text-white px-3 py-1 !rounded-button text-sm hover:bg-custom/90">View Details</a>
-                                        </div>
-                                        <div class="mt-2">
-                                            <a href="{{ route('product.show', ['id' => 1]) }}" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 text-sm">Go to Show</a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="group">
-                                    <div class="aspect-w-1 aspect-h-1 rounded-lg bg-gray-100 overflow-hidden">
-                                        <img src="{{ asset('storage/images/headlight.webp') }}" class="object-center object-cover group-hover:scale-105 transition-transform duration-300" alt="LED Headlight Assembly"/>
-                                    </div>
-                                    <div class="mt-4">
-                                        <h3 class="text-base font-medium text-gray-900">LED Headlight Assembly</h3>
-                                        <p class="mt-1 text-base text-gray-500">Crystal clear illumination</p>
-                                        <div class="mt-1 flex items-center justify-between">
-                                            <p class="text-lg font-bold text-custom">$449.99</p>
-                                            <a href="{{ route('product.show', ['id' => 3]) }}" class="bg-custom text-white px-3 py-1 !rounded-button text-sm hover:bg-custom/90">View Details</a>
-                                        </div>
-                                        <div class="mt-2">
-                                            <a href="{{ route('product.show', ['id' => 1]) }}" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 text-sm">Go to Show</a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="group">
-                                    <div class="aspect-w-1 aspect-h-1 rounded-lg bg-gray-100 overflow-hidden">
-                                        <img src="{{ asset('storage/images/coilovers.webp') }}" class="object-center object-cover group-hover:scale-105 transition-transform duration-300" alt="Sport Coilovers"/>
-                                    </div>
-                                    <div class="mt-4">
-                                        <h3 class="text-base font-medium text-gray-900">Sport Coilovers</h3>
-                                        <p class="mt-1 text-base text-gray-500">Advanced suspension system</p>
-                                        <div class="mt-1 flex items-center justify-between">
-                                            <p class="text-lg font-bold text-custom">$899.99</p>
-                                            <a href="{{ route('product.show', ['id' => 4]) }}" class="bg-custom text-white px-3 py-1 !rounded-button text-sm hover:bg-custom/90">View Details</a>
-                                        </div>
-                                        <div class="mt-2">
-                                            <a href="{{ route('product.show', ['id' => 1]) }}" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 text-sm">Go to Show</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+        </div>
+
+        <!-- Brake Systems -->
+        <div class="group">
+            <a href="#">
+                <div class="aspect-w-1 aspect-h-1 rounded-lg bg-gray-100 overflow-hidden">
+                    <img src="storage/images/brake.webp" class="object-center object-cover group-hover:scale-105 transition-transform duration-300" alt="Brake Systems" />
                 </div>
+                <h3 class="mt-4 text-base font-medium text-gray-900">Brake Systems</h3>
+            </a>
+            <div class="mt-2">
+            <a href="{{ route('product') }}" class="text-purple-600 font-medium hover:underline inline-block">
+                    View 
+                </a>
             </div>
-        </section>
+        </div>
+
+        <!-- Transmission -->
+        <div class="group">
+            <a href="#">
+                <div class="aspect-w-1 aspect-h-1 rounded-lg bg-gray-100 overflow-hidden">
+                    <img src="storage/images/transmission.webp" class="object-center object-cover group-hover:scale-105 transition-transform duration-300" alt="Transmission" />
+                </div>
+                <h3 class="mt-4 text-base font-medium text-gray-900">Transmission</h3>
+            </a>
+            <div class="mt-2">
+            <a href="{{ route('product') }}" class="text-purple-600 font-medium hover:underline inline-block">
+                    View 
+                </a>
+            </div>
+        </div>
+
+        <!-- Suspension -->
+        <div class="group">
+            <a href="#">
+                <div class="aspect-w-1 aspect-h-1 rounded-lg bg-gray-100 overflow-hidden">
+                    <img src="storage/images/suspension.webp" class="object-center object-cover group-hover:scale-105 transition-transform duration-300" alt="Suspension" />
+                </div>
+                <h3 class="mt-4 text-base font-medium text-gray-900">Suspension</h3>
+            </a>
+            <div class="mt-2">
+            <a href="{{ route('product') }}" class="text-purple-600 font-medium hover:underline inline-block">
+                    View 
+                </a>
+            </div>
+        </div>
+
+        <!-- Wheel Rim -->
+        <div class="group">
+            <a href="#">
+                <div class="aspect-w-1 aspect-h-1 rounded-lg bg-gray-100 overflow-hidden">
+                    <img src="storage/images/rim.avif" class="object-center object-cover group-hover:scale-105 transition-transform duration-300" alt="Wheel Rim" />
+                </div>
+                <h3 class="mt-4 text-base font-medium text-gray-900">Wheel Rim</h3>
+            </a>
+            <div class="mt-2">
+            <a href="{{ route('product.show', ['id' => 8]) }}" class="text-purple-600 font-medium hover:underline inline-block">
+                    View 
+                </a>
+            </div>
+        </div>
+
+        <!-- Interior -->
+        <div class="group">
+            <a href="#">
+                <div class="aspect-w-1 aspect-h-1 rounded-lg bg-gray-100 overflow-hidden">
+                    <img src="storage/images/interior.webp" class="object-center object-cover group-hover:scale-105 transition-transform duration-300" alt="Interior" />
+                </div>
+                <h3 class="mt-4 text-base font-medium text-gray-900">Interior</h3>
+            </a>
+            <div class="mt-2">
+                <a href="{{ route('product.show', ['id' => 8]) }}" class="text-purple-600 font-medium hover:underline inline-block">
+                    View 
+                </a>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+        
+       <section class="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+    <div class="flex justify-between items-center mb-8">
+        <h2 class="text-3xl font-semibold text-gray-900">Featured Products</h2>
+        <a href="#" class="text-purple-600 font-medium hover:underline">View All →</a>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+
+        <!-- Product Card -->
+        <div class="relative group rounded-xl border bg-white p-4 shadow-sm hover:shadow-md transition">
+            <div class="aspect-w-1 aspect-h-1 overflow-hidden rounded-lg bg-gray-100">
+                <img src="storage/images/PremiumAirIntake.jpg" alt="Performance Air Intake"
+                    class="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105">
+            </div>
+            <div class="mt-4 space-y-1">
+                <h3 class="text-base font-semibold text-gray-900">Performance Air Intake System</h3>
+                <p class="text-sm text-gray-500">Universal Fit | Carbon Fiber</p>
+                <div class="flex items-center space-x-1 text-yellow-400 text-sm">
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <span class="text-gray-500 ml-1">(42)</span>
+                </div>
+                <p class="text-lg font-bold text-gray-900">$189.99</p>
+                <a href="{{ route('product.show', ['id' => 3]) }}" class="text-purple-600 font-medium hover:underline">View Details</a>
+            </div>
+            <button class="absolute bottom-4 right-4 bg-purple-600 hover:bg-purple-700 text-white p-2 rounded-full shadow">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
+                    stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                        d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-1.35 2.7A1 1 0 007.5 17h9a1 1 0 00.85-1.53L17 13M10 21h.01M14 21h.01" />
+                </svg>
+            </button>
+        </div>
+
+        <!-- LED Headlight -->
+        <div class="relative group rounded-xl border bg-white p-4 shadow-sm hover:shadow-md transition">
+            <div class="aspect-w-1 aspect-h-1 overflow-hidden rounded-lg bg-gray-100">
+                <img src="storage/images/LEDHeadLight.jpg" alt="LED Headlight Assembly"
+                    class="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105">
+            </div>
+            <div class="mt-4 space-y-1">
+                <h3 class="text-base font-semibold text-gray-900">LED Headlight Assembly</h3>
+                <p class="text-sm text-gray-500">2020-2024 Models | Plug & Play</p>
+                <div class="flex items-center space-x-1 text-yellow-400 text-sm">
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <span class="text-gray-500 ml-1">(128)</span>
+                </div>
+                <div class="flex items-center space-x-2">
+                    <p class="text-lg font-bold text-gray-900">$249.99</p>
+                    <span class="text-sm line-through text-gray-400">$299.99</span>
+                </div>
+                <a href="{{ route('product.show', ['id' => 3]) }}" class="text-purple-600 font-medium hover:underline">View Details</a>
+                </div>
+            <button class="absolute bottom-4 right-4 bg-purple-600 hover:bg-purple-700 text-white p-2 rounded-full shadow">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
+                    stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                        d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-1.35 2.7A1 1 0 007.5 17h9a1 1 0 00.85-1.53L17 13M10 21h.01M14 21h.01" />
+                </svg>
+            </button>
+        </div>
+
+        <!-- Exhaust System -->
+        <div class="relative group rounded-xl border bg-white p-4 shadow-sm hover:shadow-md transition">
+            <div class="aspect-w-1 aspect-h-1 overflow-hidden rounded-lg bg-gray-100">
+                <img src="storage/images/PremiumBrakeRotor.jpg" alt="Performance Exhaust System"
+                    class="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105">
+            </div>
+            <div class="mt-4 space-y-1">
+                <h3 class="text-base font-semibold text-gray-900">Performance Exhaust System</h3>
+                <p class="text-sm text-gray-500">Stainless Steel | Dual Tip</p>
+                <div class="flex items-center space-x-1 text-yellow-400 text-sm">
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star-half-alt"></i>
+                    <span class="text-gray-500 ml-1">(76)</span>
+                </div>
+                <p class="text-lg font-bold text-gray-900">$349.99</p>
+                <a href="{{ route('product.show', ['id' => 3]) }}" class="text-purple-600 font-medium hover:underline">View Details</a>
+            </div>
+            <button class="absolute bottom-4 right-4 bg-purple-600 hover:bg-purple-700 text-white p-2 rounded-full shadow">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
+                    stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                        d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-1.35 2.7A1 1 0 007.5 17h9a1 1 0 00.85-1.53L17 13M10 21h.01M14 21h.01" />
+                </svg>
+            </button>
+        </div>
+
+        <!-- Coilover Suspension -->
+        <div class="relative group rounded-xl border bg-white p-4 shadow-sm hover:shadow-md transition">
+            <div class="aspect-w-1 aspect-h-1 overflow-hidden rounded-lg bg-gray-100">
+                <img src="storage/images/CoilOver.jpg" alt="Coilover Suspension Kit"
+                    class="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105">
+            </div>
+            <div class="mt-4 space-y-1">
+                <h3 class="text-base font-semibold text-gray-900">Coilover Suspension Kit</h3>
+                <p class="text-sm text-gray-500">Adjustable | Track Performance</p>
+                <div class="flex items-center space-x-1 text-yellow-400 text-sm">
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <span class="text-gray-500 ml-1">(95)</span>
+                </div>
+                <p class="text-lg font-bold text-gray-900">$799.99</p>
+                <a href="{{ route('product.show', ['id' => 3]) }}" class="text-purple-600 font-medium hover:underline">View Details</a>
+            </div>
+            <button class="absolute bottom-4 right-4 bg-purple-600 hover:bg-purple-700 text-white p-2 rounded-full shadow">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
+                    stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                        d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-1.35 2.7A1 1 0 007.5 17h9a1 1 0 00.85-1.53L17 13M10 21h.01M14 21h.01" />
+                </svg>
+            </button>
+        </div>
+    </div>
+</section>
+
+
         <section class="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
     <div class="mb-8">
         <h2 class="text-3xl font-semibold text-gray-900 mb-8">Featured Brands</h2>
@@ -305,7 +387,7 @@
             <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
                 <div>
                     <!-- Image here -->
-                    <img class="h-28 w-auto" src="storage/images/logo.webp" alt="Under The Hood Supply"/>
+                    <img class="h-28 w-auto" src="storage/images/logo.png" alt="Under The Hood Supply"/>
                     <p class="mt-4 text-gray-400 text-sm">Premium automotive parts and accessories for enthusiasts and professionals.</p>
                 </div>
                 <div>

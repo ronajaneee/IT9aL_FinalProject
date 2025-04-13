@@ -1,44 +1,66 @@
-<?php
-session_start();
-
-// Initialize quantity if not set
-if (!isset($_SESSION['quantity'])) {
-    $_SESSION['quantity'] = 1;
-}
-
-// Process form submission
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    if (isset($_POST['increment'])) {
-        $_SESSION['quantity'] = (int) $_SESSION['quantity'] + 1;
-    } elseif (isset($_POST['decrement'])) {
-        if ((int) $_SESSION['quantity'] > 1) {
-            $_SESSION['quantity'] = (int) $_SESSION['quantity'] - 1;
-        }
-    }
-}
-$quantity = $_SESSION['quantity'];
-?>
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>UnderTheHood</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"/>
     <link href="{{ asset('css/tailwind-custom.css') }}" rel="stylesheet"/>
     <script src="https://cdn.tailwindcss.com/3.4.5?plugins=forms@0.5.7,typography@0.5.13,aspect-ratio@0.4.2,container-queries@0.1.1"></script>
     <script src="{{ asset('js/tailwind-config.min.js') }}" data-color="#000000" data-border-radius="small"></script>
-</head>
-<body class="bg-gray-100">
-      <!-- Header Section -->
+    <script src="https://cdn.tailwindcss.com/3.4.16"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: { primary: "#800080", secondary: "#4B0082" },
+            borderRadius: {
+              none: "0px",
+              sm: "4px",
+              DEFAULT: "8px",
+              md: "12px",
+              lg: "16px",
+              xl: "20px",
+              "2xl": "24px",
+              "3xl": "32px",
+              full: "9999px",
+              button: "8px",
+            },
+          },
+        },
+      };
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css"
+      rel="stylesheet"
+    />
+    <style>
+      :where([class^="ri-"])::before { content: "\f3c2"; }
+      input[type="number"]::-webkit-inner-spin-button,
+      input[type="number"]::-webkit-outer-spin-button {
+          -webkit-appearance: none;
+          margin: 0;
+      }
+      input[type="number"] {
+          -moz-appearance: textfield;
+      }
+    </style>
+  </head>
+  <body class="bg-gray-50 min-h-screen">
   <header class="fixed w-full top-0 z-50 bg-white shadow-sm">
     <nav class="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="flex justify-between h-16">
         <!-- Left Section: Logo & Navigation -->
         <div class="flex items-center">
           <a href="/" class="flex-shrink-0">
-            <img class="h-28 w-auto" src="{{ asset('storage/images/logo.webp') }}" alt="Under The Hood Supply"/>
+          <img class="h-12 md:h-16 lg:h-20 w-auto" src="{{ asset('storage/images/logo.png') }}" alt="Under The Hood Supply"/>
           </a>
           <div class="hidden md:ml-8 md:flex md:space-x-8">
             <a href="#" class="text-blue-500 hover:text-blue-600 px-3 py-2 text-sm font-medium">Shop</a>
@@ -73,198 +95,288 @@ $quantity = $_SESSION['quantity'];
       </div>
     </nav>
   </header>
+
+  <main class="container mx-auto px-4 py-24">
+      <div class="flex flex-col lg:flex-row gap-8">
+        <!-- Product Images -->
+        <div class="lg:w-1/2">
+          <div class="bg-white rounded shadow-sm p-4 mb-4">
+            <img
+             src="{{ asset('storage/images/CoilOver.jpg') }}"
+              alt="Product Image"
+              class="w-full h-auto object-cover object-top"/>
+          </div>
+          <div class="grid grid-cols-4 gap-4">
+            <div
+              class="bg-white rounded shadow-sm p-2 cursor-pointer hover:border hover:border-primary">
+              <img
+               src="{{ asset('storage/images/CoilOver.jpg') }}"
+                alt="Thumbnail 1"
+                class="w-full h-auto object-cover object-top"/>
+            </div>
+            <div
+              class="bg-white rounded shadow-sm p-2 cursor-pointer hover:border hover:border-primary">
+              <img
+                src="{{ asset('storage/images/CoilOver.jpg') }}"
+                alt="Thumbnail 2"
+                class="w-full h-auto object-cover object-top"/>
+            </div>
+            <div
+              class="bg-white rounded shadow-sm p-2 cursor-pointer hover:border hover:border-primary">
+              <img 
+              src="{{ asset('storage/images/CoilOver.jpg') }}"
+                alt="Thumbnail 3"
+                class="w-full h-auto object-cover object-top"/>
+            </div>
+            <div
+              class="bg-white rounded shadow-sm p-2 cursor-pointer hover:border hover:border-primary">
+              <img 
+              src="{{ asset('storage/images/CoilOver.jpg') }}"
+                alt="Thumbnail 4"
+                class="w-full h-auto object-cover object-top"/>
+            </div>
+          </div>
+        </div>
+
+        <!-- Product Details -->
+        <div class="lg:w-1/2">
+          <h1 class="text-4xl font-bold text-gray-800 mb-4">Product Name</h1>
+          <p class="text-gray-600 mb-6">
+            Product description goes here. Highlight the key features and
+            benefits of the product.
+          </p>
+
+          <div class="flex items-center mb-4">
+            <div class="flex items-center mr-4">
+              <i class="ri-star-fill text-yellow-400"></i>
+              <i class="ri-star-fill text-yellow-400"></i>
+              <i class="ri-star-fill text-yellow-400"></i>
+              <i class="ri-star-fill text-yellow-400"></i>
+              <i class="ri-star-half-fill text-yellow-400"></i>
+            </div>
+            <span class="text-gray-600">(128 reviews)</span>
+          </div>
+
+          <div class="flex items-center justify-between mb-6">
+            <div>
+              <span class="text-3xl font-bold text-gray-900">$2,299.99</span>
+            </div>
+            <div class="flex items-center text-green-600">
+              <div class="w-4 h-4 bg-green-600 rounded-full mr-2"></div>
+              <span>In Stock</span>
+              <span class="text-gray-600 ml-2">(15 units available)</span>
+            </div>
+          </div>
+
+          <div class="bg-white p-6 rounded shadow-sm mb-6">
+            <h2 class="text-xl font-semibold mb-4">Product Description</h2>
+            <p class="text-gray-700 mb-4">
+              The product represents the perfect blend of performance and
+              style. Featuring a sophisticated design with
+              machine-finished faces and dark gunmetal accents. Each product is
+              engineered using advanced technology ensuring optimal strength-to-weight ratio.
+            </p>
+            <p class="text-gray-700 mb-4">
+              Designed for enthusiasts who demand both performance and
+              aesthetics, these products offer exceptional durability while
+              maintaining a lightweight profile that enhances vehicle handling
+              and acceleration. The precision engineering reduces unsprung
+              weight, improving overall driving dynamics.
+            </p>
+          </div>
+
+          <div class="bg-white p-6 rounded shadow-sm mb-6">
+            <h2 class="text-xl font-semibold mb-4">Technical Specifications</h2>
+            <div class="grid grid-cols-2 gap-4">
+              <div>
+                <p class="text-gray-600">Size</p>
+                <p class="font-medium">18" x 8.5"</p>
+              </div>
+              <div>
+                <p class="text-gray-600">Bolt Pattern</p>
+                <p class="font-medium">5x114.3</p>
+              </div>
+              <div>
+                <p class="text-gray-600">Offset</p>
+                <p class="font-medium">+45mm</p>
+              </div>
+              <div>
+                <p class="text-gray-600">Weight</p>
+                <p class="font-medium">19.8 lbs</p>
+              </div>
+              <div>
+                <p class="text-gray-600">Finish</p>
+                <p class="font-medium">Machine Face with Gunmetal</p>
+              </div>
+              <div>
+                <p class="text-gray-600">Construction</p>
+                <p class="font-medium">One-piece cast aluminum</p>
+              </div>
+              <div>
+                <p class="text-gray-600">Load Rating</p>
+                <p class="font-medium">1650 lbs per product</p>
+              </div>
+              <div>
+                <p class="text-gray-600">Warranty</p>
+                <p class="font-medium">Limited Lifetime</p>
+              </div>
+            </div>
+          </div>
+
+            <div class="mb-6">
+            <h3 class="text-lg font-medium mb-2">Quantity</h3>
+            <div class="flex items-center">
+              <button id="decrease" class="w-10 h-10 flex items-center justify-center border border-gray-300 rounded-l-button bg-white hover:bg-gray-100">
+              <i class="ri-subtract-line text-gray-700"></i>
+              </button>
+              <input
+              type="number"
+              id="quantity"
+              value="1"
+              min="1"
+              max="15"
+              class="w-16 h-10 border-y border-gray-300 text-center text-gray-700 focus:outline-none"/>
+              <button
+              id="increase"
+              class="w-10 h-10 flex items-center justify-center border border-gray-300 rounded-r-button bg-white hover:bg-gray-100">
+              <i class="ri-add-line text-gray-700"></i>
+              </button>
+            </div>
+            </div>
+            <script>
+            document.addEventListener('DOMContentLoaded', () => {
+              const decreaseButton = document.getElementById('decrease');
+              const increaseButton = document.getElementById('increase');
+              const quantityInput = document.getElementById('quantity');
+
+              decreaseButton.addEventListener('click', () => {
+              let currentValue = parseInt(quantityInput.value);
+              if (currentValue > parseInt(quantityInput.min)) {
+                quantityInput.value = currentValue - 1;
+              }
+              });
+
+              increaseButton.addEventListener('click', () => {
+              let currentValue = parseInt(quantityInput.value);
+              if (currentValue < parseInt(quantityInput.max)) {
+                quantityInput.value = currentValue + 1;
+              }
+              });
+
+              quantityInput.addEventListener('input', () => {
+              let currentValue = parseInt(quantityInput.value);
+              const minValue = parseInt(quantityInput.min);
+              const maxValue = parseInt(quantityInput.max);
+
+              if (isNaN(currentValue) || currentValue < minValue) {
+                quantityInput.value = minValue;
+              } else if (currentValue > maxValue) {
+                quantityInput.value = maxValue;
+              }
+              });
+            });
+            </script>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <button
+                onclick="window.location.href='{{ route('checkout.view') }}'"
+                  class="text-white py-3 px-6 rounded-lg flex items-center justify-center whitespace-nowrap transition-colors w-full hover:opacity-90"
+                    style="background-color: #4F46E5;">
+                    <i class="ri-flash-line mr-2"></i>
+                       Add to Cart
+                </button>
+            <button
+                onclick="window.location.href='{{ route('checkout.view') }}'"
+                  class="text-white py-3 px-6 rounded-lg flex items-center justify-center whitespace-nowrap transition-colors w-full hover:opacity-90"
+                    style="background-color: #4F46E5;">
+                    <i class="ri-flash-line mr-2"></i>
+                       Buy Now
+                </button>
+          </div>
+             <div class="mt-6 flex items-center space-x-4">
+          </div>
         </div>
       </div>
-    </nav>
-  </header>
-  <!-- Cart Modal (Overlay) - Initially Hidden -->  
-<div id="cartModal" class="hidden fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center z-50">
-    <div class="bg-white w-full max-w-xl rounded-lg shadow-xl">
-        <div class="flex items-center justify-between p-4 border-b">
-            <h2 class="text-lg font-semibold">Your Cart</h2>
-            <button onclick="toggleCartModal()" class="text-gray-400 hover:text-gray-600">
-                <i class="fas fa-times text-lg"></i>
-            </button>
-        </div>
-        <div id="cartContent" class="p-4" style="min-height: 300px; overflow-y: auto;">
-            <!-- Cart content will be dynamically loaded here -->
-        </div>
-    </div>
-</div>
-    <main class="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div class="lg:grid lg:grid-cols-2 lg:gap-x-8 lg:items-start">
-            <div class="flex flex-col">
-                <div class="aspect-w-16 aspect-h-9 rounded-lg bg-gray-100 overflow-hidden">
-                    <!-- Replace AI-generated product image with your local product image or a proper placeholder -->
-                    <img src="<?php echo 'storage/images/rim.avif'; ?>" alt="Main product image" class="object-cover object-center"/>
-                </div>
-                <div class="mt-4 grid grid-cols-4 gap-4">
-                    <!-- Replace AI-generated thumbnail images with your local alternatives -->
-                    <button class="relative aspect-w-1 aspect-h-1 rounded-lg bg-gray-100 overflow-hidden">
-                        <img src="<?php echo 'storage/images/rim.avif'; ?>" alt="Thumbnail 1" class="object-cover object-center"/>
-                    </button>
-                    <button class="relative aspect-w-1 aspect-h-1 rounded-lg bg-gray-100 overflow-hidden">
-                        <img src="<?php echo 'storage/images/rim.avif'; ?>" alt="Thumbnail 2" class="object-cover object-center"/>
-                    </button>
-                    <button class="relative aspect-w-1 aspect-h-1 rounded-lg bg-gray-100 overflow-hidden">
-                        <img src="<?php echo 'storage/images/rim.avif'; ?>" alt="Thumbnail 3" class="object-cover object-center"/>
-                    </button>
-                    <button class="relative aspect-w-1 aspect-h-1 rounded-lg bg-gray-100 overflow-hidden">
-                        <img src="<?php echo 'storage/images/rim.avif'; ?>" alt="Thumbnail 4" class="object-cover object-center"/>
-                    </button>
-                </div>
-            </div>
-            <div class="mt-10 px-4 sm:px-0 lg:mt-0">
-                <h1 class="text-3xl font-bold tracking-tight text-gray-900">{{ $product['name'] }}</h1>
-                <div class="mt-3">
-                    <p class="text-lg text-gray-900">{{ $product['brand'] }}</p>
-                </div>
-                <div class="mt-6">
-                    <div class="text-base text-gray-700 space-y-6">
-                        <p>{{ $product['description'] }}</p>
-                    </div>
-                </div>
-                <div class="mt-8">
-                    <div class="flex items-center justify-between">
-                        <h2 class="text-2xl font-bold text-gray-900">${{ number_format($product['price'], 2) }}</h2>
-                        <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-green-100 text-green-800">
-                            <i class="fas fa-check-circle mr-1"></i>
-                            {{ $product['stock'] > 0 ? 'In Stock' : 'Out of Stock' }}
-                        </span>
-                    </div>
-                    <p class="mt-1 text-sm text-gray-500">{{ $product['stock'] }} units available</p>
-                </div>
-                <img src="{{ asset($product['image']) }}" alt="{{ $product['name'] }}" class="object-cover object-center"/>
-                <!-- Quantity Form Using Pure PHP -->
-                <form method="POST" action="{{ route('product.update', ['id' => $product['id']]) }}" class="mt-8">
-                    @csrf
-                    <div class="space-y-6"> 
-                        <div>
-                            <label for="quantity" class="block text-sm font-medium text-gray-700">Quantity</label>
-                            <div class="mt-1 flex rounded-md">
-                                <!-- Minus Button -->
-                                <button type="submit" name="decrement" class="!rounded-button relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-l-md text-gray-700 bg-gray-50 hover:bg-gray-100 focus:outline-none focus:ring-1 focus:ring-custom focus:border-custom">
-                                    <i class="fas fa-minus"></i>
-                                </button>
-                                <!-- Quantity Input (read-only) -->
-                                <input type="text" name="quantity" id="quantity" class="text-center block w-24 border-gray-300 focus:ring-custom focus:border-custom sm:text-sm" value="<?php echo $quantity; ?>" readonly/>
-                                <!-- Plus Button -->
-                                <button type="submit" name="increment" class="!rounded-button relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-r-md text-gray-700 bg-gray-50 hover:bg-gray-100 focus:outline-none focus:ring-1 focus:ring-custom focus:border-custom">
-                                    <i class="fas fa-plus"></i>
-                                </button>
-                            </div>
-                        </div>
-                        <div class="flex space-x-4">
-                            <button type="submit" id="addToCartButton" class="!rounded-button flex-1 bg-gray-800 border border-transparent rounded-md py-3 px-8 flex items-center justify-center text-base font-medium text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">
-                                <i class="fas fa-bolt mr-2"></i>
-                                Add to Cart
-                            </button>
-                            <button type="button" class="!rounded-button flex-1 bg-gray-800 border border-transparent rounded-md py-3 px-8 flex items-center justify-center text-base font-medium text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">
-                                <i class="fas fa-bolt mr-2"></i>
-                                Buy Now
-                            </button>
-                        </div>
-                    </div>
-                </form>  
-            </div>
-        </div>
     </main>
-    <footer class="bg-white mt-16">
-        <div class="max-w-8xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
-            <div class="border-t border-gray-200 pt-8 flex items-center justify-between">
-                <p class="text-base text-gray-400">© 2025 R&R Corp.</p>
-                <div class="flex space-x-6">
-                    <!-- Replace AI payment methods image with your local asset -->
-                    <img src="<?php echo asset('storage/images/payment_methods.png'); ?>" alt="Payment methods" class="h-8"/>
-                </div>
-            </div>
-        </div>
-    </footer>
     <!-- Include Login Modal -->
     @include('auth.login')
 
     <script>
-            // JavaScript to toggle the modal
-            const openLoginModal = document.getElementById('openLoginModal');
-            const loginModal = document.getElementById('loginModal');
-            const closeLoginModal = document.getElementById('closeLoginModal');
-    
-            openLoginModal.addEventListener('click', () => {
-                loginModal.classList.remove('hidden');
-            });
-    
-            closeLoginModal.addEventListener('click', () => {
+document.addEventListener('DOMContentLoaded', () => {
+    // Modal toggle for login
+    const openLoginModal = document.getElementById('openLoginModal');
+    const loginModal = document.getElementById('loginModal');
+    const closeLoginModal = document.getElementById('closeLoginModal');
+
+    if (openLoginModal && loginModal && closeLoginModal) {
+        openLoginModal.addEventListener('click', () => {
+            loginModal.classList.remove('hidden');
+        });
+
+        closeLoginModal.addEventListener('click', () => {
+            loginModal.classList.add('hidden');
+        });
+
+        document.addEventListener('click', (e) => {
+            if (e.target === loginModal) {
                 loginModal.classList.add('hidden');
-            });
-    
-            // Close modal when clicking outside the modal content
-            document.addEventListener('click', (e) => {
-                if (e.target === loginModal) {
-                    loginModal.classList.add('hidden');
-                }
-            });
-    
-            // Function to toggle the cart modal
-            function toggleCartModal() {
-                const cartModal = document.getElementById('cartModal');
-                const cartContent = document.getElementById('cartContent');
-
-                if (cartModal.classList.contains('hidden')) {
-                    // Load the cart content dynamically
-                    fetch('{{ route('cart.modal') }}')
-                        .then(response => response.text())
-                        .then(html => {
-                            cartContent.innerHTML = html;
-                            cartModal.classList.remove('hidden');
-                        })
-                        .catch(error => console.error('Error loading cart content:', error));
-                } else {
-                    cartModal.classList.add('hidden');
-                }
             }
+        });
+    }
 
-            document.getElementById('addToCartButton').addEventListener('click', function (e) {
-                e.preventDefault();
+    // Toggle Cart Modal
+    window.toggleCartModal = function () {
+        const cartModal = document.getElementById('cartModal');
+        const cartContent = document.getElementById('cartContent');
 
-                // Create a bubble element
-                const bubble = document.createElement('div');
-                bubble.className = 'bubble-animation';
-                document.body.appendChild(bubble);
-
-                // Get the button and cart icon positions
-                const buttonRect = e.target.getBoundingClientRect();
-                const cartIcon = document.querySelector('.fa-shopping-cart');
-                const cartRect = cartIcon.getBoundingClientRect();
-
-                // Set the bubble's initial position
-                bubble.style.left = `${buttonRect.left + buttonRect.width / 2}px`;
-                bubble.style.top = `${buttonRect.top + buttonRect.height / 2}px`;
-
-                // Trigger the animation
-                setTimeout(() => {
-                    bubble.style.transform = `translate(${cartRect.left - buttonRect.left}px, ${cartRect.top - buttonRect.top}px) scale(0.5)`;
-                    bubble.style.opacity = '0';
-                }, 50);
-
-                // Remove the bubble after the animation ends
-                bubble.addEventListener('transitionend', () => {
-                    bubble.remove();
-                });
-            });
-        </script>
-        <style>
-            .bubble-animation {
-                position: absolute;
-                width: 30px;
-                height: 30px;
-                background-color: #4f46e5;
-                border-radius: 50%;
-                z-index: 1000;
-                transition: transform 1s cubic-bezier(0.68, -0.55, 0.27, 1.55), opacity 1s;
-                opacity: 1;
-                pointer-events: none;
-                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        if (cartModal && cartContent) {
+            if (cartModal.classList.contains('hidden')) {
+                fetch('{{ route('cart.modal') }}')
+                    .then(response => response.text())
+                    .then(html => {
+                        cartContent.innerHTML = html;
+                        cartModal.classList.remove('hidden');
+                    })
+                    .catch(error => console.error('Error loading cart content:', error));
+            } else {
+                cartModal.classList.add('hidden');
             }
-        </style>
+        }
+    };
+
+    // Quantity Counter
+    const decreaseButton = document.getElementById('decrease');
+    const increaseButton = document.getElementById('increase');
+    const quantityInput = document.getElementById('quantity');
+
+    if (decreaseButton && increaseButton && quantityInput) {
+        decreaseButton.addEventListener('click', () => {
+            let currentValue = parseInt(quantityInput.value);
+            if (currentValue > parseInt(quantityInput.min)) {
+                quantityInput.value = currentValue - 1;
+            }
+        });
+
+        increaseButton.addEventListener('click', () => {
+            let currentValue = parseInt(quantityInput.value);
+            if (currentValue < parseInt(quantityInput.max)) {
+                quantityInput.value = currentValue + 1;
+            }
+        });
+
+        quantityInput.addEventListener('input', () => {
+            let currentValue = parseInt(quantityInput.value);
+            const minValue = parseInt(quantityInput.min);
+            const maxValue = parseInt(quantityInput.max);
+
+            if (isNaN(currentValue) || currentValue < minValue) {
+                quantityInput.value = minValue;
+            } else if (currentValue > maxValue) {
+                quantityInput.value = maxValue;
+            }
+        });
+    }
+});
+</script>
+
 </body>
 </html>

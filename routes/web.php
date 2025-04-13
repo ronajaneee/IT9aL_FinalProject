@@ -32,13 +32,9 @@ Route::get('/cart/content', [CartController::class, 'getContent'])->name('cart.c
 // Route for checkout page
 Route::get('/checkout', [CheckoutController::class, 'view'])->name('checkout.view');
 
-Route::get('/cart/view', function () {
-return view('cartview');
-})->name('cart.view');
+Route::get('/cart/view', function () {return view('cartview');})->name('cart.view');
 
-Route::get('/cart', function () {
-    return view('cart');
-})->name('cart');
+Route::get('/cart', function () {return view('cart');})->name('cart');
 
 Route::get('/cartview', [CartController::class, 'view'])->name('cartview');
 Route::get('/cartview', [CartController::class, 'view'])->name('cart.view');
@@ -50,3 +46,6 @@ Route::get('/product/{id}', [ProductController::class, 'show'])->name('product.s
 Route::post('/product/{id}/update', [ProductController::class, 'update'])->name('product.update');
 
 Route::get('/show', [ProductController::class, 'show'])->name('show');
+
+Route::get('/engine', [ProductController::class, 'showEngine'])->name('product');
+

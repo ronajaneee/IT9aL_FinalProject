@@ -43,11 +43,58 @@
       </form>
       <div class="mt-6 text-center">
         <p class="text-gray-600">Don't have an account?
-          <a href="{{ url('/register') }}" class="text-blue-500 hover:text-blue-600 font-semibold transition-colors">Create account</a>
+        <a href="javascript:void(0);" id="openRegisterModal" class="text-blue-500 hover:text-blue-600 font-semibold transition-colors">Create account</a>
         </p>
       </div>
       <!-- Close Button -->
       <button id="closeLoginModal" class="absolute top-2 right-2 text-gray-400 hover:text-gray-600">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+  </div>
+
+  <!-- Register Modal -->
+  <div id="registerModal" class="hidden fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center z-50">
+    <div class="w-[420px] bg-white rounded-lg shadow-xl p-8 relative">
+      <h2 class="text-2xl font-bold text-gray-900 mb-6 text-center">Create account</h2>
+      <form class="space-y-6" method="POST" action="{{ route('register') }}">
+        @csrf
+        <div>
+          <label for="firstName" class="block text-sm font-medium text-gray-700 mb-1">First name</label>
+          <input type="text" id="firstName" name="firstName" class="w-full h-12 px-4 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" required>
+        </div>
+        <div>
+          <label for="lastName" class="block text-sm font-medium text-gray-700 mb-1">Last name</label>
+          <input type="text" id="lastName" name="lastName" class="w-full h-12 px-4 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" required>
+        </div>
+        <div>
+          <label for="email" class="block text-sm font-medium text-gray-700 mb-1">Email</label>
+          <input type="email" id="email" name="email" class="w-full h-12 px-4 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" required>
+        </div>
+        <div>
+          <label for="password" class="block text-sm font-medium text-gray-700 mb-1">Password</label>
+          <div class="relative">
+            <input type="password" id="password" name="password" class="w-full h-12 px-4 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" required>
+            <button type="button" class="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600">
+              <i class="far fa-eye"></i>
+            </button>
+          </div>
+        </div>
+        <button type="submit" class="w-full h-12 bg-blue-500 text-white font-medium rounded-lg hover:bg-blue-600 transition-colors">
+          CONFIRM &amp; CREATE ACCOUNT
+        </button>
+        <p class="text-sm text-gray-600 text-center">
+          By creating your account or signing-in, you agree to our
+          <a href="#" class="text-blue-500 hover:text-blue-600">Terms &amp; Conditions</a> and
+          <a href="#" class="text-blue-500 hover:text-blue-600">Privacy Policy</a>.
+        </p>
+        <p class="text-sm text-gray-600 text-center">
+          Already have an account?
+          <a href="javascript:void(0);" id="openLoginModal" class="text-blue-500 hover:text-blue-600 font-medium">Log in here</a>
+        </p>
+      </form>
+      <!-- Close Button -->
+      <button id="closeRegisterModal" class="absolute top-2 right-2 text-gray-400 hover:text-gray-600">
         <i class="fas fa-times"></i>
       </button>
     </div>
@@ -59,18 +106,43 @@
     const loginModal = document.getElementById('loginModal');
     const closeLoginModal = document.getElementById('closeLoginModal');
 
-    openLoginModal.addEventListener('click', () => {
-      loginModal.classList.remove('hidden');
-    });
+    const openRegisterModal = document.getElementById('openRegisterModal');
+    const registerModal = document.getElementById('registerModal');
+    const closeRegisterModal = document.getElementById('closeRegisterModal');
 
-    closeLoginModal.addEventListener('click', () => {
-      loginModal.classList.add('hidden');
-    });
+    if (openLoginModal) {
+      openLoginModal.addEventListener('click', () => {
+        loginModal.classList.remove('hidden');
+        registerModal.classList.add('hidden');
+      });
+    }
 
-    // Close modal when clicking outside the modal content
+    if (openRegisterModal) {
+      openRegisterModal.addEventListener('click', () => {
+        registerModal.classList.remove('hidden');
+        loginModal.classList.add('hidden');
+      });
+    }
+
+    if (closeLoginModal) {
+      closeLoginModal.addEventListener('click', () => {
+        loginModal.classList.add('hidden');
+      });
+    }
+
+    if (closeRegisterModal) {
+      closeRegisterModal.addEventListener('click', () => {
+        registerModal.classList.add('hidden');
+      });
+    }
+
+    // Close modals when clicking outside the modal content
     document.addEventListener('click', (e) => {
       if (e.target === loginModal) {
         loginModal.classList.add('hidden');
+      }
+      if (e.target === registerModal) {
+        registerModal.classList.add('hidden');
       }
     });
   </script>

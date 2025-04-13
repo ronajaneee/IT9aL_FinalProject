@@ -23,6 +23,11 @@ class ProductController extends Controller
         return view('products.show', compact('product'));
     }
 
+    public function showEngine()
+    {
+        return view('products.product');
+    }
+
     public function update(Request $request, $id)
     {
         // Handle the form submission logic (e.g., update quantity or add to cart)
