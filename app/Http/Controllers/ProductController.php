@@ -3,29 +3,29 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Product;
 
 class ProductController extends Controller
 {
-    public function show($id)
+    public function show($ProductID = null)
     {
-        // Fetch product details from the database (mocked for now)
-        $product = [
-            'id' => $id,
-            'name' => 'Wheel Rim - Sport Series',
-            'brand' => 'Enkei',
-            'price' => 2299.99,
-            'description' => 'High-performance, lightweight, and durable wheels, manufactured by the Japanese company Enkei Corporation.',
-            'stock' => 15,
-            'image' => 'storage/images/rim.avif',
-        ];
+        if (!$ProductID) {
+            return redirect()->route('welcome')->with('error', 'Product ID is required.');
+        }
 
-        // Pass product data to the view
+        $product = Product::find($ProductID);
+
+        if (!$product) {
+            abort(404, 'Product not found');
+        }
+
         return view('products.show', compact('product'));
     }
 
     public function showEngine()
     {
-        return view('products.product');
+        $products = Product::all();
+        return view('products.product', compact('products'));
     }
 
     public function update(Request $request, $id)
@@ -34,11 +34,17 @@ class ProductController extends Controller
         $quantity = $request->input('quantity', 1);
 
         // Example: Add the product to the cart (you can replace this with your actual logic)
-        session()->put("cart.$id", [
+        session()->put("cart.\$id", [
             'quantity' => $quantity,
             'product_id' => $id,
         ]);
 
-        return redirect()->route('product.show', ['id' => $id])->with('success', 'Product updated successfully!');
+        return redirect()->route('product.show', ['ProductID' => $id])->with('success', 'Product updated successfully!');
+    }
+
+    public function index()
+    {
+        $products = Product::all();
+        return view('welcome', compact('products'));
     }
 }

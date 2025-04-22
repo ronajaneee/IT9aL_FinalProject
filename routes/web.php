@@ -7,7 +7,7 @@ use App\Http\Controllers\CartController;
 use App\Http\Controllers\CheckoutController;
 
 // Route for main page (welcome.blade.php)
-Route::view('/', 'welcome')->name('welcome');
+Route::get('/', [ProductController::class, 'index'])->name('welcome');
 
 // Route for the login page
 Route::view('/login', 'auth.login')->name('login');
@@ -17,8 +17,6 @@ Route::get('/register', [RegisterController::class, 'showRegistrationForm'])->na
 // Process registration form submission
 Route::post('/register', [RegisterController::class, 'register']);
 
-// Route for Cart page
-Route::get('/cart', function () {return view('cart');})->name('cart.view');
 Route::patch('/cart/update/{id}', [CartController::class, 'updateCart'])->name('cart.update');
 Route::delete('/cart/remove/{id}', [CartController::class, 'removeCartItem'])->name('cart.remove');
 Route::post('/cart/update', [CartController::class, 'update'])->name('cart.update');
@@ -32,20 +30,17 @@ Route::get('/cart/content', [CartController::class, 'getContent'])->name('cart.c
 // Route for checkout page
 Route::get('/checkout', [CheckoutController::class, 'view'])->name('checkout.view');
 
-Route::get('/cart/view', function () {return view('cartview');})->name('cart.view');
-
-Route::get('/cart', function () {return view('cart');})->name('cart');
-
-Route::get('/cartview', [CartController::class, 'view'])->name('cartview');
-Route::get('/cartview', [CartController::class, 'view'])->name('cart.view');
-
 // Route for product details page
-Route::get('/product/{id}', [ProductController::class, 'show'])->name('product.show');
+Route::get('/product/{ProductID}', [ProductController::class, 'show'])
+    ->where('ProductID', '[0-9]+') // Ensure 'id' is a numeric parameter
+    ->name('product.show');
 
 // Route to handle product form submission
-Route::post('/product/{id}/update', [ProductController::class, 'update'])->name('product.update');
+Route::post('/product/{ProductID}/update', [ProductController::class, 'update'])->name('products.update');
 
-Route::get('/show', [ProductController::class, 'show'])->name('show');
+Route::get('/engine', [ProductController::class, 'showEngine'])->name('products');
 
-Route::get('/engine', [ProductController::class, 'showEngine'])->name('product');
+Route::post('/cart/add', [App\Http\Controllers\CartController::class, 'addToCart'])->name('cart.add')->middleware('auth');
 
+// Route for product listing page (assuming this is what "product" refers to)
+Route::get('/product', [ProductController::class, 'index'])->name('product');

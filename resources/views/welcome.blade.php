@@ -4,7 +4,7 @@
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>UnderTheHood</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"/>
     <link href="{{ asset('css/tailwind-custom.css') }}" rel="stylesheet"/>
     <script src="https://cdn.tailwindcss.com/3.4.5?plugins=forms@0.5.7,typography@0.5.13,aspect-ratio@0.4.2,container-queries@0.1.1"></script>
@@ -90,24 +90,19 @@
                 </div>
                 <h3 class="mt-4 text-base font-medium text-gray-900">Engine Parts</h3>
             </a>
-            <div class="mt-2">
-                <a href="{{ route('product') }}" class="text-purple-600 font-medium hover:underline inline-block">
-                    View 
-                </a>
-            </div>
-        </div>
+                    </div>
 
-        <!-- Brake Systems -->
+        <!-- Interior -->
         <div class="group">
             <a href="#">
                 <div class="aspect-w-1 aspect-h-1 rounded-lg bg-gray-100 overflow-hidden">
-                    <img src="storage/images/brake.webp" class="object-center object-cover group-hover:scale-105 transition-transform duration-300" alt="Brake Systems" />
+                    <img src="storage/images/interior.webp" class="object-center object-cover group-hover:scale-105 transition-transform duration-300" alt="Interior" />
                 </div>
-                <h3 class="mt-4 text-base font-medium text-gray-900">Brake Systems</h3>
+                <h3 class="mt-4 text-base font-medium text-gray-900">Interior</h3>
             </a>
             <div class="mt-2">
-            <a href="{{ route('product') }}" class="text-purple-600 font-medium hover:underline inline-block">
-                    View 
+                <a href="{{ route('product') }}" class="text-purple-600 font-medium hover:underline inline-block">
+                    View
                 </a>
             </div>
         </div>
@@ -122,7 +117,7 @@
             </a>
             <div class="mt-2">
             <a href="{{ route('product') }}" class="text-purple-600 font-medium hover:underline inline-block">
-                    View 
+                    View
                 </a>
             </div>
         </div>
@@ -137,7 +132,7 @@
             </a>
             <div class="mt-2">
             <a href="{{ route('product') }}" class="text-purple-600 font-medium hover:underline inline-block">
-                    View 
+                    View
                 </a>
             </div>
         </div>
@@ -151,8 +146,8 @@
                 <h3 class="mt-4 text-base font-medium text-gray-900">Wheel Rim</h3>
             </a>
             <div class="mt-2">
-            <a href="{{ route('product.show', ['id' => 8]) }}" class="text-purple-600 font-medium hover:underline inline-block">
-                    View 
+                <a href="{{ route('product') }}" class="text-purple-600 font-medium hover:underline inline-block">
+                    View
                 </a>
             </div>
         </div>
@@ -166,8 +161,8 @@
                 <h3 class="mt-4 text-base font-medium text-gray-900">Interior</h3>
             </a>
             <div class="mt-2">
-                <a href="{{ route('product.show', ['id' => 8]) }}" class="text-purple-600 font-medium hover:underline inline-block">
-                    View 
+                <a href="#" class="text-purple-600 font-medium hover:underline inline-block">
+                    View
                 </a>
             </div>
         </div>
@@ -183,16 +178,16 @@
     </div>
 
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-
+        @foreach($products as $product)
         <!-- Product Card -->
         <div class="relative group rounded-xl border bg-white p-4 shadow-sm hover:shadow-md transition">
             <div class="aspect-w-1 aspect-h-1 overflow-hidden rounded-lg bg-gray-100">
-                <img src="storage/images/PremiumAirIntake.jpg" alt="Performance Air Intake"
+                <img src="{{ asset('storage/images/' . $product->image) }}" alt="{{ $product->name }}"
                     class="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105">
             </div>
             <div class="mt-4 space-y-1">
-                <h3 class="text-base font-semibold text-gray-900">Performance Air Intake System</h3>
-                <p class="text-sm text-gray-500">Universal Fit | Carbon Fiber</p>
+                <h3 class="text-base font-semibold text-gray-900">{{ $product->name }}</h3>
+                <p class="text-sm text-gray-500">{{ $product->description }}</p>
                 <div class="flex items-center space-x-1 text-yellow-400 text-sm">
                     <i class="fas fa-star"></i>
                     <i class="fas fa-star"></i>
@@ -201,107 +196,22 @@
                     <i class="fas fa-star"></i>
                     <span class="text-gray-500 ml-1">(42)</span>
                 </div>
-                <p class="text-lg font-bold text-gray-900">$189.99</p>
-                <a href="{{ route('product.show', ['id' => 3]) }}" class="text-purple-600 font-medium hover:underline">View Details</a>
+                <p class="text-lg font-bold text-gray-900">{{ $product->price }}</p>
+                <a href="{{ route('product.show', ['ProductID' => $product->id]) }}" class="text-purple-600 font-medium hover:underline">View Details</a>
             </div>
-            <button class="absolute bottom-4 right-4 bg-purple-600 hover:bg-purple-700 text-white p-2 rounded-full shadow">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
-                    stroke="currentColor" stroke-width="2">
-                    <path stroke-linecap="round" stroke-linejoin="round"
-                        d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-1.35 2.7A1 1 0 007.5 17h9a1 1 0 00.85-1.53L17 13M10 21h.01M14 21h.01" />
+            <form action="{{ route('cart.add') }}" method="POST">
+                @csrf
+                <input type="hidden" name="product_id" value="{{ $product->id }}">
+                <button type="submit" class="absolute bottom-4 right-4 bg-purple-600 hover:bg-purple-700 text-white p-2 rounded-full shadow">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
+                        stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-1.35 2.7A1 1 0 007.5 17h9a1 1 0 00.85-1.53L17 13M10 21h.01M14 21h.01" />
                 </svg>
             </button>
+            </form>
         </div>
-
-        <!-- LED Headlight -->
-        <div class="relative group rounded-xl border bg-white p-4 shadow-sm hover:shadow-md transition">
-            <div class="aspect-w-1 aspect-h-1 overflow-hidden rounded-lg bg-gray-100">
-                <img src="storage/images/LEDHeadLight.jpg" alt="LED Headlight Assembly"
-                    class="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105">
-            </div>
-            <div class="mt-4 space-y-1">
-                <h3 class="text-base font-semibold text-gray-900">LED Headlight Assembly</h3>
-                <p class="text-sm text-gray-500">2020-2024 Models | Plug & Play</p>
-                <div class="flex items-center space-x-1 text-yellow-400 text-sm">
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <span class="text-gray-500 ml-1">(128)</span>
-                </div>
-                <div class="flex items-center space-x-2">
-                    <p class="text-lg font-bold text-gray-900">$249.99</p>
-                    <span class="text-sm line-through text-gray-400">$299.99</span>
-                </div>
-                <a href="{{ route('product.show', ['id' => 3]) }}" class="text-purple-600 font-medium hover:underline">View Details</a>
-                </div>
-            <button class="absolute bottom-4 right-4 bg-purple-600 hover:bg-purple-700 text-white p-2 rounded-full shadow">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
-                    stroke="currentColor" stroke-width="2">
-                    <path stroke-linecap="round" stroke-linejoin="round"
-                        d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-1.35 2.7A1 1 0 007.5 17h9a1 1 0 00.85-1.53L17 13M10 21h.01M14 21h.01" />
-                </svg>
-            </button>
-        </div>
-
-        <!-- Exhaust System -->
-        <div class="relative group rounded-xl border bg-white p-4 shadow-sm hover:shadow-md transition">
-            <div class="aspect-w-1 aspect-h-1 overflow-hidden rounded-lg bg-gray-100">
-                <img src="storage/images/PremiumBrakeRotor.jpg" alt="Performance Exhaust System"
-                    class="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105">
-            </div>
-            <div class="mt-4 space-y-1">
-                <h3 class="text-base font-semibold text-gray-900">Performance Exhaust System</h3>
-                <p class="text-sm text-gray-500">Stainless Steel | Dual Tip</p>
-                <div class="flex items-center space-x-1 text-yellow-400 text-sm">
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star-half-alt"></i>
-                    <span class="text-gray-500 ml-1">(76)</span>
-                </div>
-                <p class="text-lg font-bold text-gray-900">$349.99</p>
-                <a href="{{ route('product.show', ['id' => 3]) }}" class="text-purple-600 font-medium hover:underline">View Details</a>
-            </div>
-            <button class="absolute bottom-4 right-4 bg-purple-600 hover:bg-purple-700 text-white p-2 rounded-full shadow">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
-                    stroke="currentColor" stroke-width="2">
-                    <path stroke-linecap="round" stroke-linejoin="round"
-                        d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-1.35 2.7A1 1 0 007.5 17h9a1 1 0 00.85-1.53L17 13M10 21h.01M14 21h.01" />
-                </svg>
-            </button>
-        </div>
-
-        <!-- Coilover Suspension -->
-        <div class="relative group rounded-xl border bg-white p-4 shadow-sm hover:shadow-md transition">
-            <div class="aspect-w-1 aspect-h-1 overflow-hidden rounded-lg bg-gray-100">
-                <img src="storage/images/CoilOver.jpg" alt="Coilover Suspension Kit"
-                    class="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105">
-            </div>
-            <div class="mt-4 space-y-1">
-                <h3 class="text-base font-semibold text-gray-900">Coilover Suspension Kit</h3>
-                <p class="text-sm text-gray-500">Adjustable | Track Performance</p>
-                <div class="flex items-center space-x-1 text-yellow-400 text-sm">
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <span class="text-gray-500 ml-1">(95)</span>
-                </div>
-                <p class="text-lg font-bold text-gray-900">$799.99</p>
-                <a href="{{ route('product.show', ['id' => 3]) }}" class="text-purple-600 font-medium hover:underline">View Details</a>
-            </div>
-            <button class="absolute bottom-4 right-4 bg-purple-600 hover:bg-purple-700 text-white p-2 rounded-full shadow">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
-                    stroke="currentColor" stroke-width="2">
-                    <path stroke-linecap="round" stroke-linejoin="round"
-                        d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-1.35 2.7A1 1 0 007.5 17h9a1 1 0 00.85-1.53L17 13M10 21h.01M14 21h.01" />
-                </svg>
-            </button>
-        </div>
+        @endforeach
     </div>
 </section>
 
@@ -424,62 +334,4 @@
                         <a href="#" class="text-gray-400 hover:text-white">
                             <i class="fab fa-facebook-f"></i>
                         </a>
-                        <a href="#" class="text-gray-400 hover:text-white">
-                            <i class="fab fa-twitter"></i>
-                        </a>
-                        <a href="#" class="text-gray-400 hover:text-white">
-                            <i class="fab fa-instagram"></i>
-                        </a>
-                        <a href="#" class="text-gray-400 hover:text-white">
-                            <i class="fab fa-youtube"></i>
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </footer> 
-    <!-- Include Login Modal -->
-    @include('auth.login')
-
-    <script>
-            // JavaScript to toggle the modal
-            const openLoginModal = document.getElementById('openLoginModal');
-            const loginModal = document.getElementById('loginModal');
-            const closeLoginModal = document.getElementById('closeLoginModal');
-    
-            openLoginModal.addEventListener('click', () => {
-                loginModal.classList.remove('hidden');
-            });
-    
-            closeLoginModal.addEventListener('click', () => {
-                loginModal.classList.add('hidden');
-            });
-    
-            // Close modal when clicking outside the modal content
-            document.addEventListener('click', (e) => {
-                if (e.target === loginModal) {
-                    loginModal.classList.add('hidden');
-                }
-            });
-    
-            // Function to toggle the cart modal
-            function toggleCartModal() {
-                const cartModal = document.getElementById('cartModal');
-                const cartContent = document.getElementById('cartContent');
-
-                if (cartModal.classList.contains('hidden')) {
-                    // Load the cart content dynamically
-                    fetch('{{ route('cart.modal') }}')
-                        .then(response => response.text())
-                        .then(html => {
-                            cartContent.innerHTML = html;
-                            cartModal.classList.remove('hidden');
-                        })
-                        .catch(error => console.error('Error loading cart content:', error));
-                } else {
-                    cartModal.classList.add('hidden');
-                }
-            }
-        </script>
-</body>
-</html>
+                        <a href="#" class="text-gray-400 hover

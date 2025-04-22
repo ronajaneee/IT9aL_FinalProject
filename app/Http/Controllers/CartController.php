@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Cartitem;
 
 class CartController extends Controller
 {
@@ -33,8 +34,8 @@ class CartController extends Controller
 
     public function getContent()
     {
-        // Replace this with your actual cart content logic
-        return view('cart.content');
+        $cartItems = Cartitem::where('user_id', auth()->id())->get();
+        return view('cart.content', compact('cartItems'));
     }
 
     public function update(Request $request)
@@ -54,8 +55,20 @@ class CartController extends Controller
 
     public function view()
     {
-        // Fetch cart data (example logic, adjust as needed)
-        $cartItems = session('cart', []);
-        return view('cartview', ['cartItems' => $cartItems]);
+        $cartItems = Cartitem::where('user_id', auth()->id())->get();
+        return view('cart', compact('cartItems'));
+    }
+
+    public function addToCart(Request $request)
+    {
+        $productId = $request->input('product_id');
+
+        $cartItem = new Cartitem();
+        $cartItem->product_id = $productId;
+        $cartItem->quantity = 1; // You might want to allow users to specify quantity
+        $cartItem->user_id = auth()->id(); // Assuming you have user authentication
+        $cartItem->save();
+
+        return redirect()->back()->with('success', 'Product added to cart!');
     }
 }

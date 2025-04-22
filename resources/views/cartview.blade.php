@@ -4,7 +4,7 @@
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>UnderTheHood</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"/>
     <link href="{{ asset('css/tailwind-custom.css') }}" rel="stylesheet"/>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -96,56 +96,46 @@
       <h1 class="text-3xl font-semibold text-gray-900 mb-8">Your cart</h1>
       <div class="lg:grid lg:grid-cols-3 lg:gap-8">
         <div class="lg:col-span-2 space-y-6">
-          <!-- Cart Item 1 -->
-          <div class="bg-white rounded shadow-sm p-6">
-            <div class="flex flex-col md:flex-row items-start md:items-center gap-6">
-              <div class="w-24 h-24 bg-gray-100 rounded flex items-center justify-center overflow-hidden">
-                <img src="{{ asset('storage/images/rim.avif') }}" alt="Motorcycle Tire" class="object-cover w-full h-full"/>
+          @if(count($cartItems) > 0)
+            @foreach($cartItems as $cartItem)
+              <div class="bg-white rounded shadow-sm p-6">
+                <div class="flex flex-col md:flex-row items-start md:items-center gap-6">
+                  <div class="w-24 h-24 bg-gray-100 rounded flex items-center justify-center overflow-hidden">
+                    <img src="{{ asset('storage/images/rim.avif') }}" alt="Motorcycle Tire" class="object-cover w-full h-full"/>
+                  </div>
+                  <div class="flex-grow">
+                    <div class="text-sm text-gray-500">Motoworld Philippines</div>
+                    <h3 class="text-lg font-medium text-gray-900">{{ $cartItem->product->name }}</h3>
+                    <div class="text-lg font-semibold text-gray-900 mt-1">{{ $cartItem->product->price }}</div>
+                  </div>
+                  <div class="flex items-center space-x-2">
+                    <form method="POST" action="{{ route('cart.update', $cartItem->id) }}" class="flex items-center border border-gray-300 rounded-button">
+                      @csrf
+                      @method('PATCH')
+                      <input type="hidden" name="action" value="decrement"/>
+                      <button class="w-8 h-8 flex items-center justify-center hover:bg-gray-50">
+                        <i class="ri-subtract-line"></i>
+                      </button>
+                      <input type="number" name="quantity" value="{{ $cartItem->quantity }}" class="w-12 h-8 text-center border-none bg-gray-100 rounded-button text-gray-900" min="1"/>
+                      <input type="hidden" name="action" value="increment"/>
+                      <button class="w-8 h-8 flex items-center justify-center hover:bg-gray-50">
+                        <i class="ri-add-line"></i>
+                      </button>
+                    </form>
+                    <form method="POST" action="{{ route('cart.remove', $cartItem->id) }}">
+                      @csrf
+                      @method('DELETE')
+                      <button class="w-8 h-8 flex items-center justify-center text-gray-400 hover:text-red-500">
+                        <i class="ri-delete-bin-line"></i>
+                      </button>
+                    </form>
+                  </div>
+                </div>
               </div>
-              <div class="flex-grow">
-                <div class="text-sm text-gray-500">Motoworld Philippines</div>
-                <h3 class="text-lg font-medium text-gray-900">METZELER ROADTEC SCOOTER TIRE</h3>
-                <div class="text-lg font-semibold text-gray-900 mt-1">₱2,080.00</div>
-              </div>
-              <div class="flex items-center space-x-2">
-                <button class="w-8 h-8 flex items-center justify-center border border-gray-300 rounded-button hover:bg-gray-50">
-                  <i class="ri-subtract-line"></i>
-                </button>
-                <input type="number" value="1" class="w-12 h-8 text-center border-none bg-gray-100 rounded-button text-gray-900" min="1" />
-                <button class="w-8 h-8 flex items-center justify-center border border-gray-300 rounded-button hover:bg-gray-50">
-                  <i class="ri-add-line"></i>
-                </button>
-                <button class="w-8 h-8 flex items-center justify-center text-gray-400 hover:text-red-500 ml-2">
-                  <i class="ri-delete-bin-line"></i>
-                </button>
-              </div>
-            </div>
-          </div>
-          <!-- Cart Item 2 -->
-          <div class="bg-white rounded shadow-sm p-6">
-            <div class="flex flex-col md:flex-row items-start md:items-center gap-6">
-              <div class="w-24 h-24 bg-gray-100 rounded flex items-center justify-center overflow-hidden">
-                <img src="{{ asset('storage/images/CoilOver.jpg') }}" alt="Motorcycle Jacket" class="object-cover w-full h-full"/>
-              </div>
-              <div class="flex-grow">
-                <div class="text-sm text-gray-500">Motoworld Philippines</div>
-                <h3 class="text-lg font-medium text-gray-900">MACNA NOVIC MOTORCYCLE TEXTILE JACKET</h3>
-                <div class="text-lg font-semibold text-gray-900 mt-1">₱9,780.00</div>
-              </div>
-              <div class="flex items-center space-x-2">
-                <button class="w-8 h-8 flex items-center justify-center border border-gray-300 rounded-button hover:bg-gray-50">
-                  <i class="ri-subtract-line"></i>
-                </button>
-                <input type="number" value="1" class="w-12 h-8 text-center border-none bg-gray-100 rounded-button text-gray-900" min="1" />
-                <button class="w-8 h-8 flex items-center justify-center border border-gray-300 rounded-button hover:bg-gray-50">
-                  <i class="ri-add-line"></i>
-                </button>
-                <button class="w-8 h-8 flex items-center justify-center text-gray-400 hover:text-red-500 ml-2">
-                  <i class="ri-delete-bin-line"></i>
-                </button>
-              </div>
-            </div>
-          </div>
+            @endforeach
+          @else
+            <p>Your cart is empty.</p>
+          @endif
           <!-- Continue Shopping Button -->
           <div class="mt-6">
             <a href="{{ route('welcome') }}" class="inline-flex items-center text-primary hover:text-primary-dark">

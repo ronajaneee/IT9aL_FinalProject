@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>UnderTheHood</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"/>
     <link href="{{ asset('css/tailwind-custom.css') }}" rel="stylesheet"/>
     <script src="https://cdn.tailwindcss.com/3.4.5?plugins=forms@0.5.7,typography@0.5.13,aspect-ratio@0.4.2,container-queries@0.1.1"></script>
@@ -102,7 +102,7 @@
         <div class="lg:w-1/2">
           <div class="bg-white rounded shadow-sm p-4 mb-4">
             <img
-             src="{{ asset('storage/images/CoilOver.jpg') }}"
+             src="{{ asset('storage/' . $product->image) }}"
               alt="Product Image"
               class="w-full h-auto object-cover object-top"/>
           </div>
@@ -110,40 +110,39 @@
             <div
               class="bg-white rounded shadow-sm p-2 cursor-pointer hover:border hover:border-primary">
               <img
-               src="{{ asset('storage/images/CoilOver.jpg') }}"
+               src="{{ asset('storage/' . $product->image) }}"
                 alt="Thumbnail 1"
                 class="w-full h-auto object-cover object-top"/>
             </div>
             <div
               class="bg-white rounded shadow-sm p-2 cursor-pointer hover:border hover:border-primary">
               <img
-                src="{{ asset('storage/images/CoilOver.jpg') }}"
+                src="{{ asset('storage/' . $product->image) }}"
                 alt="Thumbnail 2"
                 class="w-full h-auto object-cover object-top"/>
             </div>
             <div
               class="bg-white rounded shadow-sm p-2 cursor-pointer hover:border hover:border-primary">
               <img 
-              src="{{ asset('storage/images/CoilOver.jpg') }}"
+              src="{{ asset('storage/' . $product->image) }}"
                 alt="Thumbnail 3"
                 class="w-full h-auto object-cover object-top"/>
             </div>
             <div
               class="bg-white rounded shadow-sm p-2 cursor-pointer hover:border hover:border-primary">
               <img 
-              src="{{ asset('storage/images/CoilOver.jpg') }}"
+              src="{{ asset('storage/' . $product->image) }}"
                 alt="Thumbnail 4"
                 class="w-full h-auto object-cover object-top"/>
             </div>
           </div>
         </div>
 
-        <!-- Product Details -->
-        <div class="lg:w-1/2">
-          <h1 class="text-4xl font-bold text-gray-800 mb-4">Product Name</h1>
+          <!-- Product Details -->
+        <div class="lg:w/12">
+          <h1 class="text-4xl font-bold text-gray-800 mb-4">{{ $product->ProductName ?? 'Product Name Not Available' }}</h1>
           <p class="text-gray-600 mb-6">
-            Product description goes here. Highlight the key features and
-            benefits of the product.
+            {{ $product->Description ?? 'Description Not Available' }}
           </p>
 
           <div class="flex items-center mb-4">
@@ -159,12 +158,12 @@
 
           <div class="flex items-center justify-between mb-6">
             <div>
-              <span class="text-3xl font-bold text-gray-900">$2,299.99</span>
+              <span class="text-3xl font-bold text-gray-900">${{ $product->Price ?? '0.00' }}</span>
             </div>
             <div class="flex items-center text-green-600">
               <div class="w-4 h-4 bg-green-600 rounded-full mr-2"></div>
-              <span>In Stock</span>
-              <span class="text-gray-600 ml-2">(15 units available)</span>
+              <span>{{ $product->availability > 0 ? 'In Stock' : 'Out of Stock' }}</span>
+              <span class="text-gray-600 ml-2">({{ $product->availability }} units available)</span>
             </div>
           </div>
 

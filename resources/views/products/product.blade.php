@@ -286,14 +286,15 @@
                 
                 <!-- Products Grid -->
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    <!-- Product 1 -->
+                    @foreach($products as $product)
+                    <!-- Product Card -->
                     <div class="bg-white rounded shadow-sm overflow-hidden">
                         <div class="p-4 bg-gray-100 flex items-center justify-center h-64">
-                            <img src="storage/images/ProductTestImage.jpg" alt="Honda CB650R Engine" class="object-contain h-full">
+                            <img src="{{ asset('storage/images/ProductTestImage.jpg') }}" alt="{{ $product->name }}" class="object-contain h-full">
                         </div>
                         <div class="p-4">
-                            <h3 class="text-lg font-bold">Honda CB650R Inline-Four Engine</h3>
-                            <p class="text-gray-600 text-sm mb-2">649cc DOHC 16-Valve</p>
+                            <h3 class="text-lg font-bold">{{ $product->name }}</h3>
+                            <p class="text-gray-600 text-sm mb-2">{{ $product->description }}</p>
                             <div class="flex items-center mb-3">
                                 <div class="flex text-yellow-400">
                                     <i class="ri-star-fill"></i>
@@ -305,7 +306,7 @@
                                 <span class="text-sm text-gray-500 ml-2">4.5 (28 Reviews)</span>
                             </div>
                             <div class="flex justify-between items-center">
-                                <span class="text-xl font-bold">$3,499.00</span>
+                                <span class="text-xl font-bold">{{ $product->price }}</span>
                                 <button class="bg-primary text-white px-4 py-2 rounded-button font-medium hover:bg-primary/90 transition-colors whitespace-nowrap">Add to Cart</button>
                                 <!-- Add cart icon button -->
                                 <button class="ml-2 bg-secondary text-white p-2 rounded-full hover:bg-secondary/90 transition-colors">
@@ -314,175 +315,13 @@
                             </div>
                             <!-- View Button -->
                             <div class="mt-2">
-                            <a href="{{ route('product.show', ['id' => 3]) }}" class="text-purple-600 font-medium hover:underline">View Details</a>
+                            @if($product->id)
+                                <a href="{{ route('product.show', ['ProductID' => $product->id]) }}" class="text-purple-600 font-medium hover:underline">View Details</a>
+                            @endif
                             </div>
                         </div>
                     </div>
-                    
-                    <!-- Product 2 -->
-                    <div class="bg-white rounded shadow-sm overflow-hidden">
-                        <div class="p-4 bg-gray-100 flex items-center justify-center h-64">
-                        <img src="storage/images/ProductTestImage.jpg" alt="Yamaha CP2 Engine" class="object-contain h-full">
-                        </div>
-                        <div class="p-4">
-                            <h3 class="text-lg font-bold">Yamaha CP2 Parallel-Twin Engine</h3>
-                            <p class="text-gray-600 text-sm mb-2">689cc DOHC 8-Valve</p>
-                            <div class="flex items-center mb-3">
-                                <div class="flex text-yellow-400">
-                                    <i class="ri-star-fill"></i>
-                                    <i class="ri-star-fill"></i>
-                                    <i class="ri-star-fill"></i>
-                                    <i class="ri-star-fill"></i>
-                                    <i class="ri-star-fill"></i>
-                                </div>
-                                <span class="text-sm text-gray-500 ml-2">5.0 (42 Reviews)</span>
-                            </div>
-                            <div class="flex justify-between items-center">
-                                <span class="text-xl font-bold">$2,899.00</span>
-                                <button class="bg-primary text-white px-4 py-2 rounded-button font-medium hover:bg-primary/90 transition-colors whitespace-nowrap">Add to Cart</button>
-                                <!-- Add cart icon button -->
-                                <button class="ml-2 bg-secondary text-white p-2 rounded-full hover:bg-secondary/90 transition-colors">
-                                    <i class="fas fa-shopping-cart"></i>
-                                </button>
-                            </div>
-                            <!-- View Button -->
-                            <div class="mt-2">
-                            <a href="{{ route('product.show', ['id' => 3]) }}" class="text-purple-600 font-medium hover:underline">View Details</a>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <!-- Product 3 -->
-                    <div class="bg-white rounded shadow-sm overflow-hidden">
-                        <div class="p-4 bg-gray-100 flex items-center justify-center h-64">
-                        <img src="storage/images/ProductTestImage.jpg" alt="Kawasaki Ninja ZX-10R Engine" class="object-contain h-full">
-                        </div>
-                        <div class="p-4">
-                            <h3 class="text-lg font-bold">Kawasaki Ninja ZX-10R Engine</h3>
-                            <p class="text-gray-600 text-sm mb-2">998cc DOHC 16-Valve</p>
-                            <div class="flex items-center mb-3">
-                                <div class="flex text-yellow-400">
-                                    <i class="ri-star-fill"></i>
-                                    <i class="ri-star-fill"></i>
-                                    <i class="ri-star-fill"></i>
-                                    <i class="ri-star-fill"></i>
-                                    <i class="ri-star-line"></i>
-                                </div>
-                                <span class="text-sm text-gray-500 ml-2">4.0 (19 Reviews)</span>
-                            </div>
-                            <div class="flex justify-between items-center">
-                                <span class="text-xl font-bold">$4,799.00</span>
-                                <button class="bg-primary text-white px-4 py-2 rounded-button font-medium hover:bg-primary/90 transition-colors whitespace-nowrap">Add to Cart</button>
-                                <!-- Add cart icon button -->
-                                <button class="ml-2 bg-secondary text-white p-2 rounded-full hover:bg-secondary/90 transition-colors">
-                                    <i class="fas fa-shopping-cart"></i>
-                                </button>
-                            </div>
-                            <!-- View Button -->
-                            <div class="mt-2">
-                            <a href="{{ route('product.show', ['id' => 3]) }}" class="text-purple-600 font-medium hover:underline">View Details</a>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <!-- Product 4 -->
-                    <div class="bg-white rounded shadow-sm overflow-hidden">
-                        <div class="p-4 bg-gray-100 flex items-center justify-center h-64">
-                        <img src="storage/images/ProductTestImage.jpg" alt="BMW R1250 Engine" class="object-contain h-full">
-                        </div>
-                        <div class="p-4">
-                            <h3 class="text-lg font-bold">BMW R1250 Boxer-Twin Engine</h3>
-                            <p class="text-gray-600 text-sm mb-2">1254cc DOHC 8-Valve</p>
-                            <div class="flex items-center mb-3">
-                                <div class="flex text-yellow-400">
-                                    <i class="ri-star-fill"></i>
-                                    <i class="ri-star-fill"></i>
-                                    <i class="ri-star-fill"></i>
-                                    <i class="ri-star-fill"></i>
-                                    <i class="ri-star-half-fill"></i>
-                                </div>
-                                <span class="text-sm text-gray-500 ml-2">4.7 (36 Reviews)</span>
-                            </div>
-                            <div class="flex justify-between items-center">
-                                <span class="text-xl font-bold">$5,999.00</span>
-                                <button class="bg-primary text-white px-4 py-2 rounded-button font-medium hover:bg-primary/90 transition-colors whitespace-nowrap">Add to Cart</button>
-                                <!-- Add cart icon button -->
-                                <button class="ml-2 bg-secondary text-white p-2 rounded-full hover:bg-secondary/90 transition-colors">
-                                    <i class="fas fa-shopping-cart"></i>
-                                </button>
-                            </div>
-                            <!-- View Button -->
-                            <div class="mt-2">
-                            <a href="{{ route('product.show', ['id' => 3]) }}" class="text-purple-600 font-medium hover:underline">View Details</a>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <!-- Product 5 -->
-                    <div class="bg-white rounded shadow-sm overflow-hidden">
-                        <div class="p-4 bg-gray-100 flex items-center justify-center h-64">
-                        <img src="storage/images/ProductTestImage.jpg" alt="KTM 390 Duke Engine" class="object-contain h-full">
-                        </div>
-                        <div class="p-4">
-                            <h3 class="text-lg font-bold">KTM 390 Duke Single-Cylinder Engine</h3>
-                            <p class="text-gray-600 text-sm mb-2">373cc DOHC 4-Valve</p>
-                            <div class="flex items-center mb-3">
-                                <div class="flex text-yellow-400">
-                                    <i class="ri-star-fill"></i>
-                                    <i class="ri-star-fill"></i>
-                                    <i class="ri-star-fill"></i>
-                                    <i class="ri-star-fill"></i>
-                                    <i class="ri-star-line"></i>
-                                </div>
-                                <span class="text-sm text-gray-500 ml-2">4.2 (24 Reviews)</span>
-                            </div>
-                            <div class="flex justify-between items-center">
-                                <span class="text-xl font-bold">$1,899.00</span>
-                                <button class="bg-primary text-white px-4 py-2 rounded-button font-medium hover:bg-primary/90 transition-colors whitespace-nowrap">Add to Cart</button>
-                                <!-- Add cart icon button -->
-                                <button class="ml-2 bg-secondary text-white p-2 rounded-full hover:bg-secondary/90 transition-colors">
-                                    <i class="fas fa-shopping-cart"></i>
-                                </button>
-                            </div>
-                            <!-- View Button -->
-                            <div class="mt-2">
-                            <a href="{{ route('product.show', ['id' => 3]) }}" class="text-purple-600 font-medium hover:underline">View Details</a>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <!-- Product 6 -->
-                    <div class="bg-white rounded shadow-sm overflow-hidden">
-                        <div class="p-4 bg-gray-100 flex items-center justify-center h-64">
-                        <img src="storage/images/ProductTestImage.jpg" alt="Suzuki GSX-R1000 Engine" class="object-contain h-full">
-                        </div>
-                        <div class="p-4">
-                            <h3 class="text-lg font-bold">Suzuki GSX-R1000 Engine</h3>
-                            <p class="text-gray-600 text-sm mb-2">999cc DOHC 16-Valve</p>
-                            <div class="flex items-center mb-3">
-                                <div class="flex text-yellow-400">
-                                    <i class="ri-star-fill"></i>
-                                    <i class="ri-star-fill"></i>
-                                    <i class="ri-star-fill"></i>
-                                    <i class="ri-star-fill"></i>
-                                    <i class="ri-star-line"></i>
-                                </div>
-                                <span class="text-sm text-gray-500 ml-2">4.1 (31 Reviews)</span>
-                            </div>
-                            <div class="flex justify-between items-center">
-                                <span class="text-xl font-bold">$4,299.00</span>
-                                <button class="bg-primary text-white px-4 py-2 rounded-button font-medium hover:bg-primary/90 transition-colors whitespace-nowrap">Add to Cart</button>
-                                <!-- Add cart icon button -->
-                                <button class="ml-2 bg-secondary text-white p-2 rounded-full hover:bg-secondary/90 transition-colors">
-                                    <i class="fas fa-shopping-cart"></i>
-                                </button>
-                            </div>
-                            <!-- View Button -->
-                            <div class="mt-2">
-                            <a href="{{ route('product.show', ['id' => 3]) }}" class="text-purple-600 font-medium hover:underline">View Details</a>
-                            </div>
-                        </div>
-                    </div>
+                    @endforeach
                 </div>
                 
                 <!-- Pagination -->
