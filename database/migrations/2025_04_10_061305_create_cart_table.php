@@ -17,7 +17,8 @@ return new class extends Migration
                 $table->unsignedBigInteger('UserID');
                 $table->timestamps();
 
-                $table->foreign('UserID')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
+                // Corrected foreign key to match users table primary key (UserID)
+                $table->foreign('UserID')->references('UserID')->on('users')->onDelete('cascade')->onUpdate('cascade');
             });
         }
     }

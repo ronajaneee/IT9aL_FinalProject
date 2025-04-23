@@ -20,9 +20,9 @@ return new class extends Migration
             $table->decimal('UnitPrice', 10, 2)->nullable();
             $table->timestamps();
 
-            $table->foreign('CartID')->references('CartID')->on('cart')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreign('CartID')->references('cartID')->on('cart')->onDelete('cascade')->onUpdate('cascade');
             $table->foreign('ProductID')->references('ProductID')->on('products')->onUpdate('cascade');
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('user_id')->references('UserID')->on('users')->onDelete('cascade'); // <-- fixed
         });
     }
 

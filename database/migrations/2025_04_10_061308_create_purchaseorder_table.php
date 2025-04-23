@@ -19,9 +19,10 @@ return new class extends Migration
             $table->dateTime('DeliveryDate')->nullable();
             $table->timestamps();
         
-            // ✅ Correct foreign key to match users.id
-            $table->foreign('UserID')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
+            // ✅ Correct foreign key to match users.UserID
+            $table->foreign('UserID')->references('UserID')->on('users')->onDelete('cascade')->onUpdate('cascade');
         
+            // Foreign key for SupplierID is fine as long as SupplierID in supplier table is the primary key
             $table->foreign('SupplierID')->references('SupplierID')->on('supplier')->onDelete('cascade')->onUpdate('cascade');
         });
     }
