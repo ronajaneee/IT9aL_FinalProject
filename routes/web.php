@@ -48,9 +48,12 @@ Route::get('/product/{ProductID}', [ProductController::class, 'show'])->name('pr
 Route::get('/products/category/{category}', [ProductController::class, 'filterByCategory'])->name('products.category');
 
 // Product routes
-Route::get('/products', [ProductController::class, 'index'])->name('products.index');
-Route::get('/products/category/{category}', [ProductController::class, 'byCategory'])->name('products.category');
-Route::get('/products/{ProductID}', [ProductController::class, 'show'])->name('products.show');
+Route::prefix('products')->group(function () {
+    Route::get('/', [ProductController::class, 'index'])->name('products.index');
+    Route::get('/category/{category}', [ProductController::class, 'filterByCategory'])->name('products.category');
+    Route::get('/{ProductID}', [ProductController::class, 'show'])->name('products.show');
+});
+
 
 
 

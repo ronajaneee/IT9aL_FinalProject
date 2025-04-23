@@ -4,7 +4,6 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\DB;
 
 class Product extends Model
 {
@@ -26,74 +25,44 @@ class Product extends Model
         'sales'
     ];
 
-    protected $appends = ['rating', 'review_count'];
-
-    public function getRatingAttribute()
-    {
-        $rating = $this->reviews()->avg('rating') ?? 0;
-        return round($rating, 1);
-    }
-
-    public function getReviewCountAttribute()
-    {
-        return $this->reviews()->count();
-    }
-
-    public function reviews()
-    {
-        return $this->hasMany(Review::class, 'ProductID');
-    }
-
-    public function isAvailable()
-    {
-        return $this->Quantity > 0;
-    }
-
-    public function getFormattedPrice()
-    {
-        return '₱' . number_format($this->Price, 2);
-    }
-
-    public function getImageUrl()
-    {
-        if ($this->Image) {
-            return asset('storage/images/' . $this->Image);
-        }
-        return asset('storage/images/default-product.jpg');
-    }
-
     /**
-     * Scope a query to filter by category.
+     * Scope a query to filter by category
      */
     public function scopeCategory($query, $category)
     {
         return $query->where('Category', $category);
     }
 
-    public function scopeSort($query, $sort)
+    /**
+     * Get the formatted price with currency symbol
+     */
+    public function getFormattedPrice()
     {
-        switch ($sort) {
-            case 'price-low':
-                return $query->orderBy('Price', 'asc');
-            case 'price-high':
-                return $query->orderBy('Price', 'desc');
-            case 'newest':
-                return $query->orderBy('created_at', 'desc');
-            case 'best-selling':
-                return $query->orderBy('sales', 'desc');
-            default:
-                return $query->orderBy('ProductID', 'desc');
-        }
+        return '₱' . number_format($this->Price, 2);
     }
 
-    public function scopeFilterByPrice($query, $min, $max)
+    /**
+     * Get the stock status
+     */
+    public function getStockStatus()
     {
-        if ($min) {
-            $query->where('Price', '>=', $min);
-        }
-        if ($max) {
-            $query->where('Price', '<=', $max);
-        }
-        return $query;
+        return $this->Quantity > 0 ? 'In Stock' : 'Out of Stock';
+    }
+
+    /**
+     * Check if product is in stock
+     */
+    public function isInStock()
+    {
+        return $this->Quantity > 0;
+    }
+
+    /**
+     * Get the product's image URL
+     */
+    public function getImageUrl()
+    {
+        return asset('storage/images/' . $this->Image);
     }
 }
+
