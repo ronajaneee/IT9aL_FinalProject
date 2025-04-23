@@ -30,6 +30,32 @@
             -moz-appearance: textfield;
         }
     </style>
+    <!-- Add this style block for custom radio/checkbox styles -->
+    <style>
+        input[type="radio"]:checked + div + div,
+        input[type="checkbox"]:checked + div + div {
+            opacity: 1;
+            transform: scale(1);
+        }
+        
+        input[type="radio"]:checked + div,
+        input[type="checkbox"]:checked + div {
+            border-color: #3b82f6;
+        }
+    </style>
+    <style>
+        input[type="radio"]:checked + div + div,
+        input[type="checkbox"]:checked + div + div {
+            opacity: 1;
+            transform: scale(1);
+            background-color: #000000;
+        }
+        
+        input[type="radio"]:checked + div,
+        input[type="checkbox"]:checked + div {
+            border-color: #000000;
+        }
+    </style>
 </head>
 <body class="bg-gray-100">
       <!-- Header Section -->
@@ -89,49 +115,49 @@
                     <div class="mb-6">
                         <h3 class="font-semibold mb-3">Categories</h3>
                         <div class="space-y-2">
-                            <label class="flex items-center">
+                            <label class="flex items-center cursor-pointer">
                                 <div class="w-5 h-5 flex items-center justify-center mr-3 relative">
-                                    <input type="radio" name="engine-type" class="opacity-0 absolute w-full h-full cursor-pointer z-10">
+                                    <input type="radio" name="category" value="engine-parts" class="opacity-0 absolute w-full h-full cursor-pointer z-10" onchange="handleFilterChange(this)">
                                     <div class="w-5 h-5 border border-gray-300 rounded-full"></div>
                                     <div class="w-3 h-3 bg-primary rounded-full absolute opacity-0 transform scale-0 transition-all"></div>
                                 </div>
                                 <span>Engine Parts</span>
                             </label>
-                            <label class="flex items-center">
+                            <label class="flex items-center cursor-pointer">
                                 <div class="w-5 h-5 flex items-center justify-center mr-3 relative">
-                                    <input type="radio" name="engine-type" class="opacity-0 absolute w-full h-full cursor-pointer z-10">
+                                    <input type="radio" name="category" value="brake-systems" class="opacity-0 absolute w-full h-full cursor-pointer z-10" onchange="handleFilterChange(this)">
                                     <div class="w-5 h-5 border border-gray-300 rounded-full"></div>
                                     <div class="w-3 h-3 bg-primary rounded-full absolute opacity-0 transform scale-0 transition-all"></div>
                                 </div>
                                 <span>Brake Systems</span>
                             </label>
-                            <label class="flex items-center">
+                            <label class="flex items-center cursor-pointer">
                                 <div class="w-5 h-5 flex items-center justify-center mr-3 relative">
-                                    <input type="radio" name="engine-type" class="opacity-0 absolute w-full h-full cursor-pointer z-10">
+                                    <input type="radio" name="category" value="transmission" class="opacity-0 absolute w-full h-full cursor-pointer z-10" onchange="handleFilterChange(this)">
                                     <div class="w-5 h-5 border border-gray-300 rounded-full"></div>
                                     <div class="w-3 h-3 bg-primary rounded-full absolute opacity-0 transform scale-0 transition-all"></div>
                                 </div>
                                 <span>Transmission</span>
                             </label>
-                            <label class="flex items-center">
+                            <label class="flex items-center cursor-pointer">
                                 <div class="w-5 h-5 flex items-center justify-center mr-3 relative">
-                                    <input type="radio" name="engine-type" class="opacity-0 absolute w-full h-full cursor-pointer z-10">
+                                    <input type="radio" name="category" value="suspension" class="opacity-0 absolute w-full h-full cursor-pointer z-10" onchange="handleFilterChange(this)">
                                     <div class="w-5 h-5 border border-gray-300 rounded-full"></div>
                                     <div class="w-3 h-3 bg-primary rounded-full absolute opacity-0 transform scale-0 transition-all"></div>
                                 </div>
                                 <span>Suspension</span>
                             </label>
-                            <label class="flex items-center">
+                            <label class="flex items-center cursor-pointer">
                                 <div class="w-5 h-5 flex items-center justify-center mr-3 relative">
-                                    <input type="radio" name="engine-type" class="opacity-0 absolute w-full h-full cursor-pointer z-10">
+                                    <input type="radio" name="category" value="wheel-rim" class="opacity-0 absolute w-full h-full cursor-pointer z-10" onchange="handleFilterChange(this)">
                                     <div class="w-5 h-5 border border-gray-300 rounded-full"></div>
                                     <div class="w-3 h-3 bg-primary rounded-full absolute opacity-0 transform scale-0 transition-all"></div>
                                 </div>
                                 <span>Wheel Rim</span>
                             </label>
-                            <label class="flex items-center">
+                            <label class="flex items-center cursor-pointer">
                                 <div class="w-5 h-5 flex items-center justify-center mr-3 relative">
-                                    <input type="radio" name="engine-type" class="opacity-0 absolute w-full h-full cursor-pointer z-10">
+                                    <input type="radio" name="category" value="interior" class="opacity-0 absolute w-full h-full cursor-pointer z-10" onchange="handleFilterChange(this)">
                                     <div class="w-5 h-5 border border-gray-300 rounded-full"></div>
                                     <div class="w-3 h-3 bg-primary rounded-full absolute opacity-0 transform scale-0 transition-all"></div>
                                 </div>
@@ -288,41 +314,39 @@
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     @foreach($products as $product)
                     <!-- Product Card -->
-                    <div class="bg-white rounded shadow-sm overflow-hidden">
-                        <div class="p-4 bg-gray-100 flex items-center justify-center h-64">
-                            <img src="{{ asset('storage/images/' . $product->Image) }}" alt="{{ $product->ProductName }}" class="object-contain h-full">
-                        </div>
-                        <div class="p-4">
-                            <h3 class="text-lg font-bold">{{ $product->ProductName }}</h3>
-                            <p class="text-gray-600 text-sm mb-2">{{ $product->Description }}</p>
-                            <div class="flex items-center mb-3">
-                                <div class="flex text-yellow-400">
-                                    <i class="ri-star-fill"></i>
-                                    <i class="ri-star-fill"></i>
-                                    <i class="ri-star-fill"></i>
-                                    <i class="ri-star-fill"></i>
-                                    <i class="ri-star-half-fill"></i>
+                    <div class="bg-white rounded shadow-sm overflow-hidden group hover:shadow-lg transition-shadow">
+                        <a href="{{ route('products.show', ['ProductID' => $product->ProductID]) }}" class="block">
+                            <div class="p-4 bg-gray-100 flex items-center justify-center h-64">
+                                <img src="{{ asset('storage/images/' . $product->Image) }}" alt="{{ $product->ProductName }}" class="object-contain h-full">
+                            </div>
+                            <div class="p-4">
+                                <h3 class="text-lg font-bold group-hover:text-primary transition-colors">{{ $product->ProductName }}</h3>
+                                <p class="text-gray-600 text-sm mb-2">{{ $product->Description }}</p>
+                                <div class="flex items-center mb-3">
+                                    <div class="flex text-yellow-400">
+                                        <i class="ri-star-fill"></i>
+                                        <i class="ri-star-fill"></i>
+                                        <i class="ri-star-fill"></i>
+                                        <i class="ri-star-fill"></i>
+                                        <i class="ri-star-half-fill"></i>
+                                    </div>
+                                    <span class="text-sm text-gray-500 ml-2">4.5 (28 Reviews)</span>
                                 </div>
-                                <span class="text-sm text-gray-500 ml-2">4.5 (28 Reviews)</span>
+                                <div class="flex justify-between items-center">
+                                    <span class="text-xl font-bold">₱{{ number_format($product->Price, 2) }}</span>
+                                    <form action="{{ route('cart.add') }}" method="POST" class="inline-flex space-x-2" onclick="event.stopPropagation();">
+                                        @csrf
+                                        <input type="hidden" name="product_id" value="{{ $product->ProductID }}">
+                                        <button type="submit" class="bg-primary text-white px-4 py-2 rounded-button font-medium hover:bg-primary/90 transition-colors whitespace-nowrap">
+                                            Add to Cart
+                                        </button>
+                                        <button class="ml-2 bg-secondary text-white p-2 rounded-full hover:bg-secondary/90 transition-colors">
+                                            <i class="fas fa-shopping-cart"></i>
+                                        </button>
+                                    </form>
+                                </div>
                             </div>
-                            <div class="flex justify-between items-center">
-                                <span class="text-xl font-bold">₱{{ number_format($product->Price, 2) }}</span>
-                                <form action="{{ route('cart.add') }}" method="POST" class="inline-flex space-x-2">
-                                    @csrf
-                                    <input type="hidden" name="product_id" value="{{ $product->ProductID }}">
-                                    <button type="submit" class="bg-primary text-white px-4 py-2 rounded-button font-medium hover:bg-primary/90 transition-colors whitespace-nowrap">
-                                        Add to Cart
-                                    </button>
-                                    <button class="ml-2 bg-secondary text-white p-2 rounded-full hover:bg-secondary/90 transition-colors">
-                                        <i class="fas fa-shopping-cart"></i>
-                                    </button>
-                                </form>
-                            </div>
-                            <!-- View Button -->
-                            <div class="mt-2">
-                                <a href="{{ route('products.show', ['ProductID' => $product->ProductID]) }}" class="text-purple-600 font-medium hover:underline">View Details</a>
-                            </div>
-                        </div>
+                        </a>
                     </div>
                     @endforeach
                 </div>
@@ -393,45 +417,82 @@
     </footer> 
     @include('auth.login')
     <script>
-// JavaScript to toggle the modal
-const openLoginModal = document.getElementById('openLoginModal');
-            const loginModal = document.getElementById('loginModal');
-            const closeLoginModal = document.getElementById('closeLoginModal');
-    
-            openLoginModal.addEventListener('click', () => {
-                loginModal.classList.remove('hidden');
-            });
-    
-            closeLoginModal.addEventListener('click', () => {
-                loginModal.classList.add('hidden');
-            });
-    
-            // Close modal when clicking outside the modal content
-            document.addEventListener('click', (e) => {
-                if (e.target === loginModal) {
-                    loginModal.classList.add('hidden');
-                }
-            });
-    
-            // Function to toggle the cart modal
-            function toggleCartModal() {
-                const cartModal = document.getElementById('cartModal');
-                const cartContent = document.getElementById('cartContent');
-
-                if (cartModal.classList.contains('hidden')) {
-                    // Load the cart content dynamically
-                    fetch('{{ route('cart.modal') }}')
-                        .then(response => response.text())
-                        .then(html => {
-                            cartContent.innerHTML = html;
-                            cartModal.classList.remove('hidden');
-                        })
-                        .catch(error => console.error('Error loading cart content:', error));
-                } else {
-                    cartModal.classList.add('hidden');
-                }
+        // Add this before the existing script
+        function handleFilterChange(element) {
+            const type = element.type;
+            const name = element.name;
+            const value = element.value;
+            
+            // If it's a radio button, uncheck others in the same group
+            if (type === 'radio') {
+                document.querySelectorAll(`input[name="${name}"]`).forEach(input => {
+                    const indicator = input.nextElementSibling.nextElementSibling;
+                    if (input !== element) {
+                        indicator.style.opacity = '0';
+                        indicator.style.transform = 'scale(0)';
+                    }
+                });
             }
-</script>
+            
+            // Show the selected indicator
+            const indicator = element.nextElementSibling.nextElementSibling;
+            if (element.checked) {
+                indicator.style.opacity = '1';
+                indicator.style.transform = 'scale(1)';
+            } else {
+                indicator.style.opacity = '0';
+                indicator.style.transform = 'scale(0)';
+            }
+            
+            // Here you can add AJAX call to filter products
+            // For example:
+            // fetchFilteredProducts({ [name]: value });
+        }
+
+        function fetchFilteredProducts(filters) {
+            // Add your AJAX logic here to fetch filtered products
+            console.log('Filtering products with:', filters);
+        }
+
+        // Existing modal scripts...
+        const openLoginModal = document.getElementById('openLoginModal');
+        const loginModal = document.getElementById('loginModal');
+        const closeLoginModal = document.getElementById('closeLoginModal');
+
+        openLoginModal.addEventListener('click', () => {
+            loginModal.classList.remove('hidden');
+        });
+
+        closeLoginModal.addEventListener('click', () => {
+            loginModal.classList.add('hidden');
+        });
+
+        // Close modal when clicking outside the modal content
+        document.addEventListener('click', (e) => {
+            if (e.target === loginModal) {
+                loginModal.classList.add('hidden');
+            }
+        });
+
+        // Function to toggle the cart modal
+        function toggleCartModal() {
+            const cartModal = document.getElementById('cartModal');
+            const cartContent = document.getElementById('cartContent');
+
+            if (cartModal.classList.contains('hidden')) {
+                // Load the cart content dynamically
+                fetch('{{ route('cart.modal') }}')
+                    .then(response => response.text())
+                    .then(html => {
+                        cartContent.innerHTML = html;
+                        cartModal.classList.remove('hidden');
+                    })
+                    .catch(error => console.error('Error loading cart content:', error));
+            } else {
+                cartModal.classList.add('hidden');
+            }
+        }
+    </script>
 
 </body>
 </html>
