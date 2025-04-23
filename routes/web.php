@@ -6,8 +6,11 @@ use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CheckoutController;
 
-// Route for main page (welcome.blade.php)
-Route::get('/', [ProductController::class, 'index'])->name('welcome');
+// Set welcome page as the default landing page
+Route::get('/', function () {
+    $products = \App\Models\Product::latest()->take(8)->get();
+    return view('welcome', compact('products'));
+});
 
 // Route for the login page
 Route::view('/login', 'auth.login')->name('login');
@@ -17,30 +20,40 @@ Route::get('/register', [RegisterController::class, 'showRegistrationForm'])->na
 // Process registration form submission
 Route::post('/register', [RegisterController::class, 'register']);
 
-Route::patch('/cart/update/{id}', [CartController::class, 'updateCart'])->name('cart.update');
-Route::delete('/cart/remove/{id}', [CartController::class, 'removeCartItem'])->name('cart.remove');
-Route::post('/cart/update', [CartController::class, 'update'])->name('cart.update');
-
-// Route for the cart modal content
-Route::get('/cart/modal', function () {return view('cart');})->name('cart.modal');
-
-// Route for dynamically loading cart content
-Route::get('/cart/content', [CartController::class, 'getContent'])->name('cart.content');
+// Cart routes
+Route::prefix('cart')->group(function () {
+    Route::get('/', [CartController::class, 'viewCart'])->name('cart');
+    Route::post('/add', [CartController::class, 'addToCart'])->name('cart.add')->middleware('auth');
+    Route::patch('/update/{id}', [CartController::class, 'updateCart'])->name('cart.update');
+    Route::delete('/remove/{id}', [CartController::class, 'removeCartItem'])->name('cart.remove');
+    Route::get('/modal', [CartController::class, 'getContent'])->name('cart.modal');
+});
 
 // Route for checkout page
 Route::get('/checkout', [CheckoutController::class, 'view'])->name('checkout.view');
 
-// Route for product details page
-Route::get('/product/{ProductID}', [ProductController::class, 'show'])
-    ->where('ProductID', '[0-9]+') // Ensure 'id' is a numeric parameter
-    ->name('product.show');
-
 // Route to handle product form submission
 Route::post('/product/{ProductID}/update', [ProductController::class, 'update'])->name('products.update');
 
+// Route for engine page
 Route::get('/engine', [ProductController::class, 'showEngine'])->name('products');
 
-Route::post('/cart/add', [App\Http\Controllers\CartController::class, 'addToCart'])->name('cart.add')->middleware('auth');
-
-// Route for product listing page (assuming this is what "product" refers to)
+// Route for product listing page
 Route::get('/product', [ProductController::class, 'index'])->name('product');
+
+// Route for individual product with proper model binding
+Route::get('/product/{ProductID}', [ProductController::class, 'show'])->name('products.show');
+
+// Route for category filtering
+Route::get('/products/category/{category}', [ProductController::class, 'filterByCategory'])->name('products.category');
+
+// Product routes
+Route::get('/products', [ProductController::class, 'index'])->name('products.index');
+Route::get('/products/category/{category}', [ProductController::class, 'byCategory'])->name('products.category');
+Route::get('/products/{ProductID}', [ProductController::class, 'show'])->name('products.show');
+
+
+
+
+
+

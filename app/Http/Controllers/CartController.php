@@ -9,32 +9,56 @@ class CartController extends Controller
 {
     public function viewCart()
     {
-        // Retrieve or create dummy data for cart items and total.
-        $cartItems = [/* ... */];
-        $total = 0;
-        // Calculate total here...
-        return view('cartview', compact('cartItems', 'total'));
+        $cartItems = Cartitem::with('product')->where('user_id', auth()->id())->get();
+        $total = $cartItems->sum(function($item) {
+            return $item->quantity * $item->product->Price;
+        });
+        return view('cart', compact('cartItems', 'total'));
     }
-    
+
+    public function addToCart(Request $request)
+    {
+        $productId = $request->input('product_id');
+        
+        $cartItem = Cartitem::firstOrNew([
+            'user_id' => auth()->id(),
+            'ProductID' => $productId
+        ]);
+
+        if (!$cartItem->exists) {
+            $cartItem->quantity = 1;
+            $cartItem->save();
+        } else {
+            $cartItem->increment('quantity');
+        }
+
+        return redirect()->back()->with('success', 'Product added to cart!');
+    }
+
     public function updateCart(Request $request, $id)
     {
-        // Validate and update cart quantity based on the action (increment/decrement)
-        // For example:
+        $cartItem = Cartitem::findOrFail($id);
         $action = $request->input('action');
-        // Update the cart item with $id accordingly.
-        // Then redirect back:
-        return redirect()->route('cart.view');
+
+        if ($action === 'increment') {
+            $cartItem->increment('quantity');
+        } elseif ($action === 'decrement' && $cartItem->quantity > 1) {
+            $cartItem->decrement('quantity');
+        }
+
+        return redirect()->back();
     }
-    
+
     public function removeCartItem($id)
     {
-        // Remove the cart item with $id.
-        return redirect()->route('cart.view');
+        $cartItem = Cartitem::findOrFail($id);
+        $cartItem->delete();
+        return redirect()->back();
     }
 
     public function getContent()
     {
-        $cartItems = Cartitem::where('user_id', auth()->id())->get();
+        $cartItems = Cartitem::with('product')->where('user_id', auth()->id())->get();
         return view('cart.content', compact('cartItems'));
     }
 
@@ -57,18 +81,5 @@ class CartController extends Controller
     {
         $cartItems = Cartitem::where('user_id', auth()->id())->get();
         return view('cart', compact('cartItems'));
-    }
-
-    public function addToCart(Request $request)
-    {
-        $productId = $request->input('product_id');
-
-        $cartItem = new Cartitem();
-        $cartItem->product_id = $productId;
-        $cartItem->quantity = 1; // You might want to allow users to specify quantity
-        $cartItem->user_id = auth()->id(); // Assuming you have user authentication
-        $cartItem->save();
-
-        return redirect()->back()->with('success', 'Product added to cart!');
     }
 }

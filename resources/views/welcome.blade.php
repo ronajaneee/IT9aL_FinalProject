@@ -81,92 +81,53 @@
         <section id="products" class="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
     <h2 class="text-3xl font-semibold text-gray-900 mb-8">Popular Categories</h2>
     <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-6">
-        
         <!-- Engine Parts -->
-        <div class="group">
-            <a href="{{ route('product') }}">
-                <div class="aspect-w-1 aspect-h-1 rounded-lg bg-gray-100 overflow-hidden">
-                    <img src="storage/images/engine.webp" class="object-center object-cover group-hover:scale-105 transition-transform duration-300" alt="Engine Parts" />
-                </div>
-                <h3 class="mt-4 text-base font-medium text-gray-900">Engine Parts</h3>
-            </a>
-                    </div>
-
-        <!-- Interior -->
-        <div class="group">
-            <a href="#">
-                <div class="aspect-w-1 aspect-h-1 rounded-lg bg-gray-100 overflow-hidden">
-                    <img src="storage/images/interior.webp" class="object-center object-cover group-hover:scale-105 transition-transform duration-300" alt="Interior" />
-                </div>
-                <h3 class="mt-4 text-base font-medium text-gray-900">Interior</h3>
-            </a>
-            <div class="mt-2">
-                <a href="{{ route('product') }}" class="text-purple-600 font-medium hover:underline inline-block">
-                    View
-                </a>
+        <a href="{{ route('products.index', ['category' => 'engine']) }}" class="group block transition hover:shadow-lg rounded-lg">
+            <div class="aspect-w-1 aspect-h-1 rounded-lg bg-gray-100 overflow-hidden">
+                <img src="storage/images/engine.webp" class="object-center object-cover group-hover:scale-105 transition-transform duration-300" alt="Engine Parts" />
             </div>
-        </div>
+            <h3 class="mt-4 text-base font-medium text-gray-900">Engine Parts</h3>
+        </a>
+
+        <!-- Brakes -->
+        <a href="{{ route('products.index', ['category' => 'brakes']) }}" class="group block transition hover:shadow-lg rounded-lg">
+            <div class="aspect-w-1 aspect-h-1 rounded-lg bg-gray-100 overflow-hidden">
+                <img src="storage/images/interior.webp" class="object-center object-cover group-hover:scale-105 transition-transform duration-300" alt="Interior" />
+            </div>
+            <h3 class="mt-4 text-base font-medium text-gray-900">Interior</h3>
+        </a>
 
         <!-- Transmission -->
-        <div class="group">
-            <a href="#">
-                <div class="aspect-w-1 aspect-h-1 rounded-lg bg-gray-100 overflow-hidden">
-                    <img src="storage/images/transmission.webp" class="object-center object-cover group-hover:scale-105 transition-transform duration-300" alt="Transmission" />
-                </div>
-                <h3 class="mt-4 text-base font-medium text-gray-900">Transmission</h3>
-            </a>
-            <div class="mt-2">
-            <a href="{{ route('product') }}" class="text-purple-600 font-medium hover:underline inline-block">
-                    View
-                </a>
+        <a href="{{ route('products.index', ['category' => 'transmission']) }}" class="group block transition hover:shadow-lg rounded-lg">
+            <div class="aspect-w-1 aspect-h-1 rounded-lg bg-gray-100 overflow-hidden">
+                <img src="storage/images/transmission.webp" class="object-center object-cover group-hover:scale-105 transition-transform duration-300" alt="Transmission" />
             </div>
-        </div>
+            <h3 class="mt-4 text-base font-medium text-gray-900">Transmission</h3>
+        </a>
 
         <!-- Suspension -->
-        <div class="group">
-            <a href="#">
-                <div class="aspect-w-1 aspect-h-1 rounded-lg bg-gray-100 overflow-hidden">
-                    <img src="storage/images/suspension.webp" class="object-center object-cover group-hover:scale-105 transition-transform duration-300" alt="Suspension" />
-                </div>
-                <h3 class="mt-4 text-base font-medium text-gray-900">Suspension</h3>
-            </a>
-            <div class="mt-2">
-            <a href="{{ route('product') }}" class="text-purple-600 font-medium hover:underline inline-block">
-                    View
-                </a>
+        <a href="{{ route('products.index', ['category' => 'suspension']) }}" class="group block transition hover:shadow-lg rounded-lg">
+            <div class="aspect-w-1 aspect-h-1 rounded-lg bg-gray-100 overflow-hidden">
+                <img src="storage/images/suspension.webp" class="object-center object-cover group-hover:scale-105 transition-transform duration-300" alt="Suspension" />
             </div>
-        </div>
+            <h3 class="mt-4 text-base font-medium text-gray-900">Suspension</h3>
+        </a>
 
         <!-- Wheel Rim -->
-        <div class="group">
-            <a href="#">
-                <div class="aspect-w-1 aspect-h-1 rounded-lg bg-gray-100 overflow-hidden">
-                    <img src="storage/images/rim.avif" class="object-center object-cover group-hover:scale-105 transition-transform duration-300" alt="Wheel Rim" />
-                </div>
-                <h3 class="mt-4 text-base font-medium text-gray-900">Wheel Rim</h3>
-            </a>
-            <div class="mt-2">
-                <a href="{{ route('product') }}" class="text-purple-600 font-medium hover:underline inline-block">
-                    View
-                </a>
+        <a href="{{ route('products.index', ['category' => 'wheel']) }}" class="group block transition hover:shadow-lg rounded-lg">
+            <div class="aspect-w-1 aspect-h-1 rounded-lg bg-gray-100 overflow-hidden">
+                <img src="storage/images/rim.avif" class="object-center object-cover group-hover:scale-105 transition-transform duration-300" alt="Wheel Rim" />
             </div>
-        </div>
+            <h3 class="mt-4 text-base font-medium text-gray-900">Wheel Rim</h3>
+        </a>
 
         <!-- Interior -->
-        <div class="group">
-            <a href="#">
-                <div class="aspect-w-1 aspect-h-1 rounded-lg bg-gray-100 overflow-hidden">
-                    <img src="storage/images/interior.webp" class="object-center object-cover group-hover:scale-105 transition-transform duration-300" alt="Interior" />
-                </div>
-                <h3 class="mt-4 text-base font-medium text-gray-900">Interior</h3>
-            </a>
-            <div class="mt-2">
-                <a href="#" class="text-purple-600 font-medium hover:underline inline-block">
-                    View
-                </a>
+        <a href="{{ route('products.index', ['category' => 'interior']) }}" class="group block transition hover:shadow-lg rounded-lg">
+            <div class="aspect-w-1 aspect-h-1 rounded-lg bg-gray-100 overflow-hidden">
+                <img src="storage/images/interior.webp" class="object-center object-cover group-hover:scale-105 transition-transform duration-300" alt="Interior" />
             </div>
-        </div>
-
+            <h3 class="mt-4 text-base font-medium text-gray-900">Interior</h3>
+        </a>
     </div>
 </section>
 
@@ -180,7 +141,7 @@
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         @foreach($products as $product)
         <!-- Product Card -->
-        <div class="relative group rounded-xl border bg-white p-4 shadow-sm hover:shadow-md transition">
+        <a href="{{ route('products.show', ['ProductID' => $product->ProductID]) }}" class="relative group rounded-xl border bg-white p-4 shadow-sm hover:shadow-md transition block">
             <div class="aspect-w-1 aspect-h-1 overflow-hidden rounded-lg bg-gray-100">
                 <img src="{{ asset('storage/images/' . $product->image) }}" alt="{{ $product->name }}"
                     class="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105">
@@ -197,20 +158,19 @@
                     <span class="text-gray-500 ml-1">(42)</span>
                 </div>
                 <p class="text-lg font-bold text-gray-900">{{ $product->price }}</p>
-                <a href="{{ route('product.show', ['ProductID' => $product->id]) }}" class="text-purple-600 font-medium hover:underline">View Details</a>
             </div>
-            <form action="{{ route('cart.add') }}" method="POST">
+            <form action="{{ route('cart.add') }}" method="POST" class="absolute bottom-4 right-4">
                 @csrf
                 <input type="hidden" name="product_id" value="{{ $product->id }}">
-                <button type="submit" class="absolute bottom-4 right-4 bg-purple-600 hover:bg-purple-700 text-white p-2 rounded-full shadow">
+                <button type="submit" class="bg-purple-600 hover:bg-purple-700 text-white p-2 rounded-full shadow">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
                         stroke="currentColor" stroke-width="2">
                         <path stroke-linecap="round" stroke-linejoin="round"
                             d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-1.35 2.7A1 1 0 007.5 17h9a1 1 0 00.85-1.53L17 13M10 21h.01M14 21h.01" />
-                </svg>
-            </button>
+                    </svg>
+                </button>
             </form>
-        </div>
+        </a>
         @endforeach
     </div>
 </section>
@@ -334,4 +294,19 @@
                         <a href="#" class="text-gray-400 hover:text-white">
                             <i class="fab fa-facebook-f"></i>
                         </a>
-                        <a href="#" class="text-gray-400 hover
+                        <a href="#" class="text-gray-400 hover:text-white">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-white">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-white">
+                            <i class="fab fa-linkedin-in"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

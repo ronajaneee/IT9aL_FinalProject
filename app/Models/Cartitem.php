@@ -13,8 +13,21 @@ class Cartitem extends Model
     protected $primaryKey = 'CartitemID';
     public $timestamps = true;
 
+    protected $fillable = [
+        'CartID',
+        'ProductID',
+        'user_id',
+        'Quantity',
+        'UnitPrice'
+    ];
+
     public function product()
     {
         return $this->belongsTo(Product::class, 'ProductID', 'ProductID');
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id');
     }
 }

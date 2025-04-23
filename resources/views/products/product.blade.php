@@ -286,59 +286,60 @@
                 
                 <!-- Products Grid -->
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    @foreach($products as $product)
+                    @forelse($products as $product)
                     <!-- Product Card -->
                     <div class="bg-white rounded shadow-sm overflow-hidden">
                         <div class="p-4 bg-gray-100 flex items-center justify-center h-64">
-                            <img src="{{ asset('storage/images/ProductTestImage.jpg') }}" alt="{{ $product->name }}" class="object-contain h-full">
+                            <img src="{{ $product->getImageUrl() }}" alt="{{ $product->ProductName }}" class="object-contain h-full">
                         </div>
                         <div class="p-4">
-                            <h3 class="text-lg font-bold">{{ $product->name }}</h3>
-                            <p class="text-gray-600 text-sm mb-2">{{ $product->description }}</p>
+                            <h3 class="text-lg font-bold">{{ $product->ProductName }}</h3>
+                            <p class="text-gray-600 text-sm mb-2">{{ $product->Description }}</p>
                             <div class="flex items-center mb-3">
                                 <div class="flex text-yellow-400">
-                                    <i class="ri-star-fill"></i>
-                                    <i class="ri-star-fill"></i>
-                                    <i class="ri-star-fill"></i>
-                                    <i class="ri-star-fill"></i>
-                                    <i class="ri-star-half-fill"></i>
+                                    @for ($i = 1; $i <= 5; $i++)
+                                        @if ($i <= floor($product->rating))
+                                            <i class="ri-star-fill"></i>
+                                        @elseif ($i - 0.5 <= $product->rating)
+                                            <i class="ri-star-half-fill"></i>
+                                        @else
+                                            <i class="ri-star-line"></i>
+                                        @endif
+                                    @endfor
                                 </div>
-                                <span class="text-sm text-gray-500 ml-2">4.5 (28 Reviews)</span>
+                                <span class="text-sm text-gray-500 ml-2">{{ $product->rating }} ({{ $product->review_count }} Reviews)</span>
                             </div>
                             <div class="flex justify-between items-center">
-                                <span class="text-xl font-bold">{{ $product->price }}</span>
-                                <button class="bg-primary text-white px-4 py-2 rounded-button font-medium hover:bg-primary/90 transition-colors whitespace-nowrap">Add to Cart</button>
-                                <!-- Add cart icon button -->
-                                <button class="ml-2 bg-secondary text-white p-2 rounded-full hover:bg-secondary/90 transition-colors">
-                                    <i class="fas fa-shopping-cart"></i>
-                                </button>
+                                <span class="text-xl font-bold">{{ $product->getFormattedPrice() }}</span>
+                                <form action="{{ route('cart.add') }}" method="POST" class="flex items-center">
+                                    @csrf
+                                    <input type="hidden" name="product_id" value="{{ $product->ProductID }}">
+                                    <button type="submit" 
+                                            class="bg-primary text-white px-4 py-2 rounded-button font-medium hover:bg-primary/90 transition-colors whitespace-nowrap {{ !$product->isAvailable() ? 'opacity-50 cursor-not-allowed' : '' }}"
+                                            {{ !$product->isAvailable() ? 'disabled' : '' }}>
+                                        {{ $product->isAvailable() ? 'Add to Cart' : 'Out of Stock' }}
+                                    </button>
+                                </form>
                             </div>
                             <!-- View Button -->
                             <div class="mt-2">
-                            @if($product->id)
-                                <a href="{{ route('product.show', ['ProductID' => $product->id]) }}" class="text-purple-600 font-medium hover:underline">View Details</a>
-                            @endif
+                                <a href="{{ route('products.show', ['ProductID' => $product->ProductID]) }}" 
+                                   class="text-purple-600 font-medium hover:underline">
+                                    View Details
+                                </a>
                             </div>
                         </div>
                     </div>
-                    @endforeach
+                    @empty
+                    <div class="col-span-full text-center py-12">
+                        <p class="text-gray-500 text-lg">No products found</p>
+                    </div>
+                    @endforelse
                 </div>
                 
                 <!-- Pagination -->
-                <div class="mt-8 flex justify-center">
-                    <nav class="flex items-center space-x-1">
-                        <a href="#" class="w-10 h-10 flex items-center justify-center rounded border border-gray-200 text-gray-600 hover:bg-gray-50">
-                            <i class="ri-arrow-left-s-line"></i>
-                        </a>
-                        <a href="#" class="w-10 h-10 flex items-center justify-center rounded border border-primary bg-primary text-white">1</a>
-                        <a href="#" class="w-10 h-10 flex items-center justify-center rounded border border-gray-200 text-gray-600 hover:bg-gray-50">2</a>
-                        <a href="#" class="w-10 h-10 flex items-center justify-center rounded border border-gray-200 text-gray-600 hover:bg-gray-50">3</a>
-                        <span class="w-10 h-10 flex items-center justify-center text-gray-400">...</span>
-                        <a href="#" class="w-10 h-10 flex items-center justify-center rounded border border-gray-200 text-gray-600 hover:bg-gray-50">8</a>
-                        <a href="#" class="w-10 h-10 flex items-center justify-center rounded border border-gray-200 text-gray-600 hover:bg-gray-50">
-                            <i class="ri-arrow-right-s-line"></i>
-                        </a>
-                    </nav>
+                <div class="mt-8">
+                    {{ $products->links() }}
                 </div>
             </div>
         </div>

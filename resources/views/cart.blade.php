@@ -18,7 +18,7 @@
             <div class="flex items-center justify-between p-4 border-b">
                 <h2 class="text-lg font-semibold">Your Cart</h2>
                 <div class="flex items-center gap-4">
-                    <button class="text-blue-500 font-semibold hover:underline" onclick="window.location.href='{{ route('cart.view') }}'">
+                    <button class="text-blue-500 font-semibold hover:underline" onclick="window.location.href='{{ route('cart') }}'">
                         View Cart
                     </button>
                     <button onclick="toggleCartModal()" class="text-gray-400 hover:text-gray-600">
@@ -27,26 +27,25 @@
                 </div>
             </div>
             <div id="cartContent" class="p-4" style="min-height: 300px; overflow-y: auto;">
-                <!-- Cart content will be dynamically loaded here -->
-                @if(count($cartItems) > 0)
+                @if(isset($cartItems) && $cartItems->count() > 0)
                     @foreach($cartItems as $cartItem)
                         <div class="flex gap-6 pb-6 border-b mb-6">
-                            <!-- Example product -->
-                            <img src="" alt="Product Image" class="w-32 h-32 object-cover rounded"/>
+                            <img src="{{ $cartItem->product->getImageUrl() }}" 
+                                 alt="{{ $cartItem->product->ProductName }}" 
+                                 class="w-32 h-32 object-cover rounded"/>
                             <div class="flex-1">
-                                <h3 class="font-semibold mb-1">{{ $cartItem->product->name }}</h3>
-                                <p class="text-gray-500">{{ $cartItem->product->price }}</p>
+                                <h3 class="font-semibold mb-1">{{ $cartItem->product->ProductName }}</h3>
+                                <p class="text-gray-500">{{ $cartItem->product->getFormattedPrice() }}</p>
                                 <div class="flex items-center gap-4">
-                                    <form method="POST" action="{{ route('cart.update', $cartItem->id) }}" class="flex items-center border rounded">
+                                    <form method="POST" action="{{ route('cart.update', $cartItem->CartitemID) }}" class="flex items-center border rounded">
                                         @csrf
                                         @method('PATCH')
                                         <input type="hidden" name="action" value="decrement">
                                         <button type="submit" class="px-3 py-1 hover:bg-gray-100 rounded-l">-</button>
                                         <input type="text" name="quantity" value="{{ $cartItem->quantity }}" class="w-12 text-center border-x" readonly>
-                                        <input type="hidden" name="action" value="increment">
-                                        <button type="submit" class="px-3 py-1 hover:bg-gray-100 rounded-r">+</button>
+                                        <button type="submit" name="action" value="increment" class="px-3 py-1 hover:bg-gray-100 rounded-r">+</button>
                                     </form>
-                                    <form method="POST" action="{{ route('cart.remove', $cartItem->id) }}">
+                                    <form method="POST" action="{{ route('cart.remove', $cartItem->CartitemID) }}">
                                         @csrf
                                         @method('DELETE')
                                         <button class="text-gray-400 hover:text-gray-600">
@@ -57,8 +56,11 @@
                             </div>
                         </div>
                     @endforeach
+                    <div class="mt-4 text-right">
+                        <p class="text-lg font-semibold">Total: ₱{{ number_format($total, 2) }}</p>
+                    </div>
                 @else
-                    <p>Your cart is empty.</p>
+                    <p class="text-center py-8 text-gray-500">Your cart is empty.</p>
                 @endif
             </div>
             <div class="p-4 border-t bg-gray-50">
