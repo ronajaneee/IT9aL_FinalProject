@@ -21,22 +21,11 @@ class AuthController extends Controller
             return redirect()->intended('/')->with('success', 'Welcome back!');
         }
 
-        // Check if user exists
-        $user = User::where('email', $request->email)->first();
-        
-        if (!$user) {
-            return back()
-                ->withInput($request->only('email'))
-                ->withErrors([
-                    'email' => 'No account found with this email. Please register first.',
-                    'show_register' => true // Flag to show register modal instead
-                ]);
-        }
-
         return back()
             ->withInput($request->only('email'))
             ->withErrors([
-                'password' => 'Invalid credentials.'
+                'loginError' => 'Invalid email or password.', 
+                'keepModalOpen' => true
             ]);
     }
 
@@ -54,12 +43,12 @@ class AuthController extends Controller
             'last_name' => $validatedData['lastName'],
             'email' => $validatedData['email'],
             'password' => Hash::make($validatedData['password']),
-            'role' => 'customer' // Set default role
+            'role' => 'customer'
         ]);
 
-        Auth::login($user);
-
-        return redirect('/')->with('success', 'Account created successfully!');
+        return redirect('/')
+            ->with('success', 'Account created successfully! Please login.')
+            ->with('openLogin', true); // Add this line to explicitly trigger login modal
     }
 
     public function logout(Request $request)

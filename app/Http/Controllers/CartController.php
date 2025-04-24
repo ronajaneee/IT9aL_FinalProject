@@ -10,11 +10,30 @@ class CartController extends Controller
 {
     public function viewCart()
     {
-        $cartItems = Cartitem::with('product')->where('user_id', Auth::id())->get();
+        $cartItems = Cartitem::with('product')
+            ->where('user_id', Auth::id())
+            ->active()
+            ->get();
+
         $total = $cartItems->sum(function($item) {
-            return $item->Quantity * $item->product->Price;
+            return $item->getSubtotal();
         });
+
         return view('cartview', compact('cartItems', 'total'));
+    }
+
+    public function getCartModal()
+    {
+        $cartItems = Cartitem::with('product')
+            ->where('user_id', Auth::id())
+            ->active()
+            ->get();
+
+        $total = $cartItems->sum(function($item) {
+            return $item->getSubtotal();
+        });
+
+        return view('cart', compact('cartItems', 'total'));
     }
 
     public function addToCart(Request $request)
@@ -54,12 +73,6 @@ class CartController extends Controller
     {
         $cartItem = Cartitem::findOrFail($id);
         $cartItem->delete();
-        return redirect()->back();
-    }
-
-    public function getContent()
-    {
-        $cartItems = Cartitem::with('product')->where('user_id', Auth::id())->get();
-        return view('cart.content', compact('cartItems'));
+        return redirect()->route('cart.view');
     }
 }

@@ -14,9 +14,14 @@
 </head>
 <body class="bg-gray-100">
   <!-- Login Modal -->
-  <div id="loginModal" class="hidden fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center z-50">
+  <div id="loginModal" class="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center {{ $errors->has('keepModalOpen') ? '' : 'hidden' }}">
     <div class="w-[420px] bg-white rounded-lg shadow-xl p-8 relative">
       <h2 class="text-2xl font-bold text-gray-900 mb-6 text-center">Login</h2>
+      @error('loginError')
+        <div class="mb-4 bg-red-50 border border-red-200 text-red-600 px-4 py-3 rounded relative" role="alert">
+            <p class="text-sm">{{ $message }}</p>
+        </div>
+      @enderror
       <form class="space-y-5" method="POST" action="{{ route('login') }}">
         @csrf
         <div>

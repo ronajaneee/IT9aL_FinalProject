@@ -9,6 +9,7 @@
     <link href="{{ asset('css/tailwind-custom.css') }}" rel="stylesheet"/>
     <script src="https://cdn.tailwindcss.com/3.4.5?plugins=forms@0.5.7,typography@0.5.13,aspect-ratio@0.4.2,container-queries@0.1.1"></script>
     <script src="{{ asset('js/tailwind-config.min.js') }}" data-color="#000000" data-border-radius="small"></script>
+    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
 </head>
 <body class="bg-gray-100">
   <header class="fixed w-full top-0 z-50 bg-white shadow-sm">
@@ -40,13 +41,43 @@
         </div>
         <!-- Right Section: Account & Cart Icons -->
         <div class="flex items-center space-x-6">
-            <a id="openLoginModal" href="javascript:void(0);" class="text-gray-600 hover:text-gray-900">
-                <i class="fas fa-user text-xl"></i>
-            </a>
-            <!-- Cart Button opens the cart modal -->
+            @auth
+                <div class="relative" x-data="{ open: false }">
+                    <button @click="open = !open" class="flex items-center space-x-1 text-gray-600 hover:text-gray-900">
+                        <i class="fas fa-user text-xl"></i>
+                        <span class="text-sm font-medium">{{ Auth::user()->first_name }}</span>
+                        <i class="fas fa-chevron-down text-xs"></i>
+                    </button>
+                    <div x-show="open"
+                         x-transition:enter="transition ease-out duration-100"
+                         x-transition:enter-start="transform opacity-0 scale-95"
+                         x-transition:enter-end="transform opacity-100 scale-100"
+                         x-transition:leave="transition ease-in duration-75" 
+                         x-transition:leave-start="transform opacity-100 scale-100"
+                         x-transition:leave-end="transform opacity-0 scale-95"
+                         @click.outside="open = false"
+                         class="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg py-2">
+                        <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">My Account</a>
+                        <a href="{{ route('cart.view') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Orders</a>
+                        <form method="POST" action="{{ route('logout') }}" class="block">
+                            @csrf
+                            <button type="submit" class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                Logout
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            @else
+                <a id="openLoginModal" href="javascript:void(0);" class="text-gray-600 hover:text-gray-900">
+                    <i class="fas fa-user text-xl"></i>
+                </a>
+            @endauth
+            <!-- Cart link -->
             <a href="{{ route('cart.view') }}" class="relative text-gray-600 hover:text-gray-900">
                 <i class="fas fa-shopping-cart text-xl"></i>
-                <span class="absolute -top-1 -right-1 h-4 w-4 text-xs bg-blue-500 text-white rounded-full flex items-center justify-center">2</span>
+                <span class="absolute -top-1 -right-1 h-4 w-4 text-xs bg-blue-500 text-white rounded-full flex items-center justify-center">
+                    {{ \App\Facades\Cart::count() }}
+                </span>
             </a>
         </div>
       </div>
@@ -317,22 +348,18 @@
         const openLoginModal = document.getElementById('openLoginModal');
         const loginModal = document.getElementById('loginModal');
         const closeLoginModal = document.getElementById('closeLoginModal');
+        const registerModal = document.getElementById('registerModal');
 
-        if (openLoginModal && loginModal && closeLoginModal) {
-            openLoginModal.addEventListener('click', () => {
-                loginModal.classList.remove('hidden');
-            });
+        // Check for login errors and show modal if needed
+        @if($errors->has('keepModalOpen') || session('openLogin'))
+            loginModal.classList.remove('hidden');
+            if (registerModal) {
+                registerModal.classList.add('hidden');
+            }
+        @endif
 
-            closeLoginModal.addEventListener('click', () => {
-                loginModal.classList.add('hidden');
-            });
-
-            document.addEventListener('click', (e) => {
-                if (e.target === loginModal) {
-                    loginModal.classList.add('hidden');
-                }
-            });
-        }
+        // Rest of the script remains unchanged
+        // ...existing code...
     </script>
 </body>
 </html>

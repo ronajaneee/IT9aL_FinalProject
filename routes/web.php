@@ -22,15 +22,16 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
 // Cart routes 
 Route::prefix('cart')->group(function () {
-    Route::get('/', [CartController::class, 'viewCart'])->name('cart.view');  // Changed from 'cart' to 'cart.view' for consistency
+    Route::get('/', [CartController::class, 'viewCart'])->name('cart.view');
+    Route::get('/modal', [CartController::class, 'getCartModal'])->name('cart.modal'); // Add this line
     Route::post('/add', [CartController::class, 'addToCart'])->name('cart.add')->middleware('auth');
     Route::patch('/update/{id}', [CartController::class, 'updateCart'])->name('cart.update');
     Route::delete('/remove/{id}', [CartController::class, 'removeCartItem'])->name('cart.remove');
-    Route::get('/modal', [CartController::class, 'getContent'])->name('cart.modal');
 });
 
 // Route for checkout page
 Route::get('/checkout', [CheckoutController::class, 'view'])->name('checkout.view');
+Route::post('/checkout/process', [CheckoutController::class, 'process'])->name('checkout.process');
 
 // Route to handle product form submission
 Route::post('/product/{ProductID}/update', [ProductController::class, 'update'])->name('products.update');
@@ -55,6 +56,8 @@ Route::prefix('products')->group(function () {
 });
 
 Route::get('/featured-products', [ProductController::class, 'getFeaturedProducts'])->name('products.featured');
+
+Route::get('/cartview', function () {return view('cartview');})->name('cartview.page');
 
 
 

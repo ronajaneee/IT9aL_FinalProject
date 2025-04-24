@@ -13,21 +13,19 @@
     <script src="<?php echo 'js/tailwind-config.min.js'; ?>" data-color="#000000" data-border-radius="small"></script>
 </head>
 <body class="bg-gray-50">
-    <div id="cartModal" class="fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center z-50">
-        <div class="bg-white w-full max-w-xl rounded-lg shadow-xl">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <div class="bg-white rounded-lg shadow-lg overflow-hidden">
             <div class="flex items-center justify-between p-4 border-b">
                 <h2 class="text-lg font-semibold">Your Cart</h2>
                 <div class="flex items-center gap-4">
-                    <button class="text-blue-500 font-semibold hover:underline" onclick="window.location.href='{{ route('cart') }}'">
+                    <a href="{{ route('cart.view') }}" 
+                       class="text-blue-600 hover:text-blue-700 font-medium transition-colors">
                         View Cart
-                    </button>
-                    <button onclick="toggleCartModal()" class="text-gray-400 hover:text-gray-600">
-                        <i class="fas fa-times text-lg"></i>
-                    </button>
+                    </a>
                 </div>
             </div>
             <div id="cartContent" class="p-4" style="min-height: 300px; overflow-y: auto;">
-                @if(isset($cartItems) && $cartItems->count() > 0)
+                @if(isset($cartItems) && count($cartItems) > 0)
                     @foreach($cartItems as $cartItem)
                         <div class="flex gap-6 pb-6 border-b mb-6">
                             <img src="{{ $cartItem->product->getImageUrl() }}" 
@@ -57,10 +55,10 @@
                         </div>
                     @endforeach
                     <div class="mt-4 text-right">
-                        <p class="text-lg font-semibold">Total: ₱{{ number_format($total, 2) }}</p>
+                        <p class="text-lg font-semibold">Total: ₱{{ number_format($total ?? 0, 2) }}</p>
                     </div>
                 @else
-                    <p class="text-center py-8 text-gray-500">Your cart is empty.</p>
+                    <p class="text-center py-8 text-gray-500">Your cart is empty</p>
                 @endif
             </div>
             <div class="p-4 border-t bg-gray-50">
@@ -76,23 +74,4 @@
         </div>
     </div>
 </body>
-<script>
-    function toggleCartModal() {
-        const cartModal = document.getElementById('cartModal');
-        const cartContent = document.getElementById('cartContent');
-
-        if (cartModal.classList.contains('hidden')) {
-            // Load the cart content dynamically
-            fetch('{{ route('cart.modal') }}')
-                .then(response => response.text())
-                .then(html => {
-                    cartContent.innerHTML = html;
-                    cartModal.classList.remove('hidden');
-                })
-                .catch(error => console.error('Error loading cart content:', error));
-        } else {
-            cartModal.classList.add('hidden');
-        }
-    }
-</script>
 </html>

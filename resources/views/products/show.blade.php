@@ -86,11 +86,11 @@
             <a id="openLoginModal" href="javascript:void(0);" class="text-gray-600 hover:text-gray-900">
                 <i class="fas fa-user text-xl"></i>
             </a>
-            <!-- Cart Button opens the cart modal -->
-            <a href="{{ route('cart.view') }}" class="relative text-gray-600 hover:text-gray-900">
-                <i class="fas fa-shopping-cart text-xl"></i>
-                <span class="absolute -top-1 -right-1 h-4 w-4 text-xs bg-blue-500 text-white rounded-full flex items-center justify-center">2</span>
-            </a>
+            <!-- Cart Button links directly to cart -->
+<a href="{{ route('cart.view') }}" class="relative text-gray-600 hover:text-gray-900">
+    <i class="fas fa-shopping-cart text-xl"></i>
+    <span class="absolute -top-1 -right-1 h-4 w-4 text-xs bg-blue-500 text-white rounded-full flex items-center justify-center">2</span>
+</a>
         </div>
       </div>
     </nav>
@@ -375,6 +375,30 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 });
+</script>
+
+<!-- Add this near the end of the body tag, before other scripts -->
+<script>
+function openCartModal() {
+    // Create a div for the backdrop
+    const backdrop = document.createElement('div');
+    backdrop.classList.add('fixed', 'inset-0', 'bg-black', 'bg-opacity-50', 'z-50');
+    document.body.appendChild(backdrop);
+
+    // Load and show cart.blade.php content
+    fetch('<?php echo e(route("cart.view")); ?>')
+        .then(response => response.text())
+        .then(html => {
+            document.body.insertAdjacentHTML('beforeend', html);
+        });
+
+    // Close when clicking backdrop
+    backdrop.addEventListener('click', () => {
+        backdrop.remove();
+        const cartModal = document.querySelector('#cartModal');
+        if (cartModal) cartModal.remove();
+    });
+}
 </script>
 
 </body>
