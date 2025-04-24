@@ -143,12 +143,12 @@
         <!-- Product Card -->
         <a href="{{ route('products.show', ['ProductID' => $product->ProductID]) }}" class="relative group rounded-xl border bg-white p-4 shadow-sm hover:shadow-md transition block">
             <div class="aspect-w-1 aspect-h-1 overflow-hidden rounded-lg bg-gray-100">
-                <img src="{{ asset('storage/images/' . $product->image) }}" alt="{{ $product->name }}"
+                <img src="{{ asset('storage/images/' . $product->Image) }}" alt="{{ $product->ProductName }}"
                     class="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105">
             </div>
             <div class="mt-4 space-y-1">
-                <h3 class="text-base font-semibold text-gray-900">{{ $product->name }}</h3>
-                <p class="text-sm text-gray-500">{{ $product->description }}</p>
+                <h3 class="text-base font-semibold text-gray-900">{{ $product->ProductName }}</h3>
+                <p class="text-sm text-gray-500">{{ $product->Description }}</p>
                 <div class="flex items-center space-x-1 text-yellow-400 text-sm">
                     <i class="fas fa-star"></i>
                     <i class="fas fa-star"></i>
@@ -157,7 +157,7 @@
                     <i class="fas fa-star"></i>
                     <span class="text-gray-500 ml-1">(42)</span>
                 </div>
-                <p class="text-lg font-bold text-gray-900">{{ $product->price }}</p>
+                <p class="text-lg font-bold text-gray-900">₱{{ number_format($product->Price, 2) }}</p>
             </div>
             <form action="{{ route('cart.add') }}" method="POST" class="absolute bottom-4 right-4">
                 @csrf
