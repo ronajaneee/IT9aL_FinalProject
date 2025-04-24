@@ -4,16 +4,17 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Cartitem;
+use Illuminate\Support\Facades\Auth;
 
 class CartController extends Controller
 {
     public function viewCart()
     {
-        $cartItems = Cartitem::with('product')->where('user_id', auth()->id())->get();
+        $cartItems = Cartitem::with('product')->where('user_id', Auth::id())->get();
         $total = $cartItems->sum(function($item) {
-            return $item->quantity * $item->product->Price;
+            return $item->Quantity * $item->product->Price;
         });
-        return view('cart', compact('cartItems', 'total'));
+        return view('cartview', compact('cartItems', 'total'));
     }
 
     public function addToCart(Request $request)
@@ -21,15 +22,15 @@ class CartController extends Controller
         $productId = $request->input('product_id');
         
         $cartItem = Cartitem::firstOrNew([
-            'user_id' => auth()->id(),
+            'user_id' => Auth::id(),
             'ProductID' => $productId
         ]);
 
         if (!$cartItem->exists) {
-            $cartItem->quantity = 1;
+            $cartItem->Quantity = 1;
             $cartItem->save();
         } else {
-            $cartItem->increment('quantity');
+            $cartItem->increment('Quantity');
         }
 
         return redirect()->back()->with('success', 'Product added to cart!');
@@ -41,9 +42,9 @@ class CartController extends Controller
         $action = $request->input('action');
 
         if ($action === 'increment') {
-            $cartItem->increment('quantity');
-        } elseif ($action === 'decrement' && $cartItem->quantity > 1) {
-            $cartItem->decrement('quantity');
+            $cartItem->increment('Quantity');
+        } elseif ($action === 'decrement' && $cartItem->Quantity > 1) {
+            $cartItem->decrement('Quantity');
         }
 
         return redirect()->back();
@@ -58,28 +59,7 @@ class CartController extends Controller
 
     public function getContent()
     {
-        $cartItems = Cartitem::with('product')->where('user_id', auth()->id())->get();
+        $cartItems = Cartitem::with('product')->where('user_id', Auth::id())->get();
         return view('cart.content', compact('cartItems'));
-    }
-
-    public function update(Request $request)
-    {
-        session_start();
-
-        if ($request->has('increment')) {
-            $_SESSION['cart_quantity'] = (int)$_SESSION['cart_quantity'] + 1;
-        } elseif ($request->has('decrement')) {
-            if ((int)$_SESSION['cart_quantity'] > 1) {
-                $_SESSION['cart_quantity'] = (int)$_SESSION['cart_quantity'] - 1;
-            }
-        }
-
-        return redirect()->back();
-    }
-
-    public function view()
-    {
-        $cartItems = Cartitem::where('user_id', auth()->id())->get();
-        return view('cart', compact('cartItems'));
     }
 }

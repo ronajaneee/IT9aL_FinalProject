@@ -25,9 +25,13 @@
             <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400">
               <i class="fas fa-envelope"></i>
             </span>
-            <input type="email" name="email" class="w-full bg-gray-100 text-gray-900 pl-10 pr-4 py-2.5 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all" placeholder="Enter your email" required>
+            <input type="email" name="email" value="{{ old('email') }}" class="w-full bg-gray-100 text-gray-900 pl-10 pr-4 py-2.5 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all" placeholder="Enter your email" required>
           </div>
+          @error('email')
+            <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+          @enderror
         </div>
+
         <div>
           <label class="block text-sm font-semibold text-gray-700 mb-2">Password</label>
           <div class="relative">
@@ -36,11 +40,28 @@
             </span>
             <input type="password" name="password" class="w-full bg-gray-100 text-gray-900 pl-10 pr-4 py-2.5 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all" placeholder="Enter your password" required>
           </div>
+          @error('password')
+            <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+          @enderror
         </div>
+
         <button type="submit" class="w-full bg-blue-500 hover:bg-blue-600 text-white py-2.5 rounded-xl transition-all font-semibold shadow-lg hover:shadow-xl">
           Sign in
         </button>
       </form>
+
+      <!-- Show Registration Modal Script -->
+      @if($errors->has('show_register'))
+      <script>
+        document.addEventListener('DOMContentLoaded', function() {
+          if(document.getElementById('registerModal')) {
+            loginModal.classList.add('hidden');
+            registerModal.classList.remove('hidden');
+          }
+        });
+      </script>
+      @endif
+
       <div class="mt-6 text-center">
         <p class="text-gray-600">Don't have an account?
         <a href="javascript:void(0);" id="openRegisterModal" class="text-blue-500 hover:text-blue-600 font-semibold transition-colors">Create account</a>

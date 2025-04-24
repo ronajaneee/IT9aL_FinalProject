@@ -87,7 +87,7 @@
                 <i class="fas fa-user text-xl"></i>
             </a>
             <!-- Cart Button opens the cart modal -->
-            <a href="{{ route('cart') }}" class="relative text-gray-600 hover:text-gray-900">
+            <a href="{{ route('cart.view') }}" class="relative text-gray-600 hover:text-gray-900">
                 <i class="fas fa-shopping-cart text-xl"></i>
                 <span class="absolute -top-1 -right-1 h-4 w-4 text-xs bg-blue-500 text-white rounded-full flex items-center justify-center">2</span>
             </a>

@@ -44,7 +44,7 @@
                 <i class="fas fa-user text-xl"></i>
             </a>
             <!-- Cart Button opens the cart modal -->
-            <a href="{{ route('cart') }}" class="relative text-gray-600 hover:text-gray-900">
+            <a href="{{ route('cart.view') }}" class="relative text-gray-600 hover:text-gray-900">
                 <i class="fas fa-shopping-cart text-xl"></i>
                 <span class="absolute -top-1 -right-1 h-4 w-4 text-xs bg-blue-500 text-white rounded-full flex items-center justify-center">2</span>
             </a>
@@ -308,5 +308,31 @@
             </div>
         </div>
     </footer>
+    
+    <!-- Include Login Modal -->
+    @include('auth.login')
+
+    <!-- Modal Toggle Script --> 
+    <script>
+        const openLoginModal = document.getElementById('openLoginModal');
+        const loginModal = document.getElementById('loginModal');
+        const closeLoginModal = document.getElementById('closeLoginModal');
+
+        if (openLoginModal && loginModal && closeLoginModal) {
+            openLoginModal.addEventListener('click', () => {
+                loginModal.classList.remove('hidden');
+            });
+
+            closeLoginModal.addEventListener('click', () => {
+                loginModal.classList.add('hidden');
+            });
+
+            document.addEventListener('click', (e) => {
+                if (e.target === loginModal) {
+                    loginModal.classList.add('hidden');
+                }
+            });
+        }
+    </script>
 </body>
 </html>
