@@ -19,8 +19,6 @@
         <div class="flex items-center">
           <a href="/" class="flex-shrink-0">
           <img class="h-14 w-auto ml-4" src="{{ asset('storage/images/logo.webp') }}" alt="Under The Hood Supply"/>
-
-
           </a>
           <div class="hidden md:ml-8 md:flex md:space-x-8">
             <a href="#" class="text-blue-500 hover:text-blue-600 px-3 py-2 text-sm font-medium">Shop</a>
@@ -33,12 +31,19 @@
         <div class="flex-1 flex items-center justify-center px-6">
           <div class="w-full max-w-lg">
             <label for="search" class="sr-only">Search</label>
-            <div class="relative">
-              <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                <i class="fas fa-search text-gray-400"></i>
-              </div>
-              <input id="search" name="search" type="search" class="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-button bg-white placeholder-gray-500 focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 sm:text-sm" placeholder="Search parts by vehicle, brand, or part number...">
-            </div>
+            <form action="{{ route('products.search') }}" method="GET">
+                <div class="relative">
+                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                        <i class="fas fa-search text-gray-400"></i>
+                    </div>
+                    <input id="search" 
+                           name="search" 
+                           type="search" 
+                           class="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-button bg-white placeholder-gray-500 focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 sm:text-sm" 
+                           placeholder="Search parts by vehicle, brand, or part number..."
+                           value="{{ request('search') }}">
+                </div>
+            </form>
           </div>
         </div>
         <!-- Right Section: Account & Cart Icons -->
@@ -150,9 +155,9 @@
                         <button onclick="document.getElementById('products').scrollIntoView({ behavior: 'smooth' });" class="bg-white text-gray-900 px-8 py-3 !rounded-button hover:bg-gray-100 font-medium">
                             Shop Now
                         </button>
-                        <button class="bg-white text-gray-900 px-8 py-3 !rounded-button hover:bg-gray-100 font-medium">
-                            Find Parts
-                        </button>
+                        <a href="{{ route('product') }}" class="bg-white text-gray-900 px-8 py-3 !rounded-button hover:bg-gray-100 font-medium inline-block">
+                        Find Parts
+                        </a>
                     </div>
                 </div>
             </div>
@@ -341,7 +346,7 @@
             <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
                 <div>
                     <!-- Image here -->
-                    <img class="h-28 w-auto" src="storage/images/logo.png" alt="Under The Hood Supply"/>
+                    <img class="h-14 w-auto ml-4" src="{{ asset('storage/images/logo.webp') }}" alt="Under The Hood Supply"/>
                     <p class="mt-4 text-gray-400 text-sm">Premium automotive parts and accessories for enthusiasts and professionals.</p>
                 </div>
                 <div>

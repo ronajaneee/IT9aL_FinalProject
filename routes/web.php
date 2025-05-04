@@ -9,7 +9,7 @@ use App\Http\Controllers\CartController; // Add this line
 Route::get('/', function () {
     $products = \App\Models\Product::latest()->take(8)->get();
     return view('welcome', compact('products'));
-});
+})->name('welcome'); // Add the route name here
 
 // Route for the login page
 Route::view('/login', 'auth.login')->name('login');
@@ -50,6 +50,7 @@ Route::get('/products/category/{category}', [ProductController::class, 'filterBy
 
 // Product routes
 Route::prefix('products')->group(function () {
+    Route::get('/search', [ProductController::class, 'search'])->name('products.search');
     Route::get('/', [ProductController::class, 'index'])->name('products.index');
     Route::get('/category/{category}', [ProductController::class, 'filterByCategory'])->name('products.category');
     Route::get('/{ProductID}', [ProductController::class, 'show'])->name('products.show');
