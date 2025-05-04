@@ -23,10 +23,10 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 // Cart routes 
 Route::prefix('cart')->group(function () {
     Route::get('/', [CartController::class, 'viewCart'])->name('cart.view');
-    Route::get('/modal', [CartController::class, 'getCartModal'])->name('cart.modal'); // Add this line
-    Route::post('/add', [CartController::class, 'addToCart'])->name('cart.add')->middleware('auth');
+    Route::get('/modal', [CartController::class, 'getCartModal'])->name('cart.modal');
+    Route::post('/add', [CartController::class, 'add'])->name('cart.add')->middleware('auth');
     Route::patch('/update/{id}', [CartController::class, 'updateCart'])->name('cart.update');
-    Route::delete('/remove/{id}', [CartController::class, 'removeCartItem'])->name('cart.remove');
+    Route::delete('/remove/{rowId}', [CartController::class, 'remove'])->name('cart.remove');
 });
 
 // Route for checkout page

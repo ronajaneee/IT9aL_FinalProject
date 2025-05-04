@@ -18,7 +18,9 @@
         <!-- Left Section: Logo & Navigation -->
         <div class="flex items-center">
           <a href="/" class="flex-shrink-0">
-          <img class="h-12 md:h-16 lg:h-20 w-auto" src="{{ asset('storage/images/logo.png') }}" alt="Under The Hood Supply"/>
+          <img class="h-14 w-auto ml-4" src="{{ asset('storage/images/logo.webp') }}" alt="Under The Hood Supply"/>
+
+
           </a>
           <div class="hidden md:ml-8 md:flex md:space-x-8">
             <a href="#" class="text-blue-500 hover:text-blue-600 px-3 py-2 text-sm font-medium">Shop</a>
@@ -49,12 +51,6 @@
                         <i class="fas fa-chevron-down text-xs"></i>
                     </button>
                     <div x-show="open"
-                         x-transition:enter="transition ease-out duration-100"
-                         x-transition:enter-start="transform opacity-0 scale-95"
-                         x-transition:enter-end="transform opacity-100 scale-100"
-                         x-transition:leave="transition ease-in duration-75" 
-                         x-transition:leave-start="transform opacity-100 scale-100"
-                         x-transition:leave-end="transform opacity-0 scale-95"
                          @click.outside="open = false"
                          class="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg py-2">
                         <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">My Account</a>
@@ -72,13 +68,65 @@
                     <i class="fas fa-user text-xl"></i>
                 </a>
             @endauth
-            <!-- Cart link -->
-            <a href="{{ route('cart.view') }}" class="relative text-gray-600 hover:text-gray-900">
-                <i class="fas fa-shopping-cart text-xl"></i>
-                <span class="absolute -top-1 -right-1 h-4 w-4 text-xs bg-blue-500 text-white rounded-full flex items-center justify-center">
-                    {{ \App\Facades\Cart::count() }}
-                </span>
-            </a>
+
+            <!-- Cart dropdown - Moved outside auth check -->
+            <div class="relative" x-data="{ cartOpen: false }">
+                <button @click="cartOpen = !cartOpen" class="relative text-gray-600 hover:text-gray-900">
+                    <i class="fas fa-shopping-cart text-xl"></i>
+                    <span class="absolute -top-1 -right-1 h-4 w-4 text-xs bg-blue-500 text-white rounded-full flex items-center justify-center">
+                        {{ \App\Facades\Cart::count() }}
+                    </span>
+                </button>
+                <div x-show="cartOpen"
+                     x-transition:enter="transition ease-out duration-100"
+                     x-transition:enter-start="transform opacity-0 scale-95"
+                     x-transition:enter-end="transform opacity-100 scale-100"
+                     x-transition:leave="transition ease-in duration-75"
+                     x-transition:leave-start="transform opacity-100 scale-100"
+                     x-transition:leave-end="transform opacity-0 scale-95"
+                     @click.outside="cartOpen = false"
+                     class="absolute right-0 mt-2 w-96 bg-white rounded-lg shadow-lg py-2">
+                    <div class="px-4 py-2 border-b">
+                        <h3 class="text-lg font-medium">Shopping Cart</h3>
+                    </div>
+                    <div class="max-h-96 overflow-y-auto">
+                        @if(\App\Facades\Cart::count() > 0)
+                            @foreach(\App\Facades\Cart::content() as $item)
+                                <div class="flex items-center px-4 py-3 hover:bg-gray-50 border-b">
+                                    <img src="{{ asset('storage/images/' . ($item->options->image ?? 'default.jpg')) }}" 
+                                         alt="{{ $item->name }}" 
+                                         class="h-16 w-16 object-cover rounded">
+                                    <div class="ml-3 flex-1">
+                                        <p class="text-sm font-medium text-gray-900">{{ $item->name }}</p>
+                                        <p class="text-sm text-gray-500">Qty: {{ $item->qty }}</p>
+                                        <p class="text-sm font-medium text-gray-900">₱{{ number_format($item->price, 2) }}</p>
+                                    </div>
+                                    <form action="{{ route('cart.remove', $item->rowId) }}" method="POST">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="text-red-500 hover:text-red-700">
+                                            <i class="fas fa-trash-alt"></i>
+                                        </button>
+                                    </form>
+                                </div>
+                            @endforeach
+                        @else
+                            <div class="px-4 py-3 text-gray-500 text-center">
+                                Your cart is empty
+                            </div>
+                        @endif
+                    </div>
+                    <div class="px-4 py-2 border-t">
+                        <div class="flex justify-between items-center mb-4">
+                            <span class="text-lg font-medium">Total:</span>
+                            <span class="text-lg font-bold">₱{{ number_format(\App\Facades\Cart::total(), 2) }}</span>
+                        </div>
+                        <a href="{{ route('cart.view') }}" class="block w-full bg-blue-500 text-white text-center px-4 py-2 rounded-button hover:bg-blue-600">
+                            View Cart
+                        </a>
+                    </div>
+                </div>
+            </div>
         </div>
       </div>
     </nav>
@@ -192,8 +240,13 @@
             </div>
             <form action="{{ route('cart.add') }}" method="POST" class="absolute bottom-4 right-4">
                 @csrf
-                <input type="hidden" name="product_id" value="{{ $product->id }}">
-                <button type="submit" class="bg-purple-600 hover:bg-purple-700 text-white p-2 rounded-full shadow">
+                <input type="hidden" name="product_id" value="{{ $product->ProductID }}">
+                <input type="hidden" name="quantity" value="1">
+                <button type="submit" 
+                        class="bg-purple-600 hover:bg-purple-700 text-white p-2 rounded-full shadow"
+                        onclick="event.preventDefault(); 
+                                 this.closest('form').submit();
+                                 document.querySelector('[x-data]').__x.$data.cartOpen = true;">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
                         stroke="currentColor" stroke-width="2">
                         <path stroke-linecap="round" stroke-linejoin="round"
@@ -357,9 +410,6 @@
                 registerModal.classList.add('hidden');
             }
         @endif
-
-        // Rest of the script remains unchanged
-        // ...existing code...
     </script>
 </body>
 </html>

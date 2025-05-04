@@ -121,12 +121,63 @@
                 </a>
             @endauth
             <!-- Cart link -->
-            <a href="{{ route('cart.view') }}" class="relative text-gray-600 hover:text-gray-900">
-                <i class="fas fa-shopping-cart text-xl"></i>
-                <span class="absolute -top-1 -right-1 h-4 w-4 text-xs bg-blue-500 text-white rounded-full flex items-center justify-center">
-                    {{ \App\Facades\Cart::count() }}
-                </span>
-            </a>
+            <div class="relative" x-data="{ cartOpen: false }">
+                <button @click="cartOpen = !cartOpen" class="relative text-gray-600 hover:text-gray-900">
+                    <i class="fas fa-shopping-cart text-xl"></i>
+                    <span class="absolute -top-1 -right-1 h-4 w-4 text-xs bg-blue-500 text-white rounded-full flex items-center justify-center">
+                        {{ \App\Facades\Cart::count() }}
+                    </span>
+                </button>
+                <div x-show="cartOpen"
+                     x-transition:enter="transition ease-out duration-100"
+                     x-transition:enter-start="transform opacity-0 scale-95"
+                     x-transition:enter-end="transform opacity-100 scale-100"
+                     x-transition:leave="transition ease-in duration-75"
+                     x-transition:leave-start="transform opacity-100 scale-100"
+                     x-transition:leave-end="transform opacity-0 scale-95"
+                     @click.outside="cartOpen = false"
+                     class="absolute right-0 mt-2 w-96 bg-white rounded-lg shadow-lg py-2">
+                    <div class="px-4 py-2 border-b">
+                        <h3 class="text-lg font-medium">Shopping Cart</h3>
+                    </div>
+                    <div class="max-h-96 overflow-y-auto">
+                        @if(\App\Facades\Cart::count() > 0)
+                            @foreach(\App\Facades\Cart::content() as $item)
+                                <div class="flex items-center px-4 py-3 hover:bg-gray-50 border-b">
+                                    <img src="{{ asset('storage/images/' . ($item->options->image ?? 'default.jpg')) }}" 
+                                         alt="{{ $item->name }}" 
+                                         class="h-16 w-16 object-cover rounded">
+                                    <div class="ml-3 flex-1">
+                                        <p class="text-sm font-medium text-gray-900">{{ $item->name }}</p>
+                                        <p class="text-sm text-gray-500">Qty: {{ $item->qty }}</p>
+                                        <p class="text-sm font-medium text-gray-900">₱{{ number_format($item->price, 2) }}</p>
+                                    </div>
+                                    <form action="{{ route('cart.remove', $item->rowId) }}" method="POST">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="text-red-500 hover:text-red-700">
+                                            <i class="fas fa-trash-alt"></i>
+                                        </button>
+                                    </form>
+                                </div>
+                            @endforeach
+                        @else
+                            <div class="px-4 py-3 text-gray-500 text-center">
+                                Your cart is empty
+                            </div>
+                        @endif
+                    </div>
+                    <div class="px-4 py-2 border-t">
+                        <div class="flex justify-between items-center mb-4">
+                            <span class="text-lg font-medium">Total:</span>
+                            <span class="text-lg font-bold">₱{{ number_format(\App\Facades\Cart::total(), 2) }}</span>
+                        </div>
+                        <a href="{{ route('cart.view') }}" class="block w-full bg-blue-500 text-white text-center px-4 py-2 rounded-button hover:bg-blue-600">
+                            View Cart
+                        </a>
+                    </div>
+                </div>
+            </div>
         </div>
       </div>
     </nav>
