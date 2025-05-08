@@ -126,9 +126,24 @@
                             <span class="text-lg font-medium">Total:</span>
                             <span class="text-lg font-bold">₱{{ number_format(\App\Facades\Cart::total(), 2) }}</span>
                         </div>
-                        <a href="{{ route('cart.view') }}" class="block w-full bg-blue-500 text-white text-center px-4 py-2 rounded-button hover:bg-blue-600">
-                            View Cart
-                        </a>
+                        
+                        <div class="space-y-2">
+                            <a href="{{ route('cart.view') }}" class="block w-full bg-blue-500 text-white text-center px-4 py-2 rounded-button hover:bg-blue-600">
+                                View Cart
+                            </a>
+                            @if(!\App\Facades\Cart::count() > 0)
+                                <p class="text-sm text-gray-500 text-center">Your cart is empty</p>
+                            @elseif(!Auth::check())
+                                <p class="text-sm text-gray-500 text-center">You'll need to 
+                                    <button type="button" 
+                                            class="text-blue-500 hover:text-blue-700 openLoginModal"
+                                            data-return-url="{{ route('checkout.view') }}">
+                                        login
+                                    </button> 
+                                    to checkout
+                                </p>
+                            @endif
+                        </div>
                     </div>
                 </div>
             </div>
@@ -403,10 +418,26 @@
 
     <!-- Modal Toggle Script --> 
     <script>
-        const openLoginModal = document.getElementById('openLoginModal');
+        // Get all elements with openLoginModal class
+        const openLoginButtons = document.querySelectorAll('.openLoginModal, #openLoginModal');
         const loginModal = document.getElementById('loginModal');
         const closeLoginModal = document.getElementById('closeLoginModal');
         const registerModal = document.getElementById('registerModal');
+        const loginForm = document.getElementById('login-form');
+
+        // Add click event listener to all login buttons
+        openLoginButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                loginModal.classList.remove('hidden');
+            });
+        });
+
+        // Close modal when clicking close button
+        if (closeLoginModal) {
+            closeLoginModal.addEventListener('click', () => {
+                loginModal.classList.add('hidden');
+            });
+        }
 
         // Check for login errors and show modal if needed
         @if($errors->has('keepModalOpen') || session('openLogin'))

@@ -18,7 +18,7 @@ class AuthController extends Controller
 
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
-            return redirect()->intended('/')->with('success', 'Welcome back!');
+            return $this->authenticated($request, Auth::user());
         }
 
         return back()
@@ -57,5 +57,13 @@ class AuthController extends Controller
         $request->session()->invalidate();
         $request->session()->regenerateToken();
         return redirect('/');
+    }
+
+    protected function authenticated(Request $request, $user)
+    {
+        if ($request->has('intended')) {
+            return redirect($request->input('intended'));
+        }
+        return redirect()->intended('/');
     }
 }

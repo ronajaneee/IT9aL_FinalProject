@@ -5,21 +5,21 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Cartitem;
 use Illuminate\Support\Facades\Auth;
+use App\Facades\Cart;
 
 class CheckoutController extends Controller
 {
     public function view()
     {
-        $cartItems = Cartitem::with('product')
-            ->where('user_id', Auth::id())
-            ->get();
+        // Redirect to login if user is not authenticated
+        if (!Auth::check()) {
+            return redirect()->route('login')->with('message', 'Please login or register to complete your purchase');
+        }
 
-        $subtotal = $cartItems->sum(function($item) {
-            return $item->getSubtotal();
-        });
-
-        $shipping = 150.00; // Fixed shipping rate
-        $total = $subtotal + $shipping;
+        $cartItems = Cart::content();
+        $subtotal = Cart::subtotal();
+        $shipping = 150.00;
+        $total = Cart::total() + $shipping;
 
         return view('checkout', compact('cartItems', 'subtotal', 'shipping', 'total'));
     }

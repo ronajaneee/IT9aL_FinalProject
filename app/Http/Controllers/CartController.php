@@ -12,64 +12,43 @@ class CartController extends Controller
 {
     public function viewCart()
     {
-        $cartItems = Cartitem::with('product')
-            ->where('user_id', Auth::id())
-            ->active()
-            ->get();
-
-        $total = $cartItems->sum(function($item) {
-            return $item->getSubtotal();
+        $cartItems = Cart::content()->map(function($item) {
+            $product = Product::find($item->id);
+            $item->product = $product;
+            return $item;
         });
 
-        return view('cartview', compact('cartItems', 'total'));
+        return view('cartview', [
+            'cartItems' => $cartItems,
+            'total' => Cart::total()
+        ]);
     }
 
     public function getCartModal()
     {
-        $cartItems = Cartitem::with('product')
-            ->where('user_id', Auth::id())
-            ->active()
-            ->get();
-
-        $total = $cartItems->sum(function($item) {
-            return $item->getSubtotal();
-        });
-
-        return view('cart', compact('cartItems', 'total'));
+        return view('cart', [
+            'cartItems' => Cart::content(),
+            'total' => Cart::total()
+        ]);
     }
 
     public function addToCart(Request $request)
     {
-        if (!Auth::check()) {
-            return redirect()->route('login')->with('error', 'Please login to add items to cart');
-        }
-
         $request->validate([
             'product_id' => 'required|exists:products,ProductID'
         ]);
 
-        $productId = $request->input('product_id');
-        $product = Product::findOrFail($productId);
+        $product = Product::findOrFail($request->product_id);
         
-        $cartItem = Cartitem::firstOrNew([
-            'user_id' => Auth::id(),
-            'ProductID' => $productId
-        ]);
+        Cart::add(
+            $product->ProductID,
+            $product->ProductName,
+            1,
+            $product->Price,
+            ['image' => $product->Image]
+        );
 
-        if (!$cartItem->exists) {
-            $cartItem->Quantity = 1;
-            $cartItem->UnitPrice = $product->Price;
-            $cartItem->save();
-        } else {
-            // Check if we have enough stock before incrementing
-            if ($cartItem->Quantity < $product->Quantity) {
-                $cartItem->increment('Quantity');
-            } else {
-                return redirect()->back()->with('error', 'Not enough stock available');
-            }
-        }
-
-        return redirect()->back()->with('success', 'Product added to cart!');
+        return redirect()->back()->with('success', 'Product added to cart');
     }
 
     public function updateCart(Request $request, $id)
@@ -95,7 +74,12 @@ class CartController extends Controller
 
     public function add(Request $request)
     {
+        $request->validate([
+            'product_id' => 'required|exists:products,ProductID'
+        ]);
+
         $product = Product::findOrFail($request->product_id);
+        
         Cart::add(
             $product->ProductID,
             $product->ProductName,
@@ -103,7 +87,7 @@ class CartController extends Controller
             $product->Price,
             ['image' => $product->Image]
         );
-        
+
         return back()->with('success', 'Product added to cart');
     }
 

@@ -1,4 +1,11 @@
 <!DOCTYPE html>
+@php
+    if (!Auth::check()) {
+        return redirect()->route('welcome')
+            ->with('openLoginModal', true)
+            ->with('intended', url()->current());
+    }
+@endphp
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -130,19 +137,19 @@
                     @foreach($cartItems as $item)
                     <div class="flex items-start">
                         <div class="w-16 h-16 flex-shrink-0 bg-gray-100 rounded overflow-hidden mr-4">
-                            <img src="{{ asset('storage/' . $item->product->Image) }}" 
-                                 alt="{{ $item->product->ProductName }}" 
+                            <img src="{{ asset('storage/images/' . ($item->options['image'] ?? 'default.jpg')) }}" 
+                                 alt="{{ $item->name }}" 
                                  class="w-full h-full object-cover">
                         </div>
                         <div class="flex-1">
-                            <div class="flex justify-between">
+                            <div class="flex justify-between items-center">
                                 <div>
-                                    <h3 class="font-medium">{{ $item->product->ProductName }}</h3>
-                                    <p class="text-sm text-gray-500">Qty: {{ $item->Quantity }}</p>
+                                    <h3 class="font-medium">{{ $item->name }}</h3>
+                                    <p class="text-sm text-gray-500">Qty: {{ $item->qty }}</p>
                                 </div>
-                                <span class="ml-4">{{ $item->Quantity }}</span>
+                                <span class="ml-4">{{ $item->qty }}</span>
                             </div>
-                            <p class="font-medium mt-1">₱{{ number_format($item->getSubtotal(), 2) }}</p>
+                            <p class="font-medium mt-1">₱{{ number_format($item->qty * $item->price, 2) }}</p>
                         </div>
                     </div>
                     @endforeach
@@ -183,12 +190,6 @@
                 // Set the clicked radio indicator
                 const indicator = this.querySelector('div > div');
                 indicator.classList.remove('bg-white');
-                indicator.classList.add('bg-primary');
-                // Set the radio input as checked
-                this.querySelector('input[type="radio"]').checked = true;
-            });
-        });
-    });
 </script>
 </body>
 </html>

@@ -15,26 +15,34 @@ class CartService
         $this->session = $session;
     }
 
-    public function add($productId, $name, $qty, $price, $options = [])
+    public function add($id, $name, $quantity = 1, $price = 0.0, $options = [])
     {
-        $cartItem = new stdClass();
-        $cartItem->id = $productId;
-        $cartItem->name = $name;
-        $cartItem->qty = $qty;
-        $cartItem->price = $price;
-        $cartItem->options = (object)$options;
-        $cartItem->rowId = $this->generateRowId($productId, $options);
+        $cartItem = [
+            'id' => $id,
+            'name' => $name,
+            'qty' => $quantity,
+            'price' => $price,
+            'options' => $options,
+            'rowId' => $this->generateRowId($id, $options)
+        ];
 
         $content = $this->getContent();
-        $content[$cartItem->rowId] = $cartItem;
         
+        // Check if item already exists in cart
+        if (isset($content[$cartItem['rowId']])) {
+            $cartItem['qty'] += $content[$cartItem['rowId']]['qty'];
+        }
+        
+        $content[$cartItem['rowId']] = $cartItem;
         $this->session->put($this->instance, $content);
+
+        return $cartItem;
     }
 
     public function content()
     {
         return collect($this->getContent())->map(function ($item) {
-            return (object)$item;
+            return (object) $item;
         });
     }
 
@@ -53,8 +61,32 @@ class CartService
     public function total()
     {
         return $this->content()->sum(function ($item) {
-            return $item->qty * $item->price;
+            return $item->qty * $item->price;  // Using qty instead of Quantity
         });
+    }
+
+    public function subtotal()
+    {
+        return $this->content()->sum(function ($item) {
+            return $item->qty * $item->price;  // Using qty instead of Quantity
+        });
+    }
+
+    public function update($rowId, $action)
+    {
+        $content = $this->getContent();
+        
+        if (isset($content[$rowId])) {
+            if ($action === 'increment') {
+                $content[$rowId]['qty']++;
+            } elseif ($action === 'decrement' && $content[$rowId]['qty'] > 1) {
+                $content[$rowId]['qty']--;
+            }
+            
+            $this->session->put($this->instance, $content);
+        }
+        
+        return isset($content[$rowId]) ? (object)$content[$rowId] : null;
     }
 
     protected function getContent()

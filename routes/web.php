@@ -21,17 +21,20 @@ Route::post('/login', [AuthController::class, 'login'])->name('login');
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
 // Cart routes 
-Route::prefix('cart')->group(function () {
+Route::group(['prefix' => 'cart'], function () {
     Route::get('/', [CartController::class, 'viewCart'])->name('cart.view');
     Route::get('/modal', [CartController::class, 'getCartModal'])->name('cart.modal');
-    Route::post('/add', [CartController::class, 'add'])->name('cart.add')->middleware('auth');
+    Route::post('/add', [CartController::class, 'add'])->name('cart.add'); // Removed auth middleware
     Route::patch('/update/{id}', [CartController::class, 'updateCart'])->name('cart.update');
     Route::delete('/remove/{rowId}', [CartController::class, 'remove'])->name('cart.remove');
+    Route::get('/checkout', [CheckoutController::class, 'view'])->name('checkout.view'); // Use this route name instead
 });
 
-// Route for checkout page
-Route::get('/checkout', [CheckoutController::class, 'view'])->name('checkout.view');
-Route::post('/checkout/process', [CheckoutController::class, 'process'])->name('checkout.process');
+// Add auth middleware only to checkout routes
+Route::middleware(['auth'])->group(function () {
+    Route::get('/checkout', [CheckoutController::class, 'view'])->name('checkout.view');
+    Route::post('/checkout/process', [CheckoutController::class, 'process'])->name('checkout.process');
+});
 
 // Route to handle product form submission
 Route::post('/product/{ProductID}/update', [ProductController::class, 'update'])->name('products.update');

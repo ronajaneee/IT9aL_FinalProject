@@ -16,26 +16,26 @@
                 <h1 class="text-2xl font-bold mb-8">Shopping Cart</h1>
                 @if(isset($cartItems) && $cartItems->count() > 0)
                     <div class="divide-y divide-gray-200">
-                        @foreach($cartItems as $cartItem)
+                        @foreach($cartItems as $item)
                             <div class="py-6 flex items-center">
-                                <img src="{{ $cartItem->product->getImageUrl() }}" 
-                                     alt="{{ $cartItem->product->ProductName }}" 
+                                <img src="{{ asset('storage/images/' . ($item->options->image ?? 'default.jpg')) }}" 
+                                     alt="{{ $item->name }}" 
                                      class="w-24 h-24 object-cover rounded"/>
                                 <div class="ml-6 flex-1">
-                                    <h3 class="text-lg font-medium">{{ $cartItem->product->ProductName }}</h3>
-                                    <p class="text-gray-500">{{ $cartItem->product->getFormattedPrice() }}</p>
+                                    <h3 class="text-lg font-medium">{{ $item->name }}</h3>
+                                    <p class="text-gray-500">₱{{ number_format($item->price, 2) }}</p>
                                     <div class="flex items-center mt-4">
-                                        <form method="POST" action="{{ route('cart.update', $cartItem->CartitemID) }}" 
+                                        <form method="POST" action="{{ route('cart.update', $item->rowId) }}" 
                                               class="flex items-center border rounded">
                                             @csrf
                                             @method('PATCH')
                                             <button type="submit" name="action" value="decrement" 
                                                     class="px-4 py-2 hover:bg-gray-100">-</button>
-                                            <span class="px-4 py-2 border-x">{{ $cartItem->Quantity }}</span>
+                                            <span class="px-4 py-2 border-x">{{ $item->qty }}</span>
                                             <button type="submit" name="action" value="increment" 
                                                     class="px-4 py-2 hover:bg-gray-100">+</button>
                                         </form>
-                                        <form method="POST" action="{{ route('cart.remove', $cartItem->CartitemID) }}" class="ml-4">
+                                        <form method="POST" action="{{ route('cart.remove', $item->rowId) }}" class="ml-4">
                                             @csrf
                                             @method('DELETE')
                                             <button type="submit" class="text-red-500 hover:text-red-700">
@@ -45,7 +45,7 @@
                                     </div>
                                 </div>
                                 <div class="ml-6">
-                                    <p class="text-lg font-medium">₱{{ number_format($cartItem->Quantity * $cartItem->product->Price, 2) }}</p>
+                                    <p class="text-lg font-medium">₱{{ number_format($item->qty * $item->price, 2) }}</p>
                                 </div>
                             </div>
                         @endforeach
