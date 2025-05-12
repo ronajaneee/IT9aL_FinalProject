@@ -11,6 +11,28 @@ class ProductController extends Controller
     {
         $query = Product::query();
 
+        // Apply sorting
+        switch ($request->get('sort')) {
+            case 'price_asc':
+                $query->orderBy('Price', 'asc');
+                break;
+            case 'price_desc':
+                $query->orderBy('Price', 'desc');
+                break;
+            case 'newest':
+                $query->orderBy('created_at', 'desc');
+                break;
+            case 'best_selling':
+                // Default to ProductID if sales_count doesn't exist
+                $query->orderBy('ProductID', 'desc');
+                break;
+            case 'featured':
+            default:
+                // Default sorting by ProductID
+                $query->orderBy('ProductID', 'desc');
+                break;
+        }
+
         // Category filter
         if ($request->has('category')) {
             $category = str_replace('-', ' ', $request->category);
@@ -34,7 +56,7 @@ class ProductController extends Controller
             $query->where('Price', '<=', $request->max_price);
         }
 
-        $products = $query->paginate(12);
+        $products = $query->paginate(12)->withQueryString();
         return view('products.product', compact('products'));
     }
 

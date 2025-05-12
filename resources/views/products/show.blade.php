@@ -52,15 +52,17 @@
           -moz-appearance: textfield;
       }
     </style>
+    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
   </head>
-  <body class="bg-gray-50 min-h-screen">
+  <body class="bg-gray-100">
+      <!-- Header Section -->
   <header class="fixed w-full top-0 z-50 bg-white shadow-sm">
     <nav class="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="flex justify-between h-16">
         <!-- Left Section: Logo & Navigation -->
         <div class="flex items-center">
-          <a href="/" class="flex-shrink-0">
-          <img class="h-12 md:h-16 lg:h-20 w-auto" src="{{ asset('storage/images/logo.png') }}" alt="Under The Hood Supply"/>
+          <a href="" class="flex-shrink-0">
+          <img class="h-14 w-auto ml-4" src="{{ asset('storage/images/logo.webp') }}" alt="Under The Hood Supply"/>
           </a>
           <div class="hidden md:ml-8 md:flex md:space-x-8">
             <a href="#" class="text-blue-500 hover:text-blue-600 px-3 py-2 text-sm font-medium">Shop</a>
@@ -77,26 +79,127 @@
               <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                 <i class="fas fa-search text-gray-400"></i>
               </div>
-              <input id="search" name="search" type="search" class="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-button bg-white placeholder-gray-500 focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 sm:text-sm" placeholder="Search parts by vehicle, brand, or part number...">
+              <form action="{{ route('products.search') }}" method="GET">
+                <div class="relative">
+                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                        <i class="fas fa-search text-gray-400"></i>
+                    </div>
+                    <input id="search" 
+                           name="search" 
+                           type="search" 
+                           class="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-button bg-white placeholder-gray-500 focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 sm:text-sm" 
+                           placeholder="Search parts by vehicle, brand, or part number..."
+                           value="{{ request('search') }}">
+                </div>
+              </form>
             </div>
           </div>
         </div>
-        <!-- Right Section: Account & Cart Icons -->
-        <div class="flex items-center space-x-6">
-            <a id="openLoginModal" href="javascript:void(0);" class="text-gray-600 hover:text-gray-900">
-                <i class="fas fa-user text-xl"></i>
-            </a>
-            <!-- Cart Button links directly to cart -->
-<a href="{{ route('cart.view') }}" class="relative text-gray-600 hover:text-gray-900">
-    <i class="fas fa-shopping-cart text-xl"></i>
-    <span class="absolute -top-1 -right-1 h-4 w-4 text-xs bg-blue-500 text-white rounded-full flex items-center justify-center">2</span>
-</a>
+       <!-- Right Section: Account & Cart Icons -->
+       <div class="flex items-center space-x-6">
+            @auth
+                <div class="relative" x-data="{ open: false }">
+                    <button @click="open = !open" class="flex items-center space-x-1 text-gray-600 hover:text-gray-900">
+                        <i class="fas fa-user text-xl"></i>
+                        <span class="text-sm font-medium">{{ Auth::user()->first_name }}</span>
+                        <i class="fas fa-chevron-down text-xs"></i>
+                    </button>
+                    <div x-show="open"
+                         x-transition:enter="transition ease-out duration-100"
+                         x-transition:enter-start="transform opacity-0 scale-95"
+                         x-transition:enter-end="transform opacity-100 scale-100"
+                         x-transition:leave="transition ease-in duration-75" 
+                         x-transition:leave-start="transform opacity-100 scale-100"
+                         x-transition:leave-end="transform opacity-0 scale-95"
+                         @click.outside="open = false"
+                         class="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg py-2">
+                        <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">My Account</a>
+                        <a href="{{ route('cart.view') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Orders</a>
+                        <form method="POST" action="{{ route('logout') }}" class="block">
+                            @csrf
+                            <button type="submit" class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                Logout
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            @else
+                <a id="openLoginModal" href="javascript:void(0);" class="text-gray-600 hover:text-gray-900">
+                    <i class="fas fa-user text-xl"></i>
+                </a>
+            @endauth
+            <!-- Cart link -->
+            <div class="relative" x-data="{ cartOpen: false }">
+                <button @click="cartOpen = !cartOpen" class="relative text-gray-600 hover:text-gray-900">
+                    <i class="fas fa-shopping-cart text-xl"></i>
+                    <span class="absolute -top-1 -right-1 h-4 w-4 text-xs bg-blue-500 text-white rounded-full flex items-center justify-center">
+                        {{ \App\Facades\Cart::count() }}
+                    </span>
+                </button>
+                <div x-show="cartOpen"
+                     x-transition:enter="transition ease-out duration-100"
+                     x-transition:enter-start="transform opacity-0 scale-95"
+                     x-transition:enter-end="transform opacity-100 scale-100"
+                     x-transition:leave="transition ease-in duration-75"
+                     x-transition:leave-start="transform opacity-100 scale-100"
+                     x-transition:leave-end="transform opacity-0 scale-95"
+                     @click.outside="cartOpen = false"
+                     class="absolute right-0 mt-2 w-96 bg-white rounded-lg shadow-lg py-2">
+                    <div class="px-4 py-2 border-b">
+                        <h3 class="text-lg font-medium">Shopping Cart</h3>
+                    </div>
+                    <div class="max-h-96 overflow-y-auto">
+                        @if(\App\Facades\Cart::count() > 0)
+                            @foreach(\App\Facades\Cart::content() as $item)
+                                <div class="flex items-center px-4 py-3 hover:bg-gray-50 border-b">
+                                    <img src="{{ asset('storage/images/' . ($item->options->image ?? 'default.jpg')) }}" 
+                                         alt="{{ $item->name }}" 
+                                         class="h-16 w-16 object-cover rounded">
+                                    <div class="ml-3 flex-1">
+                                        <p class="text-sm font-medium text-gray-900">{{ $item->name }}</p>
+                                        <p class="text-sm text-gray-500">Qty: {{ $item->qty }}</p>
+                                        <p class="text-sm font-medium text-gray-900">₱{{ number_format($item->price, 2) }}</p>
+                                    </div>
+                                    <form action="{{ route('cart.remove', $item->rowId) }}" method="POST">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="text-red-500 hover:text-red-700">
+                                            <i class="fas fa-trash-alt"></i>
+                                        </button>
+                                    </form>
+                                </div>
+                            @endforeach
+                        @else
+                            <div class="px-4 py-3 text-gray-500 text-center">
+                                Your cart is empty
+                            </div>
+                        @endif
+                    </div>
+                    <div class="px-4 py-2 border-t">
+                        <div class="flex justify-between items-center mb-4">
+                            <span class="text-lg font-medium">Total:</span>
+                            <span class="text-lg font-bold">₱{{ number_format(\App\Facades\Cart::total(), 2) }}</span>
+                        </div>
+                        <a href="{{ route('cart.view') }}" class="block w-full bg-blue-500 text-white text-center px-4 py-2 rounded-button hover:bg-blue-600">
+                            View Cart
+                        </a>
+                    </div>
+                </div>
+            </div>
         </div>
       </div>
     </nav>
   </header>
 
   <main class="container mx-auto px-4 py-24">
+      <!-- Add back button -->
+      <div class="mb-6">
+          <a href="{{ route('welcome') }}" class="inline-flex items-center text-gray-600 hover:text-gray-900">
+              <i class="fas fa-arrow-left mr-2"></i>
+              Back to Home
+          </a>
+      </div>
+      
       <div class="flex flex-col lg:flex-row gap-8">
         <!-- Product Images -->
         <div class="lg:w-1/2">
@@ -276,21 +379,29 @@
             });
             </script>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <button
-                onclick="window.location.href='{{ route('checkout.view') }}'"
-                  class="text-white py-3 px-6 rounded-lg flex items-center justify-center whitespace-nowrap transition-colors w-full hover:opacity-90"
-                    style="background-color: #4F46E5;">
-                    <i class="ri-flash-line mr-2"></i>
-                       Add to Cart
+              <form action="{{ route('cart.add') }}" method="POST">
+                @csrf
+                <input type="hidden" name="product_id" value="{{ $product->ProductID }}">
+                <input type="hidden" name="quantity" id="cart-quantity" value="1">
+                <button type="submit"
+                        class="text-white py-3 px-6 rounded-lg flex items-center justify-center whitespace-nowrap transition-colors w-full hover:opacity-90"
+                        style="background-color: #4F46E5;"
+                        onclick="event.preventDefault(); 
+                                document.getElementById('cart-quantity').value = document.getElementById('quantity').value;
+                                this.closest('form').submit();
+                                document.querySelector('[x-data]').__x.$data.cartOpen = true;">
+                    <i class="ri-shopping-cart-line mr-2"></i>
+                    Add to Cart
                 </button>
-            <button
+              </form>
+              <button
                 onclick="window.location.href='{{ route('checkout.view') }}'"
-                  class="text-white py-3 px-6 rounded-lg flex items-center justify-center whitespace-nowrap transition-colors w-full hover:opacity-90"
-                    style="background-color: #4F46E5;">
-                    <i class="ri-flash-line mr-2"></i>
-                       Buy Now
-                </button>
-          </div>
+                class="text-white py-3 px-6 rounded-lg flex items-center justify-center whitespace-nowrap transition-colors w-full hover:opacity-90"
+                style="background-color: #4F46E5;">
+                <i class="ri-flash-line mr-2"></i>
+                Buy Now
+              </button>
+            </div>
              <div class="mt-6 flex items-center space-x-4">
           </div>
         </div>

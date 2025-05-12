@@ -300,7 +300,7 @@
                         
                         <div class="relative" x-data="{ open: false }">
                             <button @click="open = !open" class="flex items-center space-x-2 px-4 py-2 border border-gray-200 rounded-button whitespace-nowrap">
-                                <span>Sort by: Featured</span>
+                                <span>Sort by: {{ ucfirst(request('sort', 'Featured')) }}</span>
                                 <i class="ri-arrow-down-s-line"></i>
                             </button>
                             <div x-show="open"
@@ -313,11 +313,16 @@
                                  @click.outside="open = false"
                                  class="absolute top-full left-0 mt-1 bg-white border border-gray-200 rounded shadow-lg w-48 z-10">
                                 <div class="py-1">
-                                    <a href="#" class="block px-4 py-2 text-sm text-gray-800 hover:bg-gray-100">Featured</a>
-                                    <a href="#" class="block px-4 py-2 text-sm text-gray-800 hover:bg-gray-100">Price: Low to High</a>
-                                    <a href="#" class="block px-4 py-2 text-sm text-gray-800 hover:bg-gray-100">Price: High to Low</a>
-                                    <a href="#" class="block px-4 py-2 text-sm text-gray-800 hover:bg-gray-100">Newest</a>
-                                    <a href="#" class="block px-4 py-2 text-sm text-gray-800 hover:bg-gray-100">Best Selling</a>
+                                    <a href="{{ request()->fullUrlWithQuery(['sort' => 'featured']) }}" 
+                                       class="block px-4 py-2 text-sm text-gray-800 hover:bg-gray-100 {{ request('sort') == 'featured' ? 'bg-gray-100' : '' }}">Featured</a>
+                                    <a href="{{ request()->fullUrlWithQuery(['sort' => 'price_asc']) }}" 
+                                       class="block px-4 py-2 text-sm text-gray-800 hover:bg-gray-100 {{ request('sort') == 'price_asc' ? 'bg-gray-100' : '' }}">Price: Low to High</a>
+                                    <a href="{{ request()->fullUrlWithQuery(['sort' => 'price_desc']) }}" 
+                                       class="block px-4 py-2 text-sm text-gray-800 hover:bg-gray-100 {{ request('sort') == 'price_desc' ? 'bg-gray-100' : '' }}">Price: High to Low</a>
+                                    <a href="{{ request()->fullUrlWithQuery(['sort' => 'newest']) }}" 
+                                       class="block px-4 py-2 text-sm text-gray-800 hover:bg-gray-100 {{ request('sort') == 'newest' ? 'bg-gray-100' : '' }}">Newest</a>
+                                    <a href="{{ request()->fullUrlWithQuery(['sort' => 'best_selling']) }}" 
+                                       class="block px-4 py-2 text-sm text-gray-800 hover:bg-gray-100 {{ request('sort') == 'best_selling' ? 'bg-gray-100' : '' }}">Best Selling</a>
                                 </div>
                             </div>
                         </div>
