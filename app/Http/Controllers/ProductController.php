@@ -7,9 +7,34 @@ use Illuminate\Http\Request;
 
 class ProductController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $products = Product::paginate(12);
+        $query = Product::query();
+
+        // Category filter
+        if ($request->has('category')) {
+            $category = str_replace('-', ' ', $request->category);
+            $query->where('Category', 'like', '%' . $category . '%');
+        }
+
+        // Manufacturer filter
+        if ($request->has('manufacturers')) {
+            $query->where(function($q) use ($request) {
+                foreach($request->manufacturers as $manufacturer) {
+                    $q->orWhere('Manufacturer', 'like', '%' . $manufacturer . '%');
+                }
+            });
+        }
+
+        // Price range filter
+        if ($request->has('min_price') && is_numeric($request->min_price)) {
+            $query->where('Price', '>=', $request->min_price);
+        }
+        if ($request->has('max_price') && is_numeric($request->max_price)) {
+            $query->where('Price', '<=', $request->max_price);
+        }
+
+        $products = $query->paginate(12);
         return view('products.product', compact('products'));
     }
 

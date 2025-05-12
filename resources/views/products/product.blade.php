@@ -210,163 +210,81 @@
                 <div class="bg-white p-6 rounded shadow-sm">
                     <h2 class="text-xl font-bold mb-6">Filter</h2>
                     
-                    <div class="mb-6">
-                        <h3 class="font-semibold mb-3">Categories</h3>
-                        <div class="space-y-2">
-                            <label class="flex items-center cursor-pointer">
-                                <div class="w-5 h-5 flex items-center justify-center mr-3 relative">
-                                    <input type="radio" name="category" value="engine-parts" class="opacity-0 absolute w-full h-full cursor-pointer z-10" onchange="handleFilterChange(this)">
-                                    <div class="w-5 h-5 border border-gray-300 rounded-full"></div>
-                                    <div class="w-3 h-3 bg-primary rounded-full absolute opacity-0 transform scale-0 transition-all"></div>
-                                </div>
-                                <span>Engine Parts</span>
-                            </label>
-                            <label class="flex items-center cursor-pointer">
-                                <div class="w-5 h-5 flex items-center justify-center mr-3 relative">
-                                    <input type="radio" name="category" value="brake-systems" class="opacity-0 absolute w-full h-full cursor-pointer z-10" onchange="handleFilterChange(this)">
-                                    <div class="w-5 h-5 border border-gray-300 rounded-full"></div>
-                                    <div class="w-3 h-3 bg-primary rounded-full absolute opacity-0 transform scale-0 transition-all"></div>
-                                </div>
-                                <span>Brake Systems</span>
-                            </label>
-                            <label class="flex items-center cursor-pointer">
-                                <div class="w-5 h-5 flex items-center justify-center mr-3 relative">
-                                    <input type="radio" name="category" value="transmission" class="opacity-0 absolute w-full h-full cursor-pointer z-10" onchange="handleFilterChange(this)">
-                                    <div class="w-5 h-5 border border-gray-300 rounded-full"></div>
-                                    <div class="w-3 h-3 bg-primary rounded-full absolute opacity-0 transform scale-0 transition-all"></div>
-                                </div>
-                                <span>Transmission</span>
-                            </label>
-                            <label class="flex items-center cursor-pointer">
-                                <div class="w-5 h-5 flex items-center justify-center mr-3 relative">
-                                    <input type="radio" name="category" value="suspension" class="opacity-0 absolute w-full h-full cursor-pointer z-10" onchange="handleFilterChange(this)">
-                                    <div class="w-5 h-5 border border-gray-300 rounded-full"></div>
-                                    <div class="w-3 h-3 bg-primary rounded-full absolute opacity-0 transform scale-0 transition-all"></div>
-                                </div>
-                                <span>Suspension</span>
-                            </label>
-                            <label class="flex items-center cursor-pointer">
-                                <div class="w-5 h-5 flex items-center justify-center mr-3 relative">
-                                    <input type="radio" name="category" value="wheel-rim" class="opacity-0 absolute w-full h-full cursor-pointer z-10" onchange="handleFilterChange(this)">
-                                    <div class="w-5 h-5 border border-gray-300 rounded-full"></div>
-                                    <div class="w-3 h-3 bg-primary rounded-full absolute opacity-0 transform scale-0 transition-all"></div>
-                                </div>
-                                <span>Wheel Rim</span>
-                            </label>
-                            <label class="flex items-center cursor-pointer">
-                                <div class="w-5 h-5 flex items-center justify-center mr-3 relative">
-                                    <input type="radio" name="category" value="interior" class="opacity-0 absolute w-full h-full cursor-pointer z-10" onchange="handleFilterChange(this)">
-                                    <div class="w-5 h-5 border border-gray-300 rounded-full"></div>
-                                    <div class="w-3 h-3 bg-primary rounded-full absolute opacity-0 transform scale-0 transition-all"></div>
-                                </div>
-                                <span>Interior</span>
-                            </label>
-                        </div>
+                    {{-- 
+                        NOTE: Filtering works only if your controller (e.g., ProductController@index) 
+                        reads the request parameters (category, manufacturers, min_price, max_price) 
+                        and queries the database accordingly. 
+                        This Blade file only displays the $products variable passed from the controller.
+                    --}}
+                    <form id="filterForm" method="GET" action="{{ route('products.index') }}" class="space-y-6">
+    <!-- Categories -->
+    <div class="mb-6">
+        <h3 class="font-semibold mb-3">Categories</h3>
+        <div class="space-y-2">
+            @foreach(['Engine Parts', 'Brake Systems', 'Transmission', 'Suspension', 'Wheel Rim', 'Interior'] as $category)
+                <label class="flex items-center cursor-pointer">
+                    <div class="w-5 h-5 flex items-center justify-center mr-3 relative">
+                        <input type="radio" 
+                               name="category" 
+                               value="{{ Str::slug($category) }}" 
+                               class="opacity-0 absolute w-full h-full cursor-pointer z-10"
+                               {{ request('category') == Str::slug($category) ? 'checked' : '' }}
+                               onchange="this.form.submit()">
+                        <div class="w-5 h-5 border border-gray-300 rounded-full"></div>
+                        <div class="w-3 h-3 bg-primary rounded-full absolute opacity-0 transform scale-0 transition-all"></div>
                     </div>
-                    
-                    <div class="mb-6">
-                        <h3 class="font-semibold mb-3">Displacement</h3>
-                        <div class="space-y-2">
-                            <label class="flex items-center">
-                                <div class="w-5 h-5 flex items-center justify-center mr-3 relative">
-                                    <input type="radio" name="displacement" class="opacity-0 absolute w-full h-full cursor-pointer z-10">
-                                    <div class="w-5 h-5 border border-gray-300 rounded-full"></div>
-                                    <div class="w-3 h-3 bg-primary rounded-full absolute opacity-0 transform scale-0 transition-all"></div>
-                                </div>
-                                <span>100-250cc</span>
-                            </label>
-                            <label class="flex items-center">
-                                <div class="w-5 h-5 flex items-center justify-center mr-3 relative">
-                                    <input type="radio" name="displacement" class="opacity-0 absolute w-full h-full cursor-pointer z-10">
-                                    <div class="w-5 h-5 border border-gray-300 rounded-full"></div>
-                                    <div class="w-3 h-3 bg-primary rounded-full absolute opacity-0 transform scale-0 transition-all"></div>
-                                </div>
-                                <span>251-500cc</span>
-                            </label>
-                            <label class="flex items-center">
-                                <div class="w-5 h-5 flex items-center justify-center mr-3 relative">
-                                    <input type="radio" name="displacement" class="opacity-0 absolute w-full h-full cursor-pointer z-10">
-                                    <div class="w-5 h-5 border border-gray-300 rounded-full"></div>
-                                    <div class="w-3 h-3 bg-primary rounded-full absolute opacity-0 transform scale-0 transition-all"></div>
-                                </div>
-                                <span>501-750cc</span>
-                            </label>
-                            <label class="flex items-center">
-                                <div class="w-5 h-5 flex items-center justify-center mr-3 relative">
-                                    <input type="radio" name="displacement" class="opacity-0 absolute w-full h-full cursor-pointer z-10">
-                                    <div class="w-5 h-5 border border-gray-300 rounded-full"></div>
-                                    <div class="w-3 h-3 bg-primary rounded-full absolute opacity-0 transform scale-0 transition-all"></div>
-                                </div>
-                                <span>751cc+</span>
-                            </label>
-                        </div>
+                    <span>{{ $category }}</span>
+                </label>
+            @endforeach
+        </div>
+    </div>
+
+    <!-- Manufacturers -->
+    <div class="mb-6">
+        <h3 class="font-semibold mb-3">Manufacturer</h3>
+        <div class="space-y-2">
+            @foreach(['Bilstein', 'Brembo', 'Enkie', 'Mercedez', 'Toyota', 'ZF'] as $manufacturer)
+                <label class="flex items-center cursor-pointer">
+                    <div class="w-5 h-5 flex items-center justify-center mr-3 relative">
+                        <input type="checkbox" 
+                               name="manufacturers[]" 
+                               value="{{ $manufacturer }}"
+                               class="opacity-0 absolute w-full h-full cursor-pointer z-10"
+                               {{ in_array($manufacturer, (array)request('manufacturers')) ? 'checked' : '' }}
+                               onchange="this.form.submit()">
+                        <div class="w-5 h-5 border border-gray-300 rounded"></div>
+                        <div class="w-3 h-3 bg-primary rounded absolute opacity-0 transform scale-0 transition-all"></div>
                     </div>
-                    
-                    <div class="mb-6">
-                        <h3 class="font-semibold mb-3">Manufacturer</h3>
-                        <div class="space-y-2">
-                            <label class="flex items-center">
-                                <div class="w-5 h-5 flex items-center justify-center mr-3 relative">
-                                    <input type="checkbox" class="opacity-0 absolute w-full h-full cursor-pointer z-10">
-                                    <div class="w-5 h-5 border border-gray-300 rounded"></div>
-                                    <div class="w-3 h-3 bg-primary rounded absolute opacity-0 transform scale-0 transition-all"></div>
-                                </div>
-                                <span>Bilstein</span>
-                            </label>
-                            <label class="flex items-center">
-                                <div class="w-5 h-5 flex items-center justify-center mr-3 relative">
-                                    <input type="checkbox" class="opacity-0 absolute w-full h-full cursor-pointer z-10">
-                                    <div class="w-5 h-5 border border-gray-300 rounded"></div>
-                                    <div class="w-3 h-3 bg-primary rounded absolute opacity-0 transform scale-0 transition-all"></div>
-                                </div>
-                                <span>Brembo</span>
-                            </label>
-                            <label class="flex items-center">
-                                <div class="w-5 h-5 flex items-center justify-center mr-3 relative">
-                                    <input type="checkbox" class="opacity-0 absolute w-full h-full cursor-pointer z-10">
-                                    <div class="w-5 h-5 border border-gray-300 rounded"></div>
-                                    <div class="w-3 h-3 bg-primary rounded absolute opacity-0 transform scale-0 transition-all"></div>
-                                </div>
-                                <span>Enkie</span>
-                            </label>
-                            <label class="flex items-center">
-                                <div class="w-5 h-5 flex items-center justify-center mr-3 relative">
-                                    <input type="checkbox" class="opacity-0 absolute w-full h-full cursor-pointer z-10">
-                                    <div class="w-5 h-5 border border-gray-300 rounded"></div>
-                                    <div class="w-3 h-3 bg-primary rounded absolute opacity-0 transform scale-0 transition-all"></div>
-                                </div>
-                                <span>Mercedez</span>
-                            </label>
-                            <label class="flex items-center">
-                                <div class="w-5 h-5 flex items-center justify-center mr-3 relative">
-                                    <input type="checkbox" class="opacity-0 absolute w-full h-full cursor-pointer z-10">
-                                    <div class="w-5 h-5 border border-gray-300 rounded"></div>
-                                    <div class="w-3 h-3 bg-primary rounded absolute opacity-0 transform scale-0 transition-all"></div>
-                                </div>
-                                <span>Toyota</span>
-                            </label>
-                            <label class="flex items-center">
-                                <div class="w-5 h-5 flex items-center justify-center mr-3 relative">
-                                    <input type="checkbox" class="opacity-0 absolute w-full h-full cursor-pointer z-10">
-                                    <div class="w-5 h-5 border border-gray-300 rounded"></div>
-                                    <div class="w-3 h-3 bg-primary rounded absolute opacity-0 transform scale-0 transition-all"></div>
-                                </div>
-                                <span>ZF</span>
-                            </label>
-                        </div>
-                    </div>
-                    
-                    <div class="mb-6">
-                        <h3 class="font-semibold mb-3">Price Range</h3>
-                        <div class="space-y-4">
-                            <div class="flex items-center justify-between">
-                                <input type="number" placeholder="Min" class="w-24 px-3 py-2 border border-gray-200 rounded text-sm">
-                                <span class="text-gray-400">-</span>
-                                <input type="number" placeholder="Max" class="w-24 px-3 py-2 border border-gray-200 rounded text-sm">
-                            </div>
-                            <button class="bg-primary text-white w-full py-2 rounded-button font-medium hover:bg-primary/90 transition-colors whitespace-nowrap">Apply Filter</button>
-                        </div>
-                    </div>
+                    <span>{{ $manufacturer }}</span>
+                </label>
+            @endforeach
+        </div>
+    </div>
+
+    <!-- Price Range -->
+    <div class="mb-6">
+        <h3 class="font-semibold mb-3">Price Range</h3>
+        <div class="space-y-4">
+            <div class="flex items-center justify-between">
+                <input type="number" 
+                       name="min_price" 
+                       placeholder="Min" 
+                       class="w-24 px-3 py-2 border border-gray-200 rounded text-sm"
+                       value="{{ request('min_price') }}">
+                <span class="text-gray-400">-</span>
+                <input type="number" 
+                       name="max_price" 
+                       placeholder="Max" 
+                       class="w-24 px-3 py-2 border border-gray-200 rounded text-sm"
+                       value="{{ request('max_price') }}">
+            </div>
+            <button type="submit" 
+                    class="bg-primary text-white w-full py-2 rounded-button font-medium hover:bg-primary/90 transition-colors">
+                Apply Filter
+            </button>
+        </div>
+    </div>
+</form>
                 </div>
             </div>
             
@@ -598,6 +516,19 @@
                 cartModal.classList.add('hidden');
             }
         }
+
+        // Remove AJAX applyFilters and related code, as we now use form submission.
+        // Keep only the code for initializing radio/checkbox indicators:
+        document.addEventListener('DOMContentLoaded', () => {
+            const inputs = document.querySelectorAll('input[type="radio"], input[type="checkbox"]');
+            inputs.forEach(input => {
+                const indicator = input.nextElementSibling.nextElementSibling;
+                if (input.checked) {
+                    indicator.style.opacity = '1';
+                    indicator.style.transform = 'scale(1)';
+                }
+            });
+        });
     </script>
 
 </body>
