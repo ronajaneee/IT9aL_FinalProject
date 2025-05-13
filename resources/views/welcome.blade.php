@@ -21,10 +21,8 @@
           <img class="h-14 w-auto ml-4" src="{{ asset('storage/images/logo.webp') }}" alt="Under The Hood Supply"/>
           </a>
           <div class="hidden md:ml-8 md:flex md:space-x-8">
-            <a href="#" class="text-blue-500 hover:text-blue-600 px-3 py-2 text-sm font-medium">Shop</a>
-            <a href="#" class="text-gray-600 hover:text-gray-900 px-3 py-2 text-sm font-medium">Brands</a>
-            <a href="#" class="text-gray-600 hover:text-gray-900 px-3 py-2 text-sm font-medium">Deals</a>
-            <a href="#" class="text-gray-600 hover:text-gray-900 px-3 py-2 text-sm font-medium">Services</a>
+            <a href="{{ route('product') }}" class="{{ request()->routeIs('product') ? 'text-blue-500' : 'text-gray-600' }} hover:text-blue-600 px-3 py-2 text-sm font-medium">Shop</a>
+            <a href="#featured-brands" onclick="event.preventDefault(); document.getElementById('featured-brands').scrollIntoView({ behavior: 'smooth' });" class="{{ request()->segment(1) == 'brands' ? 'text-blue-500' : 'text-gray-600' }} hover:text-blue-600 px-3 py-2 text-sm font-medium">Brands</a>
           </div>
         </div>
         <!-- Middle Section: Search Bar -->
@@ -238,7 +236,7 @@
     </div>
 
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        @foreach($products as $product)
+        @foreach($products->take(4) as $product)
         <!-- Product Card -->
         <a href="{{ route('products.show', ['ProductID' => $product->ProductID]) }}" class="relative group rounded-xl border bg-white p-4 shadow-sm hover:shadow-md transition block">
             <div class="aspect-w-1 aspect-h-1 overflow-hidden rounded-lg bg-gray-100">
@@ -280,7 +278,7 @@
 </section>
 
 
-        <section class="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+        <section id="featured-brands" class="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
     <div class="mb-8">
         <h2 class="text-3xl font-semibold text-gray-900 mb-8">Featured Brands</h2>
     </div>

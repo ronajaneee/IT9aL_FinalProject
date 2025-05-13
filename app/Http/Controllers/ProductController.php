@@ -74,12 +74,12 @@ class ProductController extends Controller
 
     public function search(Request $request)
     {
-        $query = $request->input('search');
+        $search = $request->input('search');
         
-        $products = Product::where('ProductName', 'like', "%{$query}%")
-            ->orWhere('Description', 'like', "%{$query}%") // Changed from ProductDescription to Description
-            ->orWhere('SKU', 'like', "%{$query}%")  // Changed from ProductNumber to SKU
-            ->orWhere('Category', 'like', "%{$query}%") // Added Category search
+        $products = Product::where('ProductName', 'like', "%{$search}%")
+            ->orWhere('Description', 'like', "%{$search}%")
+            ->orWhere('Category', 'like', "%{$search}%")
+            // Remove the SKU search if the column doesn't exist
             ->paginate(12);
 
         return view('products.product', compact('products'));

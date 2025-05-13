@@ -69,10 +69,8 @@
           <img class="h-14 w-auto ml-4" src="{{ asset('storage/images/logo.webp') }}" alt="Under The Hood Supply"/>
           </a>
           <div class="hidden md:ml-8 md:flex md:space-x-8">
-            <a href="#" class="text-blue-500 hover:text-blue-600 px-3 py-2 text-sm font-medium">Shop</a>
-            <a href="#" class="text-gray-600 hover:text-gray-900 px-3 py-2 text-sm font-medium">Brands</a>
-            <a href="#" class="text-gray-600 hover:text-gray-900 px-3 py-2 text-sm font-medium">Deals</a>
-            <a href="#" class="text-gray-600 hover:text-gray-900 px-3 py-2 text-sm font-medium">Services</a>
+            <a href="{{ route('product') }}" class="{{ request()->routeIs('product') ? 'text-blue-500' : 'text-gray-600' }} hover:text-blue-600 px-3 py-2 text-sm font-medium">Shop</a>
+            <a href="{{ route('welcome') }}#featured-brands" class="{{ request()->segment(1) == 'brands' ? 'text-blue-500' : 'text-gray-600' }} hover:text-blue-600 px-3 py-2 text-sm font-medium">Brands</a>
           </div>
         </div>
         <!-- Middle Section: Search Bar -->

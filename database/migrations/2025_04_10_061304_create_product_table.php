@@ -16,7 +16,7 @@ return new class extends Migration
             $table->id('ProductID'); // This creates an unsignedBigInteger column named 'ProductID'
             $table->unsignedBigInteger('SupplierID')->nullable();
             $table->string('ProductName', 100);
-            $table->string('SKU', 50)->unique(); // Add 'SKU' column after 'ProductName'
+            $table->string('SKU', 50)->unique(); // Make sure this line exists
             $table->text('Description')->nullable();
             $table->string('Image', 255)->nullable();
             $table->decimal('Price', 10, 2);
