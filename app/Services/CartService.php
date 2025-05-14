@@ -72,17 +72,12 @@ class CartService
         });
     }
 
-    public function update($rowId, $action)
+    public function update($rowId, $quantity)
     {
         $content = $this->getContent();
         
         if (isset($content[$rowId])) {
-            if ($action === 'increment') {
-                $content[$rowId]['qty']++;
-            } elseif ($action === 'decrement' && $content[$rowId]['qty'] > 1) {
-                $content[$rowId]['qty']--;
-            }
-            
+            $content[$rowId]['qty'] = $quantity;
             $this->session->put($this->instance, $content);
         }
         

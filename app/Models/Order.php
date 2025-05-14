@@ -7,23 +7,16 @@ use Illuminate\Database\Eloquent\Model;
 class Order extends Model
 {
     protected $fillable = [
-        'user_id',
-        'first_name',
-        'last_name',
-        'address',
-        'phone',
-        'delivery_method',
-        'total_amount',
+        'UserID',
+        'total',
         'status'
     ];
 
+    // If your primary key is different from 'id'
+    protected $primaryKey = 'id';
+
     public function items()
     {
-        return $this->hasMany(OrderItem::class);
-    }
-
-    public function user()
-    {
-        return $this->belongsTo(User::class);
+        return $this->hasMany(OrderItem::class, 'order_id');
     }
 }

@@ -13,7 +13,7 @@ return new class extends Migration
             $table->engine = 'InnoDB'; // Ensure the table uses InnoDB
             $table->id();
             $table->unsignedBigInteger('order_id'); // Matching the 'orders' table id type
-            $table->unsignedBigInteger('ProductID'); // Matching the 'products' table 'ProductID' type
+            $table->unsignedBigInteger('product_id'); // Matching the 'products' table 'id' type
             $table->integer('quantity');
             $table->decimal('price', 10, 2);
             $table->timestamps();
@@ -26,8 +26,8 @@ return new class extends Migration
             
             // Make sure this matches the 'products' table's primary key definition
             // The key is that the data types match exactly
-            $table->foreign('ProductID')
-                  ->references('ProductID')
+            $table->foreign('product_id')
+                  ->references('id')
                   ->on('products')
                   ->onDelete('cascade');
         });
@@ -35,11 +35,6 @@ return new class extends Migration
 
     public function down(): void
     {
-        Schema::table('order_items', function (Blueprint $table) {
-            $table->dropForeign(['order_items_productid_foreign']); // Use the correct constraint name
-            $table->dropForeign(['order_items_order_id_foreign']);  // Use the correct constraint name
-        });
-
         Schema::dropIfExists('order_items');
     }
 };

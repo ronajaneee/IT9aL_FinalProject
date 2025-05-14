@@ -176,6 +176,14 @@
         </div>
     </div>
 
+<div id="orderModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 hidden z-50">
+    <div class="relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-md bg-white">
+        <div id="orderModalContent" class="mt-3 text-center">
+            <!-- Content will be inserted here -->
+        </div>
+    </div>
+</div>
+
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         // Radio button functionality
@@ -190,6 +198,76 @@
                 // Set the clicked radio indicator
                 const indicator = this.querySelector('div > div');
                 indicator.classList.remove('bg-white');
+                indicator.classList.add('bg-primary');
+            });
+        });
+
+        const form = document.querySelector('form[action="{{ route("checkout.process") }}"]');
+        const modal = document.getElementById('orderModal');
+        const modalContent = document.getElementById('orderModalContent');
+
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            fetch('{{ route("checkout.process") }}', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify(Object.fromEntries(new FormData(form)))
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    modalContent.innerHTML = `
+                        <div class="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-green-100">
+                            <svg class="h-6 w-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                            </svg>
+                        </div>
+                        <h3 class="text-lg leading-6 font-medium text-gray-900 mt-4">Order Placed Successfully!</h3>
+                        <div class="mt-2 px-7 py-3">
+                            <p class="text-sm text-gray-500">Your order has been processed successfully.</p>
+                        </div>
+                        <div class="mt-4">
+                            <button onclick="window.location.href='${data.redirect}'" class="bg-blue-500 text-white px-4 py-2 rounded-md">
+                                View Order
+                            </button>
+                        </div>`;
+                } else {
+                    modalContent.innerHTML = `
+                        <div class="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-red-100">
+                            <svg class="h-6 w-6 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                            </svg>
+                        </div>
+                        <h3 class="text-lg leading-6 font-medium text-gray-900 mt-4">Error</h3>
+                        <div class="mt-2 px-7 py-3">
+                            <p class="text-sm text-gray-500">${data.message}</p>
+                        </div>`;
+                }
+                modal.classList.remove('hidden');
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                modalContent.innerHTML = `
+                    <div class="text-red-500">
+                        <h3 class="text-lg font-medium">Error</h3>
+                        <p>An unexpected error occurred. Please try again.</p>
+                    </div>`;
+                modal.classList.remove('hidden');
+            });
+        });
+
+        // Close modal when clicking outside
+        modal.addEventListener('click', function(e) {
+            if (e.target === modal) {
+                modal.classList.add('hidden');
+            }
+        });
+    });
 </script>
 </body>
 </html>

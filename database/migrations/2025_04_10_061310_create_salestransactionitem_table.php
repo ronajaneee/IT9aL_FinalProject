@@ -1,34 +1,32 @@
 <?php
 
-use Illuminate\Database\Migrations\Migration;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Migrations\Migration;
 
-return new class extends Migration
+class CreateSalesTransactionItemTable extends Migration
 {
-    /**
-     * Run the migrations.
-     */
-    public function up(): void
+    public function up()
     {
-        Schema::create('salestransactionitem', function (Blueprint $table) {
-            $table->id('transactionitemID')->unsigned();
-            $table->unsignedBigInteger('TransactionID');
-            $table->unsignedBigInteger('ProductID');
-            $table->integer('Quantity');
-            $table->decimal('UnitPrice', 10, 2);
-            $table->timestamps();
+        // Check if the table already exists before creating it
+        if (!Schema::hasTable('salestransactionitem')) {
+            Schema::create('salestransactionitem', function (Blueprint $table) {
+                $table->bigIncrements('transactionitemID');
+                $table->unsignedBigInteger('TransactionID');
+                $table->unsignedBigInteger('ProductID');
+                $table->integer('Quantity');
+                $table->decimal('UnitPrice', 10, 2);
+                $table->timestamps();
 
-            $table->foreign('TransactionID')->references('TransactionID')->on('salestransaction')->onDelete('cascade')->onUpdate('cascade');
-            $table->foreign('ProductID')->references('ProductID')->on('products')->onUpdate('cascade');
-        });
+                $table->foreign('TransactionID')->references('id')->on('transactions')->onDelete('cascade');
+                $table->foreign('ProductID')->references('id')->on('products')->onDelete('cascade');
+            });
+        }
     }
 
-    /**
-     * Reverse the migrations.
-     */
-    public function down(): void
+    public function down()
     {
+        // Ensure the table is dropped if it exists
         Schema::dropIfExists('salestransactionitem');
     }
-};
+}

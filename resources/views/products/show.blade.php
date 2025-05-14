@@ -327,57 +327,56 @@
 
             <div class="mb-6">
             <h3 class="text-lg font-medium mb-2">Quantity</h3>
-            <div class="flex items-center">
-              <button id="decrease" class="w-10 h-10 flex items-center justify-center border border-gray-300 rounded-l-button bg-white hover:bg-gray-100">
-              <i class="ri-subtract-line text-gray-700"></i>
+            <div class="quantity-wrapper flex items-center">
+              <button class="decrease w-10 h-10 flex items-center justify-center border border-gray-300 rounded-l-button bg-white hover:bg-gray-100">
+                <i class="ri-subtract-line text-gray-700"></i>
               </button>
               <input
-              type="number"
-              id="quantity"
-              value="1"
-              min="1"
-              max="15"
-              class="w-16 h-10 border-y border-gray-300 text-center text-gray-700 focus:outline-none"/>
+                type="number"
+                class="quantity w-16 h-10 border-y border-gray-300 text-center text-gray-700 focus:outline-none"
+                value="1"
+                min="1"
+                max="15"
+                readonly/>
               <button
-              id="increase"
-              class="w-10 h-10 flex items-center justify-center border border-gray-300 rounded-r-button bg-white hover:bg-gray-100">
-              <i class="ri-add-line text-gray-700"></i>
+                class="increase w-10 h-10 flex items-center justify-center border border-gray-300 rounded-r-button bg-white hover:bg-gray-100">
+                <i class="ri-add-line text-gray-700"></i>
               </button>
             </div>
             </div>
+
             <script>
             document.addEventListener('DOMContentLoaded', () => {
-              const decreaseButton = document.getElementById('decrease');
-              const increaseButton = document.getElementById('increase');
-              const quantityInput = document.getElementById('quantity');
+              // Find all quantity wrappers on the page
+              document.querySelectorAll('.quantity-wrapper').forEach(wrapper => {
+                const quantity = wrapper.querySelector('.quantity');
+                const decrease = wrapper.querySelector('.decrease');
+                const increase = wrapper.querySelector('.increase');
 
-              decreaseButton.addEventListener('click', () => {
-              let currentValue = parseInt(quantityInput.value);
-              if (currentValue > parseInt(quantityInput.min)) {
-                quantityInput.value = currentValue - 1;
-              }
-              });
+                const updateQuantity = (newValue) => {
+                  const min = parseInt(quantity.min);
+                  const max = parseInt(quantity.max);
+                  newValue = Math.min(Math.max(newValue, min), max);
+                  quantity.value = newValue;
+                  
+                  // Update the hidden input for the cart form
+                  const cartQuantity = document.getElementById('cart-quantity');
+                  if (cartQuantity) {
+                    cartQuantity.value = newValue;
+                  }
+                };
 
-              increaseButton.addEventListener('click', () => {
-              let currentValue = parseInt(quantityInput.value);
-              if (currentValue < parseInt(quantityInput.max)) {
-                quantityInput.value = currentValue + 1;
-              }
-              });
+                decrease.addEventListener('click', () => {
+                  updateQuantity(parseInt(quantity.value) - 1);
+                });
 
-              quantityInput.addEventListener('input', () => {
-              let currentValue = parseInt(quantityInput.value);
-              const minValue = parseInt(quantityInput.min);
-              const maxValue = parseInt(quantityInput.max);
-
-              if (isNaN(currentValue) || currentValue < minValue) {
-                quantityInput.value = minValue;
-              } else if (currentValue > maxValue) {
-                quantityInput.value = maxValue;
-              }
+                increase.addEventListener('click', () => {
+                  updateQuantity(parseInt(quantity.value) + 1);
+                });
               });
             });
             </script>
+
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
               <form action="{{ route('cart.add') }}" method="POST">
                 @csrf

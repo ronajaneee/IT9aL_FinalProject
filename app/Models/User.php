@@ -20,7 +20,7 @@ class User extends Authenticatable
         'profile_picture_url',
         'role',
         'address',
-        'contact_number'
+        'phone'
     ];
 
     /**
@@ -44,5 +44,10 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    public function orders()
+    {
+        return $this->hasMany(Order::class, 'UserID');
     }
 }

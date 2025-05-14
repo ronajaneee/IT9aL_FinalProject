@@ -3,67 +3,61 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CheckoutController;
-use App\Http\Controllers\CartController; // Add this line
+use App\Http\Controllers\CartController;
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\OrderController;
 
 // Set welcome page as the default landing page
 Route::get('/', function () {
     $products = \App\Models\Product::latest()->take(8)->get();
     return view('welcome', compact('products'));
-})->name('welcome'); // Add the route name here
+})->name('welcome');
 
 // Route for the login page
 Route::view('/login', 'auth.login')->name('login');
 
-// Remove or comment out the old registration routes
-// Route::get('/register', [RegisterController::class, 'showRegistrationForm'])->name('register');
+// Auth routes
 Route::post('/register', [AuthController::class, 'register'])->name('register');
 Route::post('/login', [AuthController::class, 'login'])->name('login');
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
-// Cart routes 
+// Cart routes
 Route::group(['prefix' => 'cart'], function () {
     Route::get('/', [CartController::class, 'viewCart'])->name('cart.view');
     Route::get('/modal', [CartController::class, 'getCartModal'])->name('cart.modal');
-    Route::post('/add', [CartController::class, 'add'])->name('cart.add'); // Removed auth middleware
-    Route::patch('/update/{id}', [CartController::class, 'updateCart'])->name('cart.update');
+    Route::post('/add', [CartController::class, 'add'])->name('cart.add');
+    Route::patch('/update/{id}', [CartController::class, 'update'])->name('cart.update');
     Route::delete('/remove/{rowId}', [CartController::class, 'remove'])->name('cart.remove');
-    Route::get('/checkout', [CheckoutController::class, 'view'])->name('checkout.view'); // Use this route name instead
 });
 
-// Add auth middleware only to checkout routes
+// Protected routes
 Route::middleware(['auth'])->group(function () {
     Route::get('/checkout', [CheckoutController::class, 'view'])->name('checkout.view');
     Route::post('/checkout/process', [CheckoutController::class, 'process'])->name('checkout.process');
+    Route::put('/profile/update', [ProfileController::class, 'update'])->name('profile.update');
+    Route::get('/account/settings', function () {
+        $orders = Auth::user()->orders()->latest()->get();
+        return view('account.settings', compact('orders'));
+    })->name('account.settings');
 });
-
-// Route to handle product form submission
-Route::post('/product/{ProductID}/update', [ProductController::class, 'update'])->name('products.update');
-
-// Route for engine page
-Route::get('/engine', [ProductController::class, 'showEngine'])->name('products');
-
-// Route for product listing page
-Route::get('/product', [ProductController::class, 'index'])->name('product');
-
-// Route for individual product with proper model binding
-Route::get('/product/{ProductID}', [ProductController::class, 'show'])->name('products.show');
-
-// Route for category filtering
-Route::get('/products/category/{category}', [ProductController::class, 'filterByCategory'])->name('products.category');
 
 // Product routes
 Route::prefix('products')->group(function () {
-    Route::get('/search', [ProductController::class, 'search'])->name('products.search');
     Route::get('/', [ProductController::class, 'index'])->name('products.index');
-    Route::get('/category/{category}', [ProductController::class, 'filterByCategory'])->name('products.category');
+    Route::get('/search', [ProductController::class, 'search'])->name('products.search');
+    Route::get('/category/{category}', [ProductController::class, 'byCategory'])->name('products.category');
     Route::get('/{ProductID}', [ProductController::class, 'show'])->name('products.show');
+    Route::post('/{ProductID}/update', [ProductController::class, 'update'])->name('products.update');
 });
 
+// Other routes
+Route::get('/shop', [ProductController::class, 'showEngine'])->name('products');  // Update this route name and path
 Route::get('/featured-products', [ProductController::class, 'getFeaturedProducts'])->name('products.featured');
-
-Route::get('/cartview', function () {return view('cartview');})->name('cartview.page');
-
-
+Route::get('/cartview', function () { return view('cartview'); })->name('cartview.page');
+Route::get('/order/success/{order}', [CheckoutController::class, 'success'])->name('order.success');
+Route::post('/place-order', [OrderController::class, 'store'])->name('order.store');
+Route::get('/order/success/{order}', [CheckoutController::class, 'success'])->name('order.success');
+Route::post('/place-order', [OrderController::class, 'store'])->name('order.store');
 
 
 

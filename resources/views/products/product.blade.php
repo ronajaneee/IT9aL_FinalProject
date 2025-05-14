@@ -69,7 +69,7 @@
           <img class="h-14 w-auto ml-4" src="{{ asset('storage/images/logo.webp') }}" alt="Under The Hood Supply"/>
           </a>
           <div class="hidden md:ml-8 md:flex md:space-x-8">
-            <a href="{{ route('product') }}" class="{{ request()->routeIs('product') ? 'text-blue-500' : 'text-gray-600' }} hover:text-blue-600 px-3 py-2 text-sm font-medium">Shop</a>
+            <a href="{{ route('products.index') }}" class="{{ request()->routeIs('products.index') ? 'text-blue-500' : 'text-gray-600' }} hover:text-blue-600 px-3 py-2 text-sm font-medium">Shop</a>
             <a href="{{ route('welcome') }}#featured-brands" class="{{ request()->segment(1) == 'brands' ? 'text-blue-500' : 'text-gray-600' }} hover:text-blue-600 px-3 py-2 text-sm font-medium">Brands</a>
           </div>
         </div>
@@ -208,12 +208,7 @@
                 <div class="bg-white p-6 rounded shadow-sm">
                     <h2 class="text-xl font-bold mb-6">Filter</h2>
                     
-                    {{-- 
-                        NOTE: Filtering works only if your controller (e.g., ProductController@index) 
-                        reads the request parameters (category, manufacturers, min_price, max_price) 
-                        and queries the database accordingly. 
-                        This Blade file only displays the $products variable passed from the controller.
-                    --}}
+
                     <form id="filterForm" method="GET" action="{{ route('products.index') }}" class="space-y-6">
     <!-- Categories -->
     <div class="mb-6">
@@ -360,18 +355,26 @@
                                     <span class="text-sm text-gray-500 ml-2">4.5 (28 Reviews)</span>
                                 </div>
                                 <div class="flex justify-between items-center">
-                                    <span class="text-xl font-bold">₱{{ number_format($product->Price, 2) }}</span>
-                                    <form action="{{ route('cart.add') }}" method="POST" class="inline-flex space-x-2" onclick="event.stopPropagation();">
-                                        @csrf
-                                        <input type="hidden" name="product_id" value="{{ $product->ProductID }}">
-                                        <button type="submit" class="bg-primary text-white px-4 py-2 rounded-button font-medium hover:bg-primary/90 transition-colors whitespace-nowrap">
-                                            Add to Cart
-                                        </button>
-                                        <button class="ml-2 bg-secondary text-white p-2 rounded-full hover:bg-secondary/90 transition-colors">
-                                            <i class="fas fa-shopping-cart"></i>
-                                        </button>
-                                    </form>
-                                </div>
+    <span class="text-xl font-bold">₱{{ number_format($product->Price, 2) }}</span>
+    <form action="{{ route('cart.add') }}" method="POST" class="inline-flex items-center space-x-2">
+        @csrf
+        <input type="hidden" name="product_id" value="{{ $product->ProductID }}">
+        <div class="flex items-center border rounded-button">
+            <button type="button" class="px-3 py-1 text-gray-600 hover:text-primary" onclick="decrementQuantity(event, this)">-</button>
+            <input type="number" 
+                   name="quantity" 
+                   value="1" 
+                   min="1"
+                   max="99"
+                   class="w-12 text-center border-0 focus:ring-0"
+                   oninput="validateQuantity(this)">
+            <button type="button" class="px-3 py-1 text-gray-600 hover:text-primary" onclick="incrementQuantity(event, this)">+</button>
+        </div>
+        <button type="submit" class="bg-primary text-white px-4 py-2 rounded-button font-medium hover:bg-primary/90 transition-colors whitespace-nowrap">
+            Add to Cart
+        </button>
+    </form>
+</div>
                             </div>
                         </a>
                     </div>
@@ -532,6 +535,37 @@
                 }
             });
         });
+
+        function incrementQuantity(event, button) {
+    event.preventDefault();
+    event.stopPropagation();
+    const input = button.parentElement.querySelector('input[type="number"]');
+    const currentValue = parseInt(input.value) || 1;
+    if (currentValue < 99) {
+        input.value = currentValue + 1;
+    }
+}
+
+function decrementQuantity(event, button) {
+    event.preventDefault();
+    event.stopPropagation();
+    const input = button.parentElement.querySelector('input[type="number"]');
+    const currentValue = parseInt(input.value) || 1;
+    if (currentValue > 1) {
+        input.value = currentValue - 1;
+    }
+}
+
+function validateQuantity(input) {
+    let value = parseInt(input.value);
+    if (isNaN(value) || value < 1) {
+        input.value = 1;
+    } else if (value > 99) {
+        input.value = 99;
+    } else {
+        input.value = Math.floor(value);
+    }
+}
     </script>
 
 </body>

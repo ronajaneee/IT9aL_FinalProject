@@ -51,25 +51,29 @@ class CartController extends Controller
         return redirect()->back()->with('success', 'Product added to cart');
     }
 
-    public function updateCart(Request $request, $id)
+    public function update(Request $request, $rowId)
     {
-        $cartItem = Cartitem::findOrFail($id);
-        $action = $request->input('action');
+        $quantity = (int)$request->input('qty');
 
-        if ($action === 'increment') {
-            $cartItem->increment('Quantity');
-        } elseif ($action === 'decrement' && $cartItem->Quantity > 1) {
-            $cartItem->decrement('Quantity');
+        $cartItem = Cart::content()->where('rowId', $rowId)->first();
+
+        if (!$cartItem) {
+            return back()->with('error', 'Cart item not found.');
         }
 
-        return redirect()->back();
+        if ($quantity < 1) {
+            return back()->with('error', 'Quantity must be at least 1.');
+        }
+
+        Cart::update($rowId, $quantity);
+
+        return redirect()->route('cart.view')->with('success', 'Cart updated successfully!');
     }
 
-    public function removeCartItem($id)
+    public function remove($rowId)
     {
-        $cartItem = Cartitem::findOrFail($id);
-        $cartItem->delete();
-        return redirect()->route('cart.view');
+        Cart::remove($rowId);
+        return back()->with('success', 'Product removed from cart');
     }
 
     public function add(Request $request)
@@ -89,11 +93,5 @@ class CartController extends Controller
         );
 
         return back()->with('success', 'Product added to cart');
-    }
-
-    public function remove($rowId)
-    {
-        Cart::remove($rowId);
-        return back()->with('success', 'Product removed from cart');
     }
 }

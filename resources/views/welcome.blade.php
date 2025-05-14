@@ -21,7 +21,7 @@
           <img class="h-14 w-auto ml-4" src="{{ asset('storage/images/logo.webp') }}" alt="Under The Hood Supply"/>
           </a>
           <div class="hidden md:ml-8 md:flex md:space-x-8">
-            <a href="{{ route('product') }}" class="{{ request()->routeIs('product') ? 'text-blue-500' : 'text-gray-600' }} hover:text-blue-600 px-3 py-2 text-sm font-medium">Shop</a>
+            <a href="{{ route('products.index') }}" class="{{ request()->routeIs('products.index') ? 'text-blue-500' : 'text-gray-600' }} hover:text-blue-600 px-3 py-2 text-sm font-medium">Shop</a>
             <a href="#featured-brands" onclick="event.preventDefault(); document.getElementById('featured-brands').scrollIntoView({ behavior: 'smooth' });" class="{{ request()->segment(1) == 'brands' ? 'text-blue-500' : 'text-gray-600' }} hover:text-blue-600 px-3 py-2 text-sm font-medium">Brands</a>
           </div>
         </div>
@@ -56,7 +56,7 @@
                     <div x-show="open"
                          @click.outside="open = false"
                          class="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg py-2">
-                        <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">My Account</a>
+                        <a href="{{ route('account.settings') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">My Account</a>
                         <a href="{{ route('cart.view') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Orders</a>
                         <form method="POST" action="{{ route('logout') }}" class="block">
                             @csrf
@@ -135,7 +135,7 @@
                                 <p class="text-sm text-gray-500 text-center">You'll need to 
                                     <button type="button" 
                                             class="text-blue-500 hover:text-blue-700 openLoginModal"
-                                            data-return-url="{{ route('checkout.view') }}">
+                                            data-return-url="{{ url()->current() }}">
                                         login
                                     </button> 
                                     to checkout
@@ -168,7 +168,7 @@
                         <button onclick="document.getElementById('products').scrollIntoView({ behavior: 'smooth' });" class="bg-white text-gray-900 px-8 py-3 !rounded-button hover:bg-gray-100 font-medium">
                             Shop Now
                         </button>
-                        <a href="{{ route('product') }}" class="bg-white text-gray-900 px-8 py-3 !rounded-button hover:bg-gray-100 font-medium inline-block">
+                        <a href="{{ route('products.index') }}" class="bg-white text-gray-900 px-8 py-3 !rounded-button hover:bg-gray-100 font-medium inline-block">
                         Find Parts
                         </a>
                     </div>
@@ -179,7 +179,7 @@
     <h2 class="text-3xl font-semibold text-gray-900 mb-8">Popular Categories</h2>
     <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-6">
         <!-- Engine Parts -->
-        <a href="{{ route('products.index', ['category' => 'engine']) }}" class="group block transition hover:shadow-lg rounded-lg">
+        <a href="{{ route('products.category', ['category' => 'engine']) }}" class="group block transition hover:shadow-lg rounded-lg">
             <div class="aspect-w-1 aspect-h-1 rounded-lg bg-gray-100 overflow-hidden">
                 <img src="storage/images/engine.webp" class="object-center object-cover group-hover:scale-105 transition-transform duration-300" alt="Engine Parts" />
             </div>
@@ -187,7 +187,7 @@
         </a>
 
         <!-- Brakes -->
-        <a href="{{ route('products.index', ['category' => 'brakes']) }}" class="group block transition hover:shadow-lg rounded-lg">
+        <a href="{{ route('products.category', ['category' => 'brakes']) }}" class="group block transition hover:shadow-lg rounded-lg">
             <div class="aspect-w-1 aspect-h-1 rounded-lg bg-gray-100 overflow-hidden">
                 <img src="storage/images/interior.webp" class="object-center object-cover group-hover:scale-105 transition-transform duration-300" alt="Interior" />
             </div>
@@ -195,7 +195,7 @@
         </a>
 
         <!-- Transmission -->
-        <a href="{{ route('products.index', ['category' => 'transmission']) }}" class="group block transition hover:shadow-lg rounded-lg">
+        <a href="{{ route('products.category', ['category' => 'transmission']) }}" class="group block transition hover:shadow-lg rounded-lg">
             <div class="aspect-w-1 aspect-h-1 rounded-lg bg-gray-100 overflow-hidden">
                 <img src="storage/images/transmission.webp" class="object-center object-cover group-hover:scale-105 transition-transform duration-300" alt="Transmission" />
             </div>
@@ -203,7 +203,7 @@
         </a>
 
         <!-- Suspension -->
-        <a href="{{ route('products.index', ['category' => 'suspension']) }}" class="group block transition hover:shadow-lg rounded-lg">
+        <a href="{{ route('products.category', ['category' => 'suspension']) }}" class="group block transition hover:shadow-lg rounded-lg">
             <div class="aspect-w-1 aspect-h-1 rounded-lg bg-gray-100 overflow-hidden">
                 <img src="storage/images/suspension.webp" class="object-center object-cover group-hover:scale-105 transition-transform duration-300" alt="Suspension" />
             </div>
@@ -211,7 +211,7 @@
         </a>
 
         <!-- Wheel Rim -->
-        <a href="{{ route('products.index', ['category' => 'wheel']) }}" class="group block transition hover:shadow-lg rounded-lg">
+        <a href="{{ route('products.category', ['category' => 'wheel']) }}" class="group block transition hover:shadow-lg rounded-lg">
             <div class="aspect-w-1 aspect-h-1 rounded-lg bg-gray-100 overflow-hidden">
                 <img src="storage/images/rim.avif" class="object-center object-cover group-hover:scale-105 transition-transform duration-300" alt="Wheel Rim" />
             </div>
@@ -219,7 +219,7 @@
         </a>
 
         <!-- Interior -->
-        <a href="{{ route('products.index', ['category' => 'interior']) }}" class="group block transition hover:shadow-lg rounded-lg">
+        <a href="{{ route('products.category', ['category' => 'interior']) }}" class="group block transition hover:shadow-lg rounded-lg">
             <div class="aspect-w-1 aspect-h-1 rounded-lg bg-gray-100 overflow-hidden">
                 <img src="storage/images/interior.webp" class="object-center object-cover group-hover:scale-105 transition-transform duration-300" alt="Interior" />
             </div>

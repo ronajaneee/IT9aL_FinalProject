@@ -12,6 +12,7 @@
     <!-- Local Tailwind Config -->
     <script src="<?php echo 'js/tailwind-config.min.js'; ?>" data-color="#000000" data-border-radius="small"></script>
 </head>
+
 <body class="bg-gray-50">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div class="bg-white rounded-lg shadow-lg overflow-hidden">
@@ -65,7 +66,7 @@
                 <p class="text-sm text-gray-500 mb-4">Taxes and shipping calculated at checkout.</p>
                 <button
                     onclick="window.location.href='{{ route('checkout.view') }}'"
-                    class="text-white py-3 px-6 rounded-lg flex items-center justify-center whitespace-nowrap transition-colors w-full hover:opacity-90"
+                    class="inline-flex items-center gap-2 text-white py-3 px-6 rounded-lg flex items-center justify-center whitespace-nowrap transition-colors w-full hover:opacity-90"
                     style="background-color: #4F46E5;">
                     <i class="ri-flash-line mr-2"></i>
                     Checkout

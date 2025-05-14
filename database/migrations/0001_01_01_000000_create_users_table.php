@@ -23,7 +23,7 @@ return new class extends Migration
             $table->rememberToken();
             $table->enum('role', ['admin', 'customer'])->default('admin');
             $table->string('address', 255)->nullable();
-            $table->string('contact_number', 50)->nullable();
+            $table->string('phone', 50)->nullable();
             $table->timestamps(0);
         });
 

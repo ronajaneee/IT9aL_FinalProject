@@ -6,22 +6,21 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
-    public function up(): void
+    public function up()
     {
-        Schema::create('purchaseorderitem', function (Blueprint $table) {
-            $table->id('purchaseorderitemID')->unsigned();
-            $table->unsignedBigInteger('PurchaseOrderID');
-            $table->unsignedBigInteger('ProductID');
-            $table->integer('Quantity');
-            $table->decimal('UnitPrice', 10, 2);
-            $table->timestamps();
+        if (!Schema::hasTable('purchaseorderitem')) {
+            Schema::create('purchaseorderitem', function (Blueprint $table) {
+                $table->bigIncrements('purchaseorderitemID');
+                $table->unsignedBigInteger('PurchaseOrderID');
+                $table->unsignedBigInteger('ProductID');
+                $table->integer('Quantity');
+                $table->decimal('UnitPrice', 10, 2);
+                $table->timestamps();
 
-            $table->foreign('PurchaseOrderID')->references('PurchaseOrderID')->on('purchaseorder')->onDelete('cascade')->onUpdate('cascade');
-            $table->foreign('ProductID')->references('ProductID')->on('products')->onUpdate('cascade'); // Correct column reference
-        });
+                $table->foreign('PurchaseOrderID')->references('id')->on('purchaseorders')->onDelete('cascade');
+                $table->foreign('ProductID')->references('id')->on('products')->onDelete('cascade');
+            });
+        }
     }
 
     /**
