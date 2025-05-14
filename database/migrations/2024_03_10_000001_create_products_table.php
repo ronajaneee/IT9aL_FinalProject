@@ -3,26 +3,23 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
-use App\Models\Product;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
         Schema::create('products', function (Blueprint $table) {
-            $table->id('ProductID'); // This creates an unsignedBigInteger column named 'ProductID'
+            $table->engine = 'InnoDB'; // Ensure the table uses InnoDB
+            $table->id('ProductID');
             $table->unsignedBigInteger('SupplierID')->nullable();
             $table->string('ProductName', 100);
-            $table->string('SKU', 50)->unique(); // Make sure this line exists
+            $table->string('SKU', 50)->unique();
             $table->text('Description')->nullable();
             $table->string('Image', 255)->nullable();
             $table->decimal('Price', 10, 2);
             $table->integer('Quantity')->default(0);
             $table->string('Category', 100);
-            $table->integer('sales')->default(0); // Add 'sales' column with a default value of 0
+            $table->integer('sales')->default(0);
             $table->timestamps();
 
             $table->foreign('SupplierID')
@@ -33,11 +30,9 @@ return new class extends Migration
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
         Schema::dropIfExists('products');
     }
 };
+

@@ -12,7 +12,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('supplier', function (Blueprint $table) {
-            $table->id('SupplierID')->unsigned();
+            $table->engine = 'InnoDB'; // Add this to ensure consistent engine type
+            $table->id('SupplierID'); // The id() method already creates an unsigned bigInteger
             $table->string('SupplierName', 100);
             $table->string('Address', 255)->nullable();
             $table->string('Email', 255)->nullable();
